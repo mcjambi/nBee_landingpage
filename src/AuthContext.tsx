@@ -6,7 +6,6 @@ import React, {
   useEffect,
 } from "react";
 import { TypedUser, useGetCurrentUserData } from "./query/user.query";
-import { useLocation } from "react-router-dom";
 import helpers from "./helpers";
 
 interface AuthContextType {
