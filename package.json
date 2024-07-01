@@ -4,6 +4,9 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@million/lint": "^1.0.0-rc.76",
+    "@shopify/polaris": "^13.6.0",
+    "@shopify/react-form": "^2.6.0",
     "@tanstack/react-query": "^5.49.0",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
@@ -14,6 +17,8 @@
     "@types/react-dom": "^18.3.0",
     "axios": "^1.7.2",
     "date-and-time": "^3.3.0",
+    "html-react-parser": "^5.1.10",
+    "million": "^3.1.11",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-helmet-async": "^2.0.5",
@@ -24,7 +29,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "craco build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
@@ -47,6 +52,8 @@
     ]
   },
   "devDependencies": {
+    "@craco/craco": "^7.1.0",
+    "@craco/types": "^7.1.0",
     "sass": "^1.77.6"
   }
 }

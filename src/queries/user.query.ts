@@ -1,6 +1,7 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import axios from "axios";
-
+import helpers from "../helpers";
+import queryClient from './index';
 
 export interface TypedUser {
     user_id: string;
@@ -50,4 +51,27 @@ export function useGetCurrentUserData() {
         queryFn: () => axios.get<TypedUser>("/user").then((res) => res.data),
         retry: 1
     });
+}
+
+
+export function useUserLogout() {
+    return useMutation({
+        mutationKey: ['user_logout'],
+        mutationFn: () => axios.get<any>("/logout"),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['user'] })
+        }
+    })
+}
+
+
+export function useUpdateProfile() {
+    return useMutation({
+        mutationKey: ['user_update_profile'],
+        mutationFn: ({ user_id: user_profile_id, ...entity }: TypedUser) => axios.patch<TypedUser>(`/user/`, helpers.cleanEntity(entity)),
+        onSuccess: () => {
+            /** Để reset lại data, chỉ cần nhớ key, nó sẽ refetch lại ... */
+            queryClient.invalidateQueries({ queryKey: ['user'] });
+        },
+    })
 }
