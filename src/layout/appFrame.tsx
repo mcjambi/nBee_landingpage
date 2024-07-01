@@ -9,11 +9,16 @@ import {
   TopBar,
   Divider,
   BlockStack,
+  Icon,
 } from "@shopify/polaris";
 import {
   HomeIcon,
   QuestionCircleIcon,
   EmailIcon,
+  NotificationIcon,
+  FlowerIcon,
+  MoneyIcon,
+  OrderIcon,
 } from "@shopify/polaris-icons";
 import { useState, useCallback, useRef } from "react";
 import { useAuth } from "../AuthContext";
@@ -23,6 +28,8 @@ import helpers from "../helpers";
 import { useUserLogout } from "../queries/user.query";
 import __, { ___ } from "languages/index";
 import { default as packageInformation } from "../../package.json";
+import SidebarPopup from "./sidebarPopup";
+import NotificationLog from "./notificationLog";
 
 export default function AppFrame({ children }: any) {
   const skipToContentRef = useRef<HTMLAnchorElement>(null);
@@ -85,12 +92,29 @@ export default function AppFrame({ children }: any) {
       onToggle={toggleUserMenuActive}
     />
   );
+  const [showNotification, setShowNotification] = useState(false);
+
+  const notificationSidebarMenuActivator = (
+    <TopBar.Menu
+      key="OpenNotification"
+      activatorContent={
+        <span>
+          <Icon source={NotificationIcon} />
+        </span>
+      }
+      open={false}
+      actions={[]}
+      onOpen={() => setShowNotification(true)}
+      onClose={() => alert("close notification")}
+    />
+  );
 
   const topBarMarkup = (
     <TopBar
       showNavigationToggle
       userMenu={userMenuMarkup}
       onNavigationToggle={toggleMobileNavigationActive}
+      secondaryMenu={isAuthenticated ? notificationSidebarMenuActivator : []}
     />
   );
 
@@ -119,17 +143,27 @@ export default function AppFrame({ children }: any) {
           {
             url: "/my_profile",
             label: "Thông tin của tôi",
-            icon: EmailIcon,
-            subNavigationItems: [
-              {
-                url: "/email_setting",
-                label: "Tài khoản",
-              },
-              {
-                url: "/email_template",
-                label: "Biểu mẫu",
-              },
-            ],
+            icon: ProfileIcon,
+          },
+          {
+            url: "/my_order",
+            label: "Các đơn hàng",
+            icon: OrderIcon,
+          },
+          {
+            url: "/my_finance",
+            label: "Tài chính",
+            icon: MoneyIcon,
+          },
+          {
+            url: "/my_help_center",
+            label: "Trung tâm trợ giúp",
+            icon: QuestionCircleIcon,
+          },
+          {
+            url: "/edu",
+            label: "Trung tâm giáo dục",
+            icon: FlowerIcon,
           },
         ]}
       />
@@ -174,6 +208,15 @@ export default function AppFrame({ children }: any) {
       onNavigationDismiss={toggleMobileNavigationActive}
       skipToContentTarget={skipToContentRef}
     >
+      {isAuthenticated && (
+        <SidebarPopup
+          title="Thông báo"
+          show={showNotification}
+          onClose={() => setShowNotification(false)}
+        >
+          <NotificationLog show={showNotification} />
+        </SidebarPopup>
+      )}
       {children}
     </Frame>
   );

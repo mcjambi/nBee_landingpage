@@ -1,0 +1,33 @@
+
+.notification_wrap {
+
+    .notification_heading {
+        font-size: 14px;
+        font-weight: bold;
+        text-transform: uppercase;
+        color: #666;
+        margin: 10px;
+    }
+  
+    .notification_element {
+      padding: 10px;
+      display: flex;
+      align-items: flex-start;
+      cursor: pointer;
+      gap: 10px;
+      text-decoration: none;
+  
+      .notification_body {
+        line-height: 1.4;
+  
+        .l2 {
+          font-size: 12px;
+          color: #5f5f5f;
+        }
+      }
+    }
+    .notification_element:hover {
+      background-color: #EEE;
+    }
+  }
+  
