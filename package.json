@@ -7,6 +7,7 @@
     "@million/lint": "^1.0.0-rc.76",
     "@shopify/polaris": "^13.6.0",
     "@shopify/react-form": "^2.6.0",
+    "@simplewebauthn/browser": "^10.0.0",
     "@tanstack/react-query": "^5.49.0",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",

@@ -1,8 +1,52 @@
 
 // remove, can not access env in this wayyy
 // process.env.TZ = 'Asia/Ho_Chi_Minh';
+import diachinh from 'config/diachinh.json';
 
 export default class GET {
+
+
+	/**
+	 * From code, return diachinh ...
+	 * @param _code 
+	 */
+	getDiaChinh(_code: string): any {
+		return new Promise((resolve, reject) => {
+			if (!_code) return resolve(null);
+			if (typeof diachinh[_code] !== 'undefined') {
+				let R = diachinh[_code];
+				return resolve({
+					"name": R.name,
+					"slug": R.slug,
+					"type": R.type,
+					"name_with_type": R.name_with_type,
+					"code": R.code,
+				});
+			};
+
+			function _find(collection, key, value) {
+				if (typeof collection !== 'object') return;
+				for (let _key in collection) {
+					let R = collection[_key];
+					if (typeof R === 'object') {
+						if (typeof R[key] !== 'undefined' && R[key] === value) {
+							return resolve({
+								"name": R.name,
+								"slug": R.slug,
+								"type": R.type,
+								"name_with_type": R.name_with_type,
+								"code": R.code,
+							});
+						} else {
+							_find(R, key, value);
+						}
+					}
+				}
+			}
+			_find(diachinh, 'code', _code);
+		})
+
+	}
 
 	/**
 	 * get Age from input

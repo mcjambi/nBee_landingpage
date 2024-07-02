@@ -36,8 +36,8 @@ export default function AppFrame({ children }: any) {
     {
       items: [
         {
-          content: 'Chỉnh sửa thông tin',
-          onAction: () => history('/my_profile'),
+          content: 'Profile của tôi',
+          onAction: () => history('/profile'),
           icon: ProfileIcon,
         },
         {
@@ -112,7 +112,7 @@ export default function AppFrame({ children }: any) {
         title="Công cụ"
         items={[
           {
-            url: '/my_profile',
+            url: '/profile',
             label: 'Thông tin của tôi',
             icon: ProfileIcon,
           },

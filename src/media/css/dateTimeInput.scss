@@ -1,0 +1,20 @@
+.date-input {
+    display: flex;
+    align-items: center;
+    margin: 5px -5px;
+   
+   input {
+    color: #666;
+    width: 60px;
+    padding: 5px;
+    margin: 0 5px;
+    text-align: center;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+  }
+  
+  span {
+    font-size: 16px;
+  }
+}

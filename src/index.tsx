@@ -16,9 +16,10 @@ import Template404 from './layout/404';
 import AppFrame from './layout/appFrame';
 import queryClient from './queries';
 import HelpCenter from 'entities/help_center/help_center';
-import MyProfile from 'entities/my_profile';
 import { NotificationProvider } from 'NotificationContext';
 import { AxiosInterceptor } from 'config/axios.config';
+import Profile from 'entities/user-profile/profile';
+import EditMyProfile from 'entities/user-profile/edit-my-profile';
 
 const baseHref = document.querySelector('base')?.getAttribute('href')?.replace(/\/$/, '');
 
@@ -52,12 +53,36 @@ root.render(
                   <Route key={'home'} path={'/'} element={<Homepage />} />
 
                   <Route
-                    key={'my_profile'}
-                    path="/my_profile"
+                    key={'profile'}
+                    path="/profile"
                     element={
                       <ProtectedRoute>
                         <AppFrame>
-                          <MyProfile />
+                          <Profile />
+                        </AppFrame>
+                      </ProtectedRoute>
+                    }
+                  />
+
+                  <Route
+                    key={'profile_user_id'}
+                    path="/profile/:user_id"
+                    element={
+                      <ProtectedRoute>
+                        <AppFrame>
+                          <Profile />
+                        </AppFrame>
+                      </ProtectedRoute>
+                    }
+                  />
+
+                  <Route
+                    key={'edit-my-profile'}
+                    path="/edit-my-profile"
+                    element={
+                      <ProtectedRoute>
+                        <AppFrame>
+                          <EditMyProfile />
                         </AppFrame>
                       </ProtectedRoute>
                     }
