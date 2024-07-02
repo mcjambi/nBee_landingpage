@@ -53,18 +53,6 @@ root.render(
                   <Route key={'home'} path={'/'} element={<Homepage />} />
 
                   <Route
-                    key={'profile'}
-                    path="/profile"
-                    element={
-                      <ProtectedRoute>
-                        <AppFrame>
-                          <Profile />
-                        </AppFrame>
-                      </ProtectedRoute>
-                    }
-                  />
-
-                  <Route
                     key={'profile_user_id'}
                     path="/profile/:user_id"
                     element={

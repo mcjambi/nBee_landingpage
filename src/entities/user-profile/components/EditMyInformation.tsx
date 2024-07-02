@@ -24,18 +24,27 @@ import { USER_CAPACITY_LIST } from 'constant';
 import DateTimeInput from 'components/dateTimeInput';
 import { useAuth } from 'AuthContext';
 import { useAddUserToJob, useUpdateProfile } from 'queries/user.query';
+import { useNotification } from 'NotificationContext';
+import __ from 'languages/index';
 
 /**
  *   Create upload Modal for Notification
  */
 export default function EditMyInformation() {
   const { user: entity } = useAuth();
+  const { addNotification } = useNotification();
 
   const { mutateAsync: addUserToJob } = useAddUserToJob();
 
   const { smUp } = useBreakpoints();
 
-  const { mutateAsync: updateProfile } = useUpdateProfile();
+  const { mutateAsync: updateProfile, isSuccess: updateProfileSuccess } = useUpdateProfile();
+
+  useEffect(() => {
+    if (updateProfileSuccess) {
+      addNotification('info', __('updated_successfully'));
+    }
+  }, [updateProfileSuccess]);
 
   const userJobCallback = useCallback(
     (userJobList: string[]) => {

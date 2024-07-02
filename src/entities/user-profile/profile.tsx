@@ -3,8 +3,6 @@ import { Card, SkeletonBodyText, InlineGrid } from '@shopify/polaris';
 import { useState, useCallback, useEffect, useMemo } from 'react';
 import './media/user_profile.scss';
 
-import { useParams } from 'react-router-dom';
-
 import UserAchievement from 'components/user_achivement';
 import ProfileHeader from './profile-header';
 import { Helmet } from 'react-helmet-async';
@@ -22,23 +20,16 @@ export default function MyProfile() {
 
   const [profileData, setProfileData] = useState<TypedUser | null>(null);
 
-  /**
-   * If user apply filter, it will add to URL, then parse URL back to initial state
-   */
-  let useParam = {} as any;
-  useParam = useParams();
-  let Param = useParam.user_id || currentUserData?.user_id;
-
   const loadData = useCallback(async () => {
-    let entity = await mutateAsync(Param);
+    let entity = await mutateAsync(currentUserData?.user_id);
     if (entity) {
       setProfileData(entity);
     }
-  }, [Param]);
+  }, []);
 
   useEffect(() => {
-    if (Param) loadData();
-  }, [Param]);
+    loadData();
+  }, []);
 
   return (
     <>
@@ -48,7 +39,7 @@ export default function MyProfile() {
 
       {profileData && (
         <div id="staff-profile">
-          <ProfileHeader current_user_id={Param} />
+          <ProfileHeader current_user_id={currentUserData?.user_id} />
 
           <div id="profile_body" style={{ padding: '1.5rem' }}>
             <InlineGrid columns={{ xs: '1', sm: '1', md: '1', lg: ['oneThird', 'twoThirds'] }} gap="400">

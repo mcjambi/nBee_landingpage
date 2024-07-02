@@ -41,7 +41,7 @@ export default function AppFrame({ children }: any) {
       items: [
         {
           content: 'Profile của tôi',
-          onAction: () => history('/profile'),
+          onAction: () => history('/'),
           icon: ProfileIcon,
         },
         {
@@ -49,6 +49,10 @@ export default function AppFrame({ children }: any) {
           onAction: () => history('/help_center'),
           icon: QuestionCircleIcon,
         },
+      ],
+    },
+    {
+      items: [
         {
           content: 'Đăng xuất',
           onAction: logMeOutCallback,
@@ -115,11 +119,6 @@ export default function AppFrame({ children }: any) {
         separator
         title="Công cụ"
         items={[
-          {
-            url: '/profile',
-            label: 'Thông tin của tôi',
-            icon: ProfileIcon,
-          },
           {
             url: '/my_order',
             label: 'Các đơn hàng',

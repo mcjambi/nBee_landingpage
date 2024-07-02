@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { InlineStack, SkeletonThumbnail, Text } from '@shopify/polaris';
 import crownICON from 'media/images/crown.svg';
+import 'media/css/achievement.scss';
 
 // import { getEntities as getAchievement, createEntity as createAchievement, getAssignee, reset } from 'store/achievement.store.reducer';
 import { useGetAssignee } from 'queries/user_archivement.query';
