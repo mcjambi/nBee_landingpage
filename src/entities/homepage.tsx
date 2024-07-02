@@ -1,6 +1,7 @@
-import { Button, LegacyCard } from "@shopify/polaris";
-import { useAuth } from "AuthContext";
-import React from "react";
+import { Button, LegacyCard } from '@shopify/polaris';
+import { useAuth } from 'AuthContext';
+import axios from 'axios';
+import React from 'react';
 
 export default function Homepage() {
   const { isAuthenticated, user } = useAuth();
@@ -8,7 +9,16 @@ export default function Homepage() {
   return (
     <LegacyCard sectioned>
       <>Welcome {user?.display_name}</>
-      <Button onClick={() => alert("Button clicked!")}>NÚT BẤM</Button>
+      <Button
+        onClick={() =>
+          axios
+            .get('blabla')
+            .then()
+            .catch((e) => {})
+        }
+      >
+        NÚT BẤM
+      </Button>
     </LegacyCard>
   );
 }

@@ -31,6 +31,7 @@ export function useGetNotifications(object: IQuery) {
         queryFn: () => axios.get<TypedNotification[]>(`/notification${EndURL}`).then((res) => res.data),
         retry: 1,
         refetchOnWindowFocus: true,
+        enabled: false
     });
 }
 

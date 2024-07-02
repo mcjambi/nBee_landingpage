@@ -1,7 +1,7 @@
 {
   "name": "nbee_landingpage",
   "description": "Đây là một project ví dụ sử dụng nBee để tạo một landing page",
-  "version": "0.1.0",
+  "version": "1.2.1",
   "private": true,
   "dependencies": {
     "@million/lint": "^1.0.0-rc.76",
@@ -28,7 +28,7 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "PORT=3006 react-scripts start",
     "build": "craco build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

@@ -1,36 +1,19 @@
-import {
-  FooterHelp,
-  Frame,
-  Link,
-  Loading,
-  Navigation,
-  Toast,
-  Text,
-  TopBar,
-  Divider,
-  BlockStack,
-  Icon,
-} from "@shopify/polaris";
-import {
-  HomeIcon,
-  QuestionCircleIcon,
-  EmailIcon,
-  NotificationIcon,
-  FlowerIcon,
-  MoneyIcon,
-  OrderIcon,
-} from "@shopify/polaris-icons";
-import { useState, useCallback, useRef } from "react";
-import { useAuth } from "../AuthContext";
-import { useLocation, useNavigate } from "react-router-dom";
-import { ProfileIcon, ExitIcon } from "@shopify/polaris-icons";
-import helpers from "../helpers";
-import { useUserLogout } from "../queries/user.query";
-import __, { ___ } from "languages/index";
-import { default as packageInformation } from "../../package.json";
-import SidebarPopup from "./sidebarPopup";
-import NotificationLog from "./notificationLog";
+import { FooterHelp, Frame, Link, Loading, Navigation, Toast, Text, TopBar, Divider, BlockStack, Icon } from '@shopify/polaris';
+import { HomeIcon, QuestionCircleIcon, EmailIcon, NotificationIcon, FlowerIcon, MoneyIcon, OrderIcon } from '@shopify/polaris-icons';
+import { useState, useCallback, useRef } from 'react';
+import { useAuth } from '../AuthContext';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { ProfileIcon, ExitIcon } from '@shopify/polaris-icons';
+import helpers from '../helpers';
+import { useUserLogout } from '../queries/user.query';
+import __, { ___ } from 'languages/index';
+import { default as packageInformation } from '../../package.json';
+import SidebarPopup from './sidebarPopup';
+import NotificationLog from './notificationLog';
+import { useIsFetching } from '@tanstack/react-query';
+import { useNotification } from 'NotificationContext';
 
+// How many queries are fetching?
 export default function AppFrame({ children }: any) {
   const skipToContentRef = useRef<HTMLAnchorElement>(null);
 
@@ -41,20 +24,11 @@ export default function AppFrame({ children }: any) {
   const [userMenuActive, setUserMenuActive] = useState(false);
   const [mobileNavigationActive, setMobileNavigationActive] = useState(false);
 
-  const toggleUserMenuActive = useCallback(
-    () => setUserMenuActive((userMenuActive) => !userMenuActive),
-    []
-  );
-  const toggleMobileNavigationActive = useCallback(
-    () =>
-      setMobileNavigationActive(
-        (mobileNavigationActive) => !mobileNavigationActive
-      ),
-    []
-  );
+  const toggleUserMenuActive = useCallback(() => setUserMenuActive((userMenuActive) => !userMenuActive), []);
+  const toggleMobileNavigationActive = useCallback(() => setMobileNavigationActive((mobileNavigationActive) => !mobileNavigationActive), []);
 
   const logMeOutCallback = useCallback(async () => {
-    helpers.cookie_delete("AT");
+    helpers.cookie_delete('AT');
     await logOut();
   }, []);
 
@@ -62,17 +36,17 @@ export default function AppFrame({ children }: any) {
     {
       items: [
         {
-          content: "Chỉnh sửa thông tin",
-          onAction: () => history("/my_profile"),
+          content: 'Chỉnh sửa thông tin',
+          onAction: () => history('/my_profile'),
           icon: ProfileIcon,
         },
         {
-          content: "Trung tâm trợ giúp",
-          onAction: () => history("/help_center"),
+          content: 'Trung tâm trợ giúp',
+          onAction: () => history('/help_center'),
           icon: QuestionCircleIcon,
         },
         {
-          content: "Đăng xuất",
+          content: 'Đăng xuất',
           onAction: logMeOutCallback,
           icon: ExitIcon,
         },
@@ -83,11 +57,9 @@ export default function AppFrame({ children }: any) {
   const userMenuMarkup = (
     <TopBar.UserMenu
       actions={isAuthenticated ? userMenuActions : []}
-      name={user?.display_name || "Khách truy cập"}
+      name={user?.display_name || 'Khách truy cập'}
       detail={user?.user_role}
-      initials={String(
-        user?.display_name || user?.user_email || user?.user_login || "unknown"
-      ).charAt(0)}
+      initials={String(user?.display_name || user?.user_email || user?.user_login || 'unknown').charAt(0)}
       open={userMenuActive}
       onToggle={toggleUserMenuActive}
     />
@@ -105,7 +77,7 @@ export default function AppFrame({ children }: any) {
       open={false}
       actions={[]}
       onOpen={() => setShowNotification(true)}
-      onClose={() => alert("close notification")}
+      onClose={() => alert('close notification')}
     />
   );
 
@@ -119,8 +91,7 @@ export default function AppFrame({ children }: any) {
   );
 
   const version = packageInformation.version;
-  const polarisVersion =
-    packageInformation["dependencies"]["@shopify/polaris"] || "";
+  const polarisVersion = packageInformation['dependencies']['@shopify/polaris'] || '';
 
   const location = useLocation();
 
@@ -129,8 +100,8 @@ export default function AppFrame({ children }: any) {
       <Navigation.Section
         items={[
           {
-            url: "/",
-            label: "Trang chủ",
+            url: '/',
+            label: 'Trang chủ',
             icon: HomeIcon,
             exactMatch: true,
           },
@@ -141,28 +112,28 @@ export default function AppFrame({ children }: any) {
         title="Công cụ"
         items={[
           {
-            url: "/my_profile",
-            label: "Thông tin của tôi",
+            url: '/my_profile',
+            label: 'Thông tin của tôi',
             icon: ProfileIcon,
           },
           {
-            url: "/my_order",
-            label: "Các đơn hàng",
+            url: '/my_order',
+            label: 'Các đơn hàng',
             icon: OrderIcon,
           },
           {
-            url: "/my_finance",
-            label: "Tài chính",
+            url: '/my_finance',
+            label: 'Tài chính',
             icon: MoneyIcon,
           },
           {
-            url: "/my_help_center",
-            label: "Trung tâm trợ giúp",
+            url: '/my_help_center',
+            label: 'Trung tâm trợ giúp',
             icon: QuestionCircleIcon,
           },
           {
-            url: "/edu",
-            label: "Trung tâm giáo dục",
+            url: '/edu',
+            label: 'Trung tâm giáo dục',
             icon: FlowerIcon,
           },
         ]}
@@ -170,18 +141,16 @@ export default function AppFrame({ children }: any) {
 
       <Navigation.Section fill items={[]} />
 
-      <div style={{ padding: "10px" }}>
-        <BlockStack align="center" inlineAlign="start" gap={"200"}>
+      <div style={{ padding: '10px' }}>
+        <BlockStack align="center" inlineAlign="start" gap={'200'}>
           <Text as="p" variant="bodyXs" tone="subdued">
             NBEE CRM &copy;2022, version {version}
             <br />
             Polaris {polarisVersion}
           </Text>
           <Text as="p" variant="bodyXs" tone="subdued">
-            {___("footer_text: need help? Go to {help_center_link}", {
-              help_center_link: (
-                <Link url="/help_center">{__("help_center_text")}</Link>
-              ),
+            {___('footer_text: need help? Go to {help_center_link}', {
+              help_center_link: <Link url="/help_center">{__('help_center_text')}</Link>,
             })}
           </Text>
           <div style={{ marginBottom: 5, marginTop: 5 }}></div>
@@ -192,12 +161,15 @@ export default function AppFrame({ children }: any) {
 
   const logo = {
     width: 86,
-    topBarSource:
-      "https://cdn.shopify.com/s/files/1/2376/3301/files/Shopify_Secondary_Inverted.png",
-    contextualSaveBarSource:
-      "https://cdn.shopify.com/s/files/1/2376/3301/files/Shopify_Secondary_Inverted.png",
-    accessibilityLabel: "Shopify",
+    topBarSource: 'https://cdn.shopify.com/s/files/1/2376/3301/files/Shopify_Secondary_Inverted.png',
+    contextualSaveBarSource: 'https://cdn.shopify.com/s/files/1/2376/3301/files/Shopify_Secondary_Inverted.png',
+    accessibilityLabel: 'Shopify',
   };
+
+  /** GLobal Loading */
+  const isFetching = useIsFetching();
+  /** Global notification */
+  const { notification, clearNotification } = useNotification();
 
   return (
     <Frame
@@ -208,12 +180,18 @@ export default function AppFrame({ children }: any) {
       onNavigationDismiss={toggleMobileNavigationActive}
       skipToContentTarget={skipToContentRef}
     >
+      {notification && (
+        <Toast
+          content={notification.message}
+          duration={5000}
+          onDismiss={() => clearNotification(notification.id)}
+          error={notification.type === 'error'}
+        />
+      )}
+
+      {isFetching > 0 && <Loading />}
       {isAuthenticated && (
-        <SidebarPopup
-          title="Thông báo"
-          show={showNotification}
-          onClose={() => setShowNotification(false)}
-        >
+        <SidebarPopup title="Thông báo" show={showNotification} onClose={() => setShowNotification(false)}>
           <NotificationLog show={showNotification} />
         </SidebarPopup>
       )}
