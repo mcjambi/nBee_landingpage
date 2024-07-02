@@ -12,10 +12,14 @@ import SidebarPopup from './sidebarPopup';
 import NotificationLog from './notificationLog';
 import { useIsFetching } from '@tanstack/react-query';
 import { useNotification } from 'NotificationContext';
+import useRefreshTokenHelper from 'components/useRefreshTokenHelper';
 
 // How many queries are fetching?
 export default function AppFrame({ children }: any) {
   const skipToContentRef = useRef<HTMLAnchorElement>(null);
+
+  /** refresh outdate token */
+  useRefreshTokenHelper();
 
   const { user, isAuthenticated } = useAuth();
   const history = useNavigate();
