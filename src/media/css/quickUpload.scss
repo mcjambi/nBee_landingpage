@@ -1,0 +1,77 @@
+
+.quick_upload_outer {
+	position: relative;
+	height: 100%;
+	display: flex;
+	width: 100%;
+	// background-color: #b4b4b431;
+	min-height: 50px;
+	align-items: center;
+	justify-content: center;
+  overflow: hidden;
+  border: 2px dashed #ccc;
+
+  .loaded {
+    background: rgb(131,58,180);
+    background: linear-gradient(90deg, rgba(131,58,180,1) 0%, rgba(253,29,29,1) 50%, rgba(252,176,69,1) 100%);
+    position: absolute;
+    height: 100%;
+    width: 0;
+    left: 0;
+    top: 0;
+    opacity: .5;
+  }
+
+  .imageAfterUploadPlaceholder {
+    width: 100%;
+    height: auto;
+    display: inline-block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 2;
+  }
+  .children_wrap {
+    position: relative;
+    z-index: 4;
+  }
+
+  .textPlaceholder {
+    color: #fff;
+    font-size: 12px;
+    background-color: #4d4c4c91;
+  }
+}
+
+.quick_upload_wrap {
+  display: flex;
+  opacity: 0;
+  flex-flow: column nowrap;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  z-index: 101;
+  background-color: #0000003b;
+  cursor: pointer;
+  transition: all 0.25s ease 0s;
+  justify-content: center;
+}
+
+.quick_upload_wrap:hover {
+  opacity: 1;
+}
+
+.quick_upload {
+  display: inline-flex;
+  align-items: center;
+  padding: 10px;
+  background-color: #00000070;
+  color: #fff;
+  border-radius: 30px;
+  text-decoration: none;
+}
+
+.quick_upload:hover {
+  background-color: #00000090;
+}

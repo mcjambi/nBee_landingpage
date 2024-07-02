@@ -1,6 +1,5 @@
-import { Loading, Text } from '@shopify/polaris';
 import axios from 'axios';
-
+import 'media/css/quickUpload.scss';
 import { Children, useEffect, useState } from 'react';
 
 type TypedUploadResult = {
