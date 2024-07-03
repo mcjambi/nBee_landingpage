@@ -12,9 +12,10 @@ axios.defaults.baseURL = process.env.REACT_APP_BACKEND_URL;
 declare const window: any;
 
 
-export function AxiosInterceptor(onStatus: (status: number) => void, onError: (error: string) => void): void {
+export function AxiosInterceptor(onStatus: (status: number) => void, onError: (error: string) => void, onLoading: (loading: boolean) => void): void {
 
     const onRequestSuccess = async (config: any) => {
+        onLoading(true);
         config.headers['X-Authorization'] = helpers.cookie_get('AT');
         config.headers['User-Referrer'] = helpers.cookie_get('user_referrer');
 
@@ -44,12 +45,16 @@ export function AxiosInterceptor(onStatus: (status: number) => void, onError: (e
     };
     const onResponseSuccess = (response: any) => {
         // set access_token
+        onLoading(false);
+
         const access_token = response.headers['x-authorization'] || false;
         if (access_token) helpers.cookie_set('AT', access_token, 30);
         return response;
     };
 
     const onResponseError = (err: any) => {
+        onLoading(false);
+
         const status = err.status || err?.response?.status || 0;
         /***************
         * 401: User not (correctly) authenticated, the resource/page require authentication
@@ -67,6 +72,7 @@ export function AxiosInterceptor(onStatus: (status: number) => void, onError: (e
     };
 
     const onRequestError = (err: any) => {
+        onLoading(false);
         console.log('===>request Error: ', err);
         return Promise.reject(err);
     }

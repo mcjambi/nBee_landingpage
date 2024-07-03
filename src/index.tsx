@@ -4,7 +4,7 @@ import './media/css/App.scss';
 import reportWebVitals from './reportWebVitals';
 import { HelmetProvider } from 'react-helmet-async';
 import '@shopify/polaris/build/esm/styles.css';
-import enTranslations from '@shopify/polaris/locales/en.json';
+import viTranslations from '@shopify/polaris/locales/vi.json';
 import { AppProvider } from '@shopify/polaris';
 
 import { QueryClientProvider } from '@tanstack/react-query';
@@ -48,9 +48,9 @@ function NtsLink({ children, url, external, ...rest }) {
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
-  <AppProvider i18n={enTranslations} linkComponent={NtsLink}>
-    <NotificationProvider axiosInterceptors={AxiosInterceptor}>
-      <QueryClientProvider client={queryClient}>
+  <AppProvider i18n={viTranslations} linkComponent={NtsLink}>
+    <QueryClientProvider client={queryClient}>
+      <NotificationProvider axiosInterceptors={AxiosInterceptor}>
         <HelmetProvider>
           <React.StrictMode>
             <AuthProvider>
@@ -101,8 +101,8 @@ root.render(
             </AuthProvider>
           </React.StrictMode>
         </HelmetProvider>
-      </QueryClientProvider>
-    </NotificationProvider>
+      </NotificationProvider>
+    </QueryClientProvider>
   </AppProvider>
 );
 

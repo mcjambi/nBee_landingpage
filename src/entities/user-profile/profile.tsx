@@ -1,4 +1,4 @@
-import { Card, SkeletonBodyText, InlineGrid } from '@shopify/polaris';
+import { Card, SkeletonBodyText, InlineGrid, Button } from '@shopify/polaris';
 
 import { useState, useCallback, useEffect, useMemo } from 'react';
 import './media/user_profile.scss';
@@ -8,6 +8,7 @@ import ProfileHeader from './profile-header';
 import { Helmet } from 'react-helmet-async';
 import { useAuth } from 'AuthContext';
 import { TypedUser, useGetEntity } from 'queries/user.query';
+import axios from 'axios';
 
 /************************************************************ *
  * MAINN
@@ -31,6 +32,10 @@ export default function MyProfile() {
     loadData();
   }, []);
 
+  const test412 = useCallback(() => {
+    axios.get('login/sign_test').catch(() => {});
+  }, []);
+
   return (
     <>
       <Helmet prioritizeSeoTags>
@@ -43,7 +48,11 @@ export default function MyProfile() {
 
           <div id="profile_body" style={{ padding: '1.5rem' }}>
             <InlineGrid columns={{ xs: '1', sm: '1', md: '1', lg: ['oneThird', 'twoThirds'] }} gap="400">
-              <UserAchievement user_id={profileData?.user_id} />
+              {/* <UserAchievement user_id={profileData?.user_id} /> */}
+              <div>
+                Chafo cacs banj, <Button onClick={test412}>Tesst</Button>
+              </div>
+              <div>Chafo cacs banj</div>
             </InlineGrid>
           </div>
           {/** profile_body */}

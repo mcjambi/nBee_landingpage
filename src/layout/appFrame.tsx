@@ -10,7 +10,7 @@ import __, { ___ } from 'languages/index';
 import { default as packageInformation } from '../../package.json';
 import SidebarPopup from './sidebarPopup';
 import NotificationLog from './notificationLog';
-import { useIsFetching } from '@tanstack/react-query';
+// import { useIsFetching } from '@tanstack/react-query';
 import { useNotification } from 'NotificationContext';
 
 // How many queries are fetching?
@@ -165,8 +165,6 @@ export default function AppFrame({ children }: any) {
     accessibilityLabel: 'Shopify',
   };
 
-  /** GLobal Loading */
-  const isFetching = useIsFetching();
   /** Global notification */
   const { notification, clearNotification } = useNotification();
 
@@ -188,7 +186,6 @@ export default function AppFrame({ children }: any) {
         />
       )}
 
-      {isFetching > 0 && <Loading />}
       {isAuthenticated && (
         <SidebarPopup title="Thông báo" show={showNotification} onClose={() => setShowNotification(false)}>
           <NotificationLog show={showNotification} />

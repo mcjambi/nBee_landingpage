@@ -1,0 +1,99 @@
+.linear-progress {
+	background-color: var(--p-color-bg-fill-inverse);
+  height: 4px;
+  position: absolute;
+  width: 100%;
+  overflow: hidden;
+  z-index: var(--p-z-index-9);
+  top: 0;
+  left: 0;
+  -webkit-animation: start 0.3s ease-in;
+          animation: start 0.3s ease-in;
+
+  .bar {
+  position: absolute;
+	background-color: var(--p-color-bg-fill-inverse-active);
+  transition: transform 0.2s linear;
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+}
+ .bar1 {
+  -webkit-animation: progressLinearMovement 2.5s infinite;
+          animation: progressLinearMovement 2.5s infinite;
+  -webkit-animation-delay: 0;
+          animation-delay: 0;
+}
+ .bar2 {
+  left: -100%;
+  -webkit-animation: progressLinearMovement 2.5s infinite;
+          animation: progressLinearMovement 2.5s infinite;
+  -webkit-animation-delay: 0.7s;
+          animation-delay: 0.7s;
+}
+}
+
+@-webkit-keyframes start {
+  from {
+    max-height: 0;
+    opacity: 0;
+  }
+  to {
+    max-height: 20px;
+    opacity: 1;
+  }
+}
+@keyframes start {
+  from {
+    max-height: 0;
+    opacity: 0;
+  }
+  to {
+    max-height: 20px;
+    opacity: 1;
+  }
+}
+@-webkit-keyframes end {
+  from {
+    max-height: 0;
+    opacity: 0;
+  }
+  to {
+    max-height: 2px;
+    opacity: 1;
+  }
+}
+@keyframes end {
+  from {
+    max-height: 0;
+    opacity: 0;
+  }
+  to {
+    max-height: 2px;
+    opacity: 1;
+  }
+}
+@-webkit-keyframes progressLinearMovement {
+  0% {
+    left: -100%;
+  }
+  50% {
+    left: 100%;
+  }
+  100% {
+    left: 100%;
+  }
+}
+@keyframes progressLinearMovement {
+  0% {
+    left: -100%;
+  }
+  50% {
+    left: 100%;
+  }
+  100% {
+    left: 100%;
+  }
+}

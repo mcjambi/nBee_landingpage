@@ -1,3 +1,5 @@
+import GlobalProgressingBar from 'components/GlobalProgressingBar';
+import UserSignComponent from 'components/userSign';
 import React, { createContext, useState, useContext, useCallback, useEffect } from 'react';
 
 type GLobalNotificationElement = {
@@ -25,10 +27,12 @@ export const NotificationProvider = ({
   axiosInterceptors,
 }: {
   children: any;
-  axiosInterceptors?: (onStatus: (status: number) => void, onError: (error: string) => void) => void;
+  axiosInterceptors?: (onStatus: (status: number) => void, onError: (error: string) => void, onLoading: (loading: boolean) => void) => void;
 }) => {
   const [notifications, setNotifications] = useState([]);
   const [notification, setNotification] = useState(null);
+
+  const [showUserSignModal, setShowUserSignModal] = useState(false);
 
   useEffect(() => {
     if (notifications.length < 1) setNotification(null);
@@ -43,14 +47,20 @@ export const NotificationProvider = ({
     }, 5000); // Remove after 5 seconds
   };
 
+  const [loading, setLoading] = useState(false);
+
   useEffect(() => {
     axiosInterceptors(
       (status) => {
         // console.log(status, '<<< AXIOS Status');
+        if (status === 412) setShowUserSignModal(true);
       },
       (error: string) => {
         // console.log(error, 'AXIOS call ERROR');
         addNotification('error', error);
+      },
+      (loading: boolean) => {
+        setLoading(loading);
       }
     );
   }, []);
@@ -59,5 +69,15 @@ export const NotificationProvider = ({
     setNotifications((prev) => prev.filter((notif) => notif.id !== id));
   }, []);
 
-  return <NotificationContext.Provider value={{ addNotification, clearNotification, notification }}>{children}</NotificationContext.Provider>;
+  const hideSignModal = useCallback(() => {
+    setShowUserSignModal(false);
+  }, []);
+
+  return (
+    <NotificationContext.Provider value={{ addNotification, clearNotification, notification }}>
+      <GlobalProgressingBar show={loading} />
+      <UserSignComponent show={showUserSignModal} onClose={hideSignModal} />
+      {children}
+    </NotificationContext.Provider>
+  );
 };
