@@ -9,7 +9,7 @@ export default function QuickSearchBank({ current_bank_id, onClose }: { current_
     return bankList.map((el) => {
       return {
         value: el.shortName,
-        label: el.name,
+        label: `${el.name} (${el.shortName})`,
       };
     });
   }, []);
