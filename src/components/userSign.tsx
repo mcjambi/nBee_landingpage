@@ -7,13 +7,16 @@ import helpers from 'helpers/index';
 import { bufferToBase64URLString } from '@simplewebauthn/browser';
 import { useSignByPasskey, useSignByPassword } from 'queries/webauthn.query';
 
+/**
+ * Xác thực hai bước, quan trọng!
+ */
 export default function UserSignComponent({ show = false, onClose }: { show: boolean; onClose: () => void }) {
   const { mutateAsync: signByPasskey } = useSignByPasskey();
   const { mutateAsync: signByPassword } = useSignByPassword();
 
   const [viewPasswordMode, setViewPasswordMode] = useState(false);
   const [textFieldValue, setTextFieldValue] = useState('');
-  const hideModal = useCallback(() => {
+  const hideModal = useCallback(async () => {
     onClose();
   }, []);
 
@@ -43,10 +46,11 @@ export default function UserSignComponent({ show = false, onClose }: { show: boo
     setPasswordChecking(true);
     setPasswordFieldMeetError(false);
     try {
-      let { data } = await signByPassword(textFieldValue);
+      let data = await signByPassword(textFieldValue);
       helpers.cookie_set('XS', data.ATSL, 0.0833); // lưu lâu lâu chút, vì dù gì cũng là server quyết định ... 5 phút
       hideModal();
     } catch (e) {
+      console.log(e, '<<<< WEBAUTHN_ERROR');
       setPasswordFieldMeetError(true);
     } finally {
       setPasswordChecking(false);
@@ -68,8 +72,7 @@ export default function UserSignComponent({ show = false, onClose }: { show: boo
           // SZYN5YgOjGh0NBcPZHZgW4_krrmihjLHmVzzuoMdl2MdAAAAAA
           const authDataStr = bufferToBase64URLString(credential.response.authenticatorData);
           signByPasskey(authDataStr)
-            .then(async (response) => {
-              let { data } = response;
+            .then(async (data) => {
               helpers.cookie_set('XS', data.ATSL, 0.00139);
               await helpers.sleep(1000);
               hideModal();
@@ -77,7 +80,7 @@ export default function UserSignComponent({ show = false, onClose }: { show: boo
             .catch((e) => {});
         })
         .catch((e) => {
-          console.log(e, 'AAA YUYUYU <<<<');
+          console.log(e, 'WEBAUTHN_ERROR <<<<');
         });
     } catch (e) {
     } finally {

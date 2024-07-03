@@ -7,6 +7,7 @@ import EditMyInformation from './components/EditMyInformation';
 import ChangeMyPassword from './components/ChangeMyPassword';
 import { Helmet } from 'react-helmet-async';
 import { useAuth } from 'AuthContext';
+import UserFinance from './components/UserFinance';
 
 export default function EditMyProfile() {
   const { user: entity } = useAuth();
@@ -33,11 +34,16 @@ export default function EditMyProfile() {
       },
       {
         id: 'tab_1',
+        content: 'Thông tin thanh toán',
+        panelID: 'user_finance',
+      },
+      {
+        id: 'tab_2',
         content: 'Bảo mật',
         panelID: 'user_password',
       },
       {
-        id: 'tab_2',
+        id: 'tab_3',
         content: 'Lịch sử đăng nhập',
         panelID: 'user_login_history',
       },
@@ -91,6 +97,7 @@ export default function EditMyProfile() {
               <Tabs tabs={tabs} selected={tabselected} onSelect={handleTabChange}></Tabs>
               <div style={{ margin: '15px' }}>
                 {tabs[tabselected].panelID === 'edit_user_account' && <EditMyInformation />}
+                {tabs[tabselected].panelID === 'user_finance' && <UserFinance />}
                 {tabs[tabselected].panelID === 'user_password' && <ChangeMyPassword />}
                 {tabs[tabselected].panelID === 'user_login_history' && <UserLoginHistory user_id={entity?.user_id} />}
               </div>

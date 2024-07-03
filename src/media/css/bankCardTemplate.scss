@@ -1,0 +1,56 @@
+
+.bank_card_container {
+    position: relative;
+    background-image: url("../images/bank_card_background.png");
+    background-size: cover;
+    padding: 18px;
+    border-radius: 28px;
+    width: 3.37in;
+    height: 2.13in;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+  
+    .card-details {
+      margin-top: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+  
+  
+      header, .logo {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+      }
+      .logo img {
+          width: 48px;
+          margin-right: 10px;
+      }
+      h5 {
+          font-size: 16px;
+          font-weight: 400;
+          color: #fff;
+      }
+      header .chip {
+          width: 50px;
+          height: auto;
+      }
+      h6 {
+          color: #fff;
+          font-size: 10px;
+          font-weight: 400;
+      }
+      h5.number {
+          margin-top: 4px;
+          font-size: 18px;
+          letter-spacing: 1px;
+      }
+      h5.name {
+          margin-top: 20px;
+          max-width: 195px
+      }
+  
+  
+  }
+  
+  

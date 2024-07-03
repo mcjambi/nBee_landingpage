@@ -121,6 +121,45 @@ export function useAddUserToJob() {
 }
 
 
+/** Payment method ? Chưa save */
+
+
+export interface TypedUser_bank_information {
+    id?: string;
+    user_id?: string;
+    bank_name?: string;
+    bank_owner_display_name?: string;
+    bank_owner_number_account?: string;
+    bank_owner_card_number?: string;
+    createdAt?: string;
+}
+
+
+export function useGetUserPayment() {
+    return useQuery({
+        queryKey: ["user_get_user_payment"],
+        queryFn: () => axios.get<TypedUser_bank_information>("/user_bank_information").then((res) => res.data),
+        retry: 1,
+        refetchOnWindowFocus: false,
+    });
+}
+
+
+export function useUpdateUserPayment() {
+    return useMutation({
+        mutationKey: ['user_add_user_payment'],
+        mutationFn: (entity: TypedUser_bank_information) => axios.patch<TypedUser_bank_information>(`/user_bank_information`, helpers.cleanEntity(entity)),
+        onSuccess: () => {
+            /** Để reset lại data, chỉ cần nhớ key, nó sẽ refetch lại ... */
+            queryClient.invalidateQueries({ queryKey: ['user_get_user_payment'] });
+        }
+    })
+}
+
+/** END USER Payment method */
+
+
+
 export function useUserQuickLogin() {
     return useMutation({
         mutationKey: ['quick_login'],
