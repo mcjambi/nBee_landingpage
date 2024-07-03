@@ -1,4 +1,18 @@
-import { BlockStack, DropZone, InlineStack, Modal, TextContainer, Text, Icon, Link, TextField, Button, Form, Tooltip } from '@shopify/polaris';
+import {
+  BlockStack,
+  DropZone,
+  InlineStack,
+  Modal,
+  TextContainer,
+  Text,
+  Icon,
+  Link,
+  TextField,
+  Button,
+  Form,
+  Tooltip,
+  InlineError,
+} from '@shopify/polaris';
 import __ from 'languages/index';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import face_id_icon from 'media/images/face-id-svgrepo-com.svg';
@@ -182,11 +196,10 @@ export default function UserSignComponent({ show = false, onClose }: { show: boo
           )}
 
           <br />
-          <TextContainer>
-            <Tooltip content="Chức năng này yêu cầu bảo mật nâng cao để bảo vệ chính bạn.">
-              <Button tone="critical" icon={QuestionCircleIcon}></Button>
-            </Tooltip>
-          </TextContainer>
+          <InlineError
+            message="Chức năng này yêu cầu bảo mật nâng cao để bảo vệ chính bạn. Sau khi xác thực xong, bạn cần thao tác lại. Mỗi phiên ký sẽ được lưu trong vòng 5 phút."
+            fieldID="some_f_id"
+          />
         </Modal.Section>
       </Modal>
     </>

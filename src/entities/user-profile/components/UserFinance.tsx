@@ -1,12 +1,12 @@
 import React from 'react';
 import 'media/css/bankCardTemplate.scss';
 import BankCard from 'components/bankCard';
-import { lengthLessThan, useField, useForm } from '@shopify/react-form';
+import { lengthLessThan, notEmptyString, useField, useForm } from '@shopify/react-form';
 import helpers from 'helpers/index';
 import { useGetUserPayment, useUpdateUserPayment } from 'queries/user.query';
 import { useAuth } from 'AuthContext';
 import { BlockStack, Box, Card, ContextualSaveBar, Form, FormLayout, InlineGrid, TextField, Text, Select, FooterHelp } from '@shopify/polaris';
-import bankList from 'config/bank_list.json';
+import QuickSearchBank from 'components/quickSearchBank';
 
 export default function UserFinance() {
   const { user } = useAuth();
@@ -15,7 +15,7 @@ export default function UserFinance() {
 
   const useFields = {
     bank_name: useField<string>({
-      value: entity?.bank_name,
+      value: entity?.bank_name ?? '',
       validates: [
         (inputValue) => {
           if (inputValue) {
@@ -31,24 +31,23 @@ export default function UserFinance() {
     }),
 
     bank_owner_display_name: useField<string>({
-      value: entity?.bank_owner_display_name,
+      value: entity?.bank_owner_display_name ?? '',
       validates: [
         lengthLessThan(46, 'Tên không nên dài hơn 46 ký tự'),
+        notEmptyString('Trường này được yêu cầu phải điền.'),
         (inputValue) => {
-          if (inputValue.length > 1) {
-            if (helpers.isUTF8(inputValue)) {
-              return 'Không được dùng mã Unicode trong trường này!';
-            }
+          if (helpers.isUTF8(inputValue)) {
+            return 'Không được dùng mã Unicode trong trường này!';
           }
         },
       ],
     }),
 
     bank_owner_number_account: useField<string>({
-      value: entity?.bank_owner_number_account,
+      value: entity?.bank_owner_number_account ?? '',
       validates: [
         (inputValue) => {
-          if (inputValue.length > 1) {
+          if (inputValue && inputValue.length > 1) {
             if (helpers.isUTF8(inputValue)) {
               return 'Không được dùng mã Unicode trong trường này!';
             }
@@ -60,7 +59,7 @@ export default function UserFinance() {
       ],
     }),
     bank_owner_card_number: useField<string>({
-      value: entity?.bank_owner_card_number,
+      value: entity?.bank_owner_card_number ?? '',
       validates: [
         lengthLessThan(17, 'Chỉ nên ít hơn 16 ký tự'),
         (inputValue) => {
@@ -135,16 +134,7 @@ export default function UserFinance() {
             <Card roundedAbove="sm">
               <BlockStack gap="400">
                 <FormLayout>
-                  <Select
-                    label={'Chọn ngân hàng'}
-                    options={bankList.map((el) => {
-                      return {
-                        value: el.shortName,
-                        label: el.name,
-                      };
-                    })}
-                    {...fields.bank_name}
-                  />
+                  <QuickSearchBank current_bank_id={fields.bank_name.value} onClose={(bank_id) => fields.bank_name.onChange(bank_id)} />
                   <TextField autoFocus maxLength={46} autoComplete="off" label="Tên in trên thẻ" {...fields.bank_owner_display_name} />
                   <TextField
                     autoFocus
