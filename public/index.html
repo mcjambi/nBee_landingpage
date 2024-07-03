@@ -1,21 +1,35 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
   <head>
+    <base href="%PUBLIC_URL%/">
     <meta charset="utf-8" />
+    <title></title>
+
+    <script crossorigin="anonymous" type="application/javascript" src="./passport.js"></script>
+    
+    <script>
+      const backend_url = 'http://localhost:8088/activity/web_activity';
+    </script>
+    <!-- // How tracking work? -->
+     <!-- 
+    {
+      activity_target: String, default window.location.href,
+      activity_referrer: document.referrer,
+      activity_agent: window.navigator.userAgent
+     }
+     -->
+    <!-- <script crossorigin="anonymous" defer="defer" type="application/javascript" src="./requestee.js"></script> -->
+
     <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#000000" />
-    <meta
-      name="description"
-      content="Web site created using create-react-app"
-    />
-    <script crossorigin="anonymous" type="application/javascript" src="./passport.js"></script>
+    <meta name="description" content="" />
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
     <!--
       manifest.json provides metadata used when your web app is installed on a
       user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
     -->
-    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+    <link rel="manifest" href="%PUBLIC_URL%/site.manifest" />
     <!--
       Notice the use of %PUBLIC_URL% in the tags above.
       It will be replaced with the URL of the `public` folder during the build.
@@ -25,20 +39,80 @@
       work correctly both with client-side routing and a non-root public URL.
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
-    <title></title>
+    
+    <style>
+      #require_login {
+        position: fixed;
+        overflow: hidden;
+        width: 0;
+        height: 0;
+        left: 0;
+        top: 0;
+        background-color: #000000b3;
+        color: #fff;
+        z-index: 99999;
+        text-align: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      #before_load {
+        position: fixed;
+        overflow: hidden;
+        width: 100%;
+        height: 100%;
+        left: 0;
+        top: 0;
+        background-color: #fff;
+        color: #999;
+        z-index: 99998;
+        text-align: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+    </style>
+
+    <script>
+      var inactivityTime = function () {
+        var require_login = document.getElementById('require_login');
+        var time;
+        // DOM Events
+        document.onmousemove = resetTimer;
+        document.onkeydown = resetTimer;
+
+        function logout() {
+          require_login.style.width = '100%';
+          require_login.style.height = '100%';
+        }
+
+        function resetTimer() {
+            clearTimeout(time);
+            time = setTimeout(logout, 260000);
+        }
+        resetTimer();
+      };
+      window.onload = function() {
+          inactivityTime();
+      }
+    </script>
+
   </head>
   <body>
+
+
+
     <noscript>You need to enable JavaScript to run this app.</noscript>
-    <div id="root"></div>
-    <!--
-      This HTML file is a template.
-      If you open it directly in the browser, you will see an empty page.
+    <div id="require_login">
+      Bạn đã nghỉ quá lâu... bấm F5 hoặc tải lại trang.
+    </div>
+    <div id="root" style="display: none;"></div>
+    <div id="before_load">
+      Loading...
+    </div>
 
-      You can add webfonts, meta tags, or analytics to this file.
-      The build step will place the bundled scripts into the <body> tag.
 
-      To begin the development, run `npm start` or `yarn start`.
-      To create a production bundle, use `npm run build` or `yarn build`.
-    -->
+
   </body>
 </html>

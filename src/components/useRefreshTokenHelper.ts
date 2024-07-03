@@ -26,13 +26,21 @@ export default function useRefreshTokenHelper() {
         }
     }, []);
 
+    const loadUserData = useCallback(async () => {
+        document.getElementById('root').style.display = 'block';
+        document.getElementById('before_load').style.display = 'none';
+        document.getElementById('before_load').style.width = '0';
+        document.getElementById('before_load').style.height = '0';
+    }, []);
+
+
     const initLoadingUserData = useCallback(async () => {
         try {
             await loadRefreshToken();
         } catch (e) {
             console.log(e, 'REFRESH TOKEN ERROR');
         }
-
+        await loadUserData();
         setInterval(() => {
             loadRefreshToken();
         }, 120000);

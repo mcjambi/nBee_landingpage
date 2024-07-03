@@ -1,12 +1,15 @@
-import React, { useEffect } from "react";
-import { Helmet } from "react-helmet-async";
-import { useAuth } from "../AuthContext";
-import "media/css/welcomepage.scss";
-import heroBG from "media/images/hero-bg.png";
+import { Helmet } from 'react-helmet-async';
+import 'media/css/welcomepage.scss';
+import heroBG from 'media/images/hero-bg.png';
+import { useEffect } from 'react';
 
 export default function WelcomePage() {
-  let REACT_APP_CLIENT_PUBLIC_KEY = process.env.REACT_APP_CLIENT_PUBLIC_KEY;
-  let REACT_APP_FRONT_END_URL = process.env.REACT_APP_FRONT_END_URL;
+  useEffect(() => {
+    document.getElementById('root').style.display = 'block';
+    document.getElementById('before_load').style.display = 'none';
+    document.getElementById('before_load').style.width = '0';
+    document.getElementById('before_load').style.height = '0';
+  }, []);
 
   return (
     <>
@@ -24,15 +27,9 @@ export default function WelcomePage() {
         <section className="hero-section">
           <div className="hero">
             <h2>MỘT BƯỚC TIẾN VĨ ĐẠI</h2>
-            <p>
-              Nhiều ưu đãi cho những người tiên phong, bấm vào nút BẮT ĐẦU, và
-              chúng tôi sẽ đưa bạn tới gần hơn với thành công.
-            </p>
+            <p>Nhiều ưu đãi cho những người tiên phong, bấm vào nút BẮT ĐẦU, và chúng tôi sẽ đưa bạn tới gần hơn với thành công.</p>
             <div className="buttons">
-              <a
-                href={`${REACT_APP_FRONT_END_URL}/login/sso?app_id=${REACT_APP_CLIENT_PUBLIC_KEY}`}
-                className="join"
-              >
+              <a href={`/login`} className="join">
                 BẮT ĐẦU
               </a>
             </div>

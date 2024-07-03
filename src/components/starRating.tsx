@@ -1,4 +1,5 @@
 import { memo } from 'react';
+import 'media/css/starRating.scss';
 
 const StarRating = memo(function StarRatingComponent({ num }: { num: number }) {
   switch (num) {

@@ -1,4 +1,4 @@
-import { BlockStack, LegacyCard, Page, SkeletonTabs, Tabs, Text } from '@shopify/polaris';
+import { BlockStack, Box, Card, InlineGrid, Page, SkeletonBodyText, SkeletonTabs, Tabs } from '@shopify/polaris';
 import { useState, useCallback, useEffect, useRef, useMemo } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import __ from 'languages/index';
@@ -12,17 +12,14 @@ export default function EditMyProfile() {
   const { user: entity } = useAuth();
   const history = useNavigate();
 
-  const [loading, setLoading] = useState<boolean>(false);
-
+  const [loading, setLoading] = useState<boolean>(true);
   useEffect(() => {
-    setTimeout(() => {
-      setLoading(false);
-    }, 1000);
-    history(`/edit-my-profile`);
+    setTimeout(() => setLoading(false), 2000);
   }, []);
 
   let { hash } = useLocation();
   const [tabselected, setTabselected] = useState(0);
+
   const handleTabChange = useCallback((selectedTabIndex: number) => {
     window.location.hash = '#tab-' + selectedTabIndex;
   }, []);
@@ -49,9 +46,8 @@ export default function EditMyProfile() {
   ); // Empty dependency array means this will only run once on mount
 
   useEffect(() => {
-    if (hash) {
+    if (hash && hash.includes('tab-')) {
       let tabb = Number(String(hash || ' ').replace('#tab-', ''));
-      if (tabs[tabb] === undefined) tabb = 0;
       setTabselected(tabb);
     } else {
       setTabselected(0);
@@ -71,12 +67,25 @@ export default function EditMyProfile() {
         title="Chỉnh sửa tài khoản"
       >
         <BlockStack gap="400">
-          {/* <UserGeneralInformation /> */}
-
           {loading ? (
-            <LegacyCard>
-              <SkeletonTabs />
-            </LegacyCard>
+            <>
+              <Card padding={'0'}>
+                <SkeletonTabs />
+              </Card>
+              <br />
+              <BlockStack gap={{ xs: '800', sm: '400' }}>
+                <InlineGrid columns={{ xs: '1fr', md: '2fr 5fr' }} gap="400">
+                  <Box as="section" paddingInlineStart={{ xs: '400', sm: '0' }} paddingInlineEnd={{ xs: '400', sm: '0' }}>
+                    <SkeletonBodyText />
+                  </Box>
+                  <Card roundedAbove="sm">
+                    <BlockStack gap="400">
+                      <SkeletonBodyText />
+                    </BlockStack>
+                  </Card>
+                </InlineGrid>
+              </BlockStack>
+            </>
           ) : (
             <div className="custom_tabs" style={{ margin: '0 -15px' }}>
               <Tabs tabs={tabs} selected={tabselected} onSelect={handleTabChange}></Tabs>

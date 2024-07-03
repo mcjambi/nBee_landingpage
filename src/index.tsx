@@ -20,6 +20,12 @@ import { NotificationProvider } from 'NotificationContext';
 import { AxiosInterceptor } from 'config/axios.config';
 import Profile from 'entities/user-profile/profile';
 import EditMyProfile from 'entities/user-profile/edit-my-profile';
+import Login from 'layout/login';
+import QuickLogin from 'layout/quick.login';
+import AddReferrer from 'layout/add_referrer.account';
+import ActiveAccount from 'layout/active.account';
+import Register from 'layout/register';
+import RecoverPasswordComponent from 'layout/recover-password';
 
 const baseHref = document.querySelector('base')?.getAttribute('href')?.replace(/\/$/, '');
 
@@ -75,6 +81,15 @@ root.render(
                       </ProtectedRoute>
                     }
                   />
+
+                  <Route key={'login'} path="/login" element={<Login />} />
+                  <Route key={'login_sso'} path="/login/sso" element={<Login />} />
+                  <Route key={'login_facebook'} path="/login/facebook" element={<Login />} />
+                  <Route key={'quick_login'} path="/quick-login/:token" element={<QuickLogin />} />
+                  <Route key={'active_account'} path="/active-account" element={<ActiveAccount />} />
+                  <Route key={'add_referrer'} path="/add-referrer" element={<AddReferrer />} />
+                  <Route key={'register'} path="/register" element={<Register />} />
+                  <Route key={'recover_password'} path="/recover_password" element={<RecoverPasswordComponent />} />
 
                   <Route key={'help_center_slug'} path="/help_center/:slug" element={<HelpCenter />} />
 

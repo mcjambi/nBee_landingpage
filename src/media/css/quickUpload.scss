@@ -9,7 +9,10 @@
 	align-items: center;
 	justify-content: center;
   overflow: hidden;
-  border: 2px dashed #ccc;
+
+  &:hover {
+    border: 2px dashed #ccc;
+  }
 
   .loaded {
     background: rgb(131,58,180);

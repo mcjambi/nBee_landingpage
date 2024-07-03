@@ -1,7 +1,5 @@
-import React, { useState, useEffect, useMemo, useCallback, useRef } from 'react';
-
-import { Button, Text, Toast, BlockStack, InlineStack, Badge } from '@shopify/polaris';
-
+import React, { useState, useEffect, useCallback, useRef } from 'react';
+import { Button, Text, Toast, BlockStack, InlineStack, Badge, SkeletonThumbnail, SkeletonBodyText } from '@shopify/polaris';
 import { GiftCardFilledIcon, EmailIcon, LocationIcon, PhoneIcon, EditIcon } from '@shopify/polaris-icons';
 
 import dateandtime from 'date-and-time';
@@ -12,25 +10,21 @@ import helpers from '../../helpers';
 import StarRating from 'components/starRating';
 import __ from 'languages/index';
 import { useAuth } from 'AuthContext';
-import { TypedUser, useGetEntity, useUpdateProfile } from 'queries/user.query';
+import { useGetEntity, useUpdateProfile } from 'queries/user.query';
 
 export default function ProfileHeader({ current_user_id }: { current_user_id: string }) {
   const { user: currentUserData } = useAuth();
 
-  const { mutateAsync } = useGetEntity();
+  const { mutate: getEntity, data: profileData, isPending } = useGetEntity();
 
-  const { mutateAsync: updateProfile, isSuccess: updateProfileSuccess } = useUpdateProfile();
+  const { mutateAsync: updateProfile } = useUpdateProfile();
 
-  const [profileData, setProfileData] = useState<TypedUser>(null);
-
-  const fetchUsers = useCallback(async (user_id: string) => {
-    let data = await mutateAsync(user_id);
-    setProfileData(data);
-  }, []);
-
-  const getMainQueryDebound = useMemo(() => helpers.debounce((_value) => fetchUsers?.call(this, _value), 1000), []);
   useEffect(() => {
-    if (current_user_id) getMainQueryDebound(current_user_id);
+    if (current_user_id) {
+      setTimeout(() => {
+        getEntity(current_user_id);
+      }, 1500);
+    }
   }, [current_user_id]);
 
   const [internalErrorNotice, setInternalErrorNotice] = useState('');
@@ -72,7 +66,39 @@ export default function ProfileHeader({ current_user_id }: { current_user_id: st
     getFullAddress(profileData);
   }, [profileData]);
 
-  return current_user_id ? (
+  const ProfileHeaderLoading = useCallback(() => {
+    return (
+      <div id="profile_heading">
+        <div className="profile_inner">
+          <InlineStack gap="200" blockAlign="start" align="start">
+            <div className="profile-avatar">
+              <SkeletonThumbnail />
+            </div>
+            <div className="profile-description">
+              <BlockStack gap="200">
+                <Text as="h1" variant="headingLg">
+                  <SkeletonBodyText lines={1} />
+                </Text>
+                <Badge tone="success">&nbsp;</Badge>
+
+                <SkeletonBodyText lines={2} />
+                <StarRating num={5} />
+              </BlockStack>
+            </div>
+          </InlineStack>
+        </div>
+
+        <div style={{ maxWidth: '350px' }}>
+          <InlineStack wrap={true} gap={'400'}>
+            <SkeletonBodyText lines={1} />
+            <SkeletonBodyText lines={1} />
+          </InlineStack>
+        </div>
+      </div>
+    );
+  }, []);
+
+  return profileData ? (
     <>
       {internalErrorNotice ? <Toast content={internalErrorNotice} error onDismiss={() => setInternalErrorNotice('')} /> : null}
       <div id="profile_heading">
@@ -151,5 +177,7 @@ export default function ProfileHeader({ current_user_id }: { current_user_id: st
       </div>{' '}
       {/** profile_heading */}
     </>
-  ) : null;
+  ) : (
+    <ProfileHeaderLoading />
+  );
 }

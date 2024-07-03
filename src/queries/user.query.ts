@@ -66,6 +66,7 @@ export interface TypedUser {
     user_social_profile?: any[]; // Adjust the type as needed
     user_to_job?: any[]; // Adjust the type as needed
     capacities?: string[];
+    must_validated_account?: number;
 }
 
 
