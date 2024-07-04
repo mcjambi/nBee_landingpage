@@ -69,7 +69,8 @@ export default class GET {
 	}
 
 	/** 
-	 * @input file name ...
+	 * @_filename file name ...
+	 * @placeholder full URL of an placeholder
 	 * @return full media link or placeholder
 	 */
 	getMediaLink(_filename: string = '', placeholder = 'https://placehold.co/600x400') {

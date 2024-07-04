@@ -2,6 +2,8 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import helpers from "helpers/index";
 import { IQueryParams } from "queries";
+import queryClient from './index';
+
 
 export type TypedAchievementConditionName = "JOIN_DATE" | "ORDER_NUMBER" | "PAYMENT_NUMBER" | "TASK_DONE" | "AFFILIATE_NUMBER" | ""
 export type TypedAchievementConditionAction = "immediately" | "daily" | "weekly" | "monthly";
@@ -28,6 +30,7 @@ export interface TypeUserToAchievement {
     achievement_id?: bigint | string,
     createdAt?: bigint | string,
     user?: any
+    achievement?: any
 }
 
 type TypedQuery = TypedUserAchievement & IQueryParams;
@@ -60,10 +63,11 @@ export function useGetAchivement() {
     });
 }
 
+/** Load các thành tựu mà người đó đạt được! */
 export function useGetAssignee(params: IQueryParams) {
     const EndURL = helpers.buildEndUrl(params);
     return useQuery({
-        queryKey: ["user_to_achievement"],
+        queryKey: ["user_to_achievement/fetch_list"],
         queryFn: () => axios.get<TypedUserAchievement[]>(`/user_to_achievement${EndURL}`).then(response => {
             let { data, headers } = response;
             return {
@@ -73,6 +77,19 @@ export function useGetAssignee(params: IQueryParams) {
         }),
         retry: 1,
         refetchOnWindowFocus: true,
-        enabled: false,
+        enabled: true,
+    });
+}
+
+/** Lấy huân chương đầu tiên trong đời ... Huân chương gia nhập */
+export function useGetFirstAchivement() {
+    return useMutation({
+        mutationKey: ['achievement/get_first_achievement'],
+        mutationFn: () => axios.get<TypedUserAchievement>(`/achievement/get_my_first_achievement`).then((res) => res.data),
+        onSettled(data, error, variables, context) {
+            if (!error) {
+                queryClient.invalidateQueries({ queryKey: ['user_to_achievement/fetch_list'] })
+            }
+        }
     });
 }

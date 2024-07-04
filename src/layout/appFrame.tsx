@@ -108,6 +108,16 @@ export default function AppFrame({ children }: any) {
             label: 'Trang chủ',
             icon: HomeIcon,
             exactMatch: true,
+            subNavigationItems: [
+              {
+                url: '/edit-my-profile',
+                label: 'Chỉnh sửa tài khoản',
+              },
+              {
+                url: '/my-wallet',
+                label: 'Quản lý ví',
+              },
+            ],
           },
         ]}
       />
@@ -119,11 +129,6 @@ export default function AppFrame({ children }: any) {
             url: '/my_order',
             label: 'Các đơn hàng',
             icon: OrderIcon,
-          },
-          {
-            url: '/my_finance',
-            label: 'Tài chính',
-            icon: MoneyIcon,
           },
           {
             url: '/my_help_center',

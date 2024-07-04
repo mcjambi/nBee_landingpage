@@ -1,9 +1,8 @@
 import { Card, SkeletonBodyText, InlineGrid, Button } from '@shopify/polaris';
 
-import { useState, useCallback, useEffect, useMemo } from 'react';
+import { useState, useCallback, useEffect, useMemo, Suspense, lazy } from 'react';
 import './media/user_profile.scss';
 
-import UserAchievement from 'components/user_achivement';
 import ProfileHeader from './profile-header';
 import { Helmet } from 'react-helmet-async';
 import { useAuth } from 'AuthContext';
@@ -18,6 +17,8 @@ import axios from 'axios';
 export default function MyProfile() {
   const { user: currentUserData } = useAuth();
   const { mutateAsync } = useGetEntity();
+
+  const UserAchievement = lazy(() => import('components/user_achivement'));
 
   const [profileData, setProfileData] = useState<TypedUser | null>(null);
 
@@ -48,11 +49,16 @@ export default function MyProfile() {
 
           <div id="profile_body" style={{ padding: '1.5rem' }}>
             <InlineGrid columns={{ xs: '1', sm: '1', md: '1', lg: ['oneThird', 'twoThirds'] }} gap="400">
-              {/* <UserAchievement user_id={profileData?.user_id} /> */}
+              <div>
+                <Suspense>
+                  <UserAchievement user_id={profileData?.user_id} />
+                </Suspense>
+              </div>
+
               <div>
                 Chafo cacs banj, <Button onClick={test412}>Tesst</Button>
+                Chafo cacs banj
               </div>
-              <div>Chafo cacs banj</div>
             </InlineGrid>
           </div>
           {/** profile_body */}
