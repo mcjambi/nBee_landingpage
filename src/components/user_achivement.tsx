@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { BlockStack, Box, EmptyState, ExceptionList, InlineGrid, InlineStack, Link, Modal, SkeletonThumbnail, Text } from '@shopify/polaris';
+import { BlockStack, Box, Card, EmptyState, ExceptionList, InlineGrid, InlineStack, Link, Modal, SkeletonThumbnail, Text } from '@shopify/polaris';
 import crownICON from 'media/images/crown.svg';
 import 'media/css/achievement.scss';
 import Lottie from 'lottie-react';
@@ -110,25 +110,27 @@ export default function UserAchievement({ user_id }: { user_id: bigint | string;
       )}
 
       {userAchievementListCount < 1 && (
-        <BlockStack gap="400">
-          <InlineGrid columns={['twoThirds', 'oneThird']} alignItems="center">
-            <div>
-              <Text as="h3" tone="subdued" variant="headingLg">
-                Chưa có huy chương nào?
-              </Text>
-              <Text as="p" tone="subdued" variant="bodySm">
-                Đừng lo, chúng tôi ghi nhận mọi đóng góp của bạn, và trao thưởng rất kịp thời. Nào! Bây giờ bạn{' '}
-                <Link onClick={getMyFistAchievement}>click vào đây</Link> để nhận một huy chương đầu tiên.
-              </Text>
-            </div>
-            <Lottie animationData={achievement_background} loop />
-          </InlineGrid>
-        </BlockStack>
+        <Card>
+          <BlockStack gap="400">
+            <InlineGrid columns={['twoThirds', 'oneThird']} alignItems="center">
+              <BlockStack gap="200">
+                <Text as="h3" tone="subdued" variant="headingMd">
+                  Chưa có huy chương?
+                </Text>
+                <Text as="p" tone="subdued" variant="bodySm">
+                  Đừng lo, chúng tôi ghi nhận mọi đóng góp của bạn, và trao thưởng rất kịp thời.
+                </Text>
+              </BlockStack>
+              <Lottie animationData={achievement_background} loop />
+            </InlineGrid>
+          </BlockStack>
+          <Link onClick={getMyFistAchievement}>Click vào đây</Link> để nhận một huy chương đầu tiên.
+        </Card>
       )}
-      {userAchievementListCount > 0 ? (
+      {userAchievementListCount > 0 && (
         <>
-          <Text as="h3" tone="subdued" variant="headingLg">
-            Bạn được {userAchievementListCount} huy chương!
+          <Text as="h3" tone="subdued" variant="headingMd">
+            Bạn có {userAchievementListCount} huy chương!
           </Text>
 
           <div className="user_achievement">
@@ -151,8 +153,6 @@ export default function UserAchievement({ user_id }: { user_id: bigint | string;
             })}
           </div>
         </>
-      ) : (
-        <Text as="p">Chưa có thành tựu nào!</Text>
       )}
     </div>
   );

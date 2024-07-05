@@ -6,7 +6,7 @@ import dateandtime from 'date-and-time';
 import QuickUploadImage from 'components/oneclick-upload-image';
 
 import default_avatar from 'media/images/user-default.svg';
-import helpers from '../../helpers';
+import helpers from 'helpers';
 import StarRating from 'components/starRating';
 import __ from 'languages/index';
 import { useAuth } from 'AuthContext';
@@ -164,17 +164,7 @@ export default function ProfileHeader({ current_user_id }: { current_user_id: st
             {fullAddress.current}
           </Button>
         ) : null}
-
-        {currentUserData?.user_id === profileData?.user_id ? (
-          <>
-            <br />
-            <br />
-            <Button icon={EditIcon} variant="plain" url={'/edit-my-profile'}>
-              {__('edit_my_profile')}
-            </Button>
-          </>
-        ) : null}
-      </div>{' '}
+      </div>
       {/** profile_heading */}
     </>
   ) : (

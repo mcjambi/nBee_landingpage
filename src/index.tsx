@@ -26,6 +26,7 @@ import AddReferrer from 'layout/add_referrer.account';
 import ActiveAccount from 'layout/active.account';
 import Register from 'layout/register';
 import RecoverPasswordComponent from 'layout/recover-password';
+import Orders from 'entities/order';
 
 const baseHref = document.querySelector('base')?.getAttribute('href')?.replace(/\/$/, '');
 
@@ -65,6 +66,29 @@ root.render(
                       <ProtectedRoute>
                         <AppFrame>
                           <Profile />
+                        </AppFrame>
+                      </ProtectedRoute>
+                    }
+                  />
+
+                  <Route
+                    key={'my_order'}
+                    path="/order"
+                    element={
+                      <ProtectedRoute>
+                        <AppFrame>
+                          <Orders />
+                        </AppFrame>
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    key={'my_order_detail'}
+                    path="/order/:slug"
+                    element={
+                      <ProtectedRoute>
+                        <AppFrame>
+                          <Orders />
                         </AppFrame>
                       </ProtectedRoute>
                     }

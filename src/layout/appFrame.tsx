@@ -60,11 +60,13 @@ export default function AppFrame({ children }: any) {
 
   const userMenuMarkup = (
     <TopBar.UserMenu
+      customWidth="250px"
       actions={isAuthenticated ? userMenuActions : []}
       name={user?.display_name || 'Khách truy cập'}
       detail={user?.user_role}
       initials={String(user?.display_name || user?.user_email || user?.user_login || 'unknown').charAt(0)}
       open={userMenuActive}
+      avatar={user.user_avatar ?? null}
       onToggle={toggleUserMenuActive}
     />
   );
@@ -126,7 +128,7 @@ export default function AppFrame({ children }: any) {
         title="Công cụ"
         items={[
           {
-            url: '/my_order',
+            url: '/order',
             label: 'Các đơn hàng',
             icon: OrderIcon,
           },
