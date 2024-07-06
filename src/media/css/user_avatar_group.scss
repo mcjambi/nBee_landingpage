@@ -8,13 +8,26 @@
     .avatar {
         position: relative;
         transition: 0.2s;
+        text-align: center;
+        cursor: pointer;
     }
+
     .avatar:not(:first-child) {
     margin-left: -1.5rem;
     }
     .avatar:hover {
         z-index: 1;
         transform: translateY(-0.5rem);
+    }
+
+    .has-more {
+        background-color: #fff;
+        display: inline;
+        border-radius: 50%;
+        border: 3px solid #fff;
+        box-shadow: 0 0.25rem 1rem rgba(0, 0, 0, 0.1);
+        vertical-align: middle;
+        padding: 0.80rem;
     }
     .avatar-name {
         position: absolute;

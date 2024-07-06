@@ -17,6 +17,23 @@ export interface TypedUser_referrer {
 type IQuery = TypedUser_referrer & IQueryParams;
 
 
+export type TypedMyReferrer = {
+    "user": TypedUser,
+    "referrers": {
+        "user_id": string,
+        "display_name": string,
+        "user_email": string,
+        "user_avatar": string,
+        "user_status": number,
+        "user_rate": number,
+        "user_rate_count": number,
+        "createdAt": string,
+        "customer_to_user": {
+            "customer_order_count": number,
+            "customer_moneyspent_count": number
+        }
+    }[]
+}
 
 
 /*
@@ -44,7 +61,7 @@ export function useGetReferrer(object: IQuery) {
     let _rest = helpers.buildEndUrl(rest);
     return useQuery({
         queryKey: ["user_referrer/fetch_entity_list"],
-        queryFn: () => axios.get<TypedUser_referrer[]>(`/user_referrer/${user_id}${_rest}`).then(response => {
+        queryFn: () => axios.get<TypedMyReferrer>(`/user_referrer/${user_id}${_rest}`).then(response => {
             let { data, headers } = response;
             return {
                 body: data,

@@ -4,7 +4,8 @@ import 'media/css/user_avatar_group.scss';
 import user_referrer_placeholder from 'media/lottie_files/user_referrer_placeholder.json';
 import Lottie from 'lottie-react';
 import { useAuth } from 'AuthContext';
-import { useGetReferrer } from 'queries/user_referrer.query';
+import { TypedMyReferrer, useGetReferrer } from 'queries/user_referrer.query';
+import __helpers from 'helpers/index';
 
 /** Hiển thị tóm tắt đội nhóm của một ai đó ... */
 export default function UserReferrerModule() {
@@ -24,7 +25,7 @@ export default function UserReferrerModule() {
   }, []);
 
   const [totalItems, setTotalItems] = useState(0);
-  const [referrerEntity, setReferrerEntity] = useState({});
+  const [referrerEntity, setReferrerEntity] = useState<TypedMyReferrer | null>(null);
 
   useEffect(() => {
     if (referrerData) {
@@ -33,43 +34,40 @@ export default function UserReferrerModule() {
       setReferrerEntity(body);
     }
   }, [referrerData]);
-  a;
 
   return (
     <>
-      <SkeletonDisplayText size="small" />
-      <br />
-      <InlineStack blockAlign="center" gap={'100'} align="start">
-        <UserAvatarGroup
-          data={[
-            {
-              display_name: 'Ch',
-              user_avatar: '',
-            },
-            {
-              display_name: 'TR',
-              user_avatar: '',
-            },
-          ]}
-        />
-        <Text as="p">
-          được giới thiệu bởi bạn, <Link url="/my_referrer">xem tất cả</Link>.
-        </Text>
-      </InlineStack>
-
-      <br />
-      <InlineStack blockAlign="center" gap={'100'} align="start">
-        <Lottie className="user_referrer_placeholder" animationData={user_referrer_placeholder} loop />
-        <BlockStack>
-          <Text as="p" variant="headingMd">
-            Bạn chưa mời ai
-          </Text>
+      {loadingUserReferrer ? (
+        <SkeletonDisplayText size="small" />
+      ) : totalItems < 1 ? (
+        <InlineStack blockAlign="center" gap={'100'} align="start">
+          <Lottie className="user_referrer_placeholder" animationData={user_referrer_placeholder} loop />
+          <BlockStack>
+            <Text as="p" variant="headingMd">
+              Bạn chưa mời ai
+            </Text>
+            <Text as="p">
+              Bạn có thể sử dụng {current_user_data?.user_email ? `email ${current_user_data?.user_email} hoặc ` : ''}{' '}
+              {current_user_data?.user_phonenumber ? ` số điện thoại ${current_user_data?.user_phonenumber}` : ''} để làm mã mời.
+            </Text>
+          </BlockStack>
+        </InlineStack>
+      ) : (
+        <InlineStack blockAlign="center" gap={'100'} align="start">
+          <UserAvatarGroup
+            data={referrerEntity.referrers.map((element) => {
+              return {
+                display_name: element.display_name,
+                user_avatar: __helpers.getMediaLink(element.user_avatar),
+              };
+            })}
+            hasMore={totalItems - 5}
+          />
           <Text as="p">
-            Bạn có thể sử dụng {current_user_data?.user_email ? `email ${current_user_data?.user_email} hoặc ` : ''}{' '}
-            {current_user_data?.user_phonenumber ? ` số điện thoại ${current_user_data?.user_phonenumber}` : ''} để làm mã mời.
+            được giới thiệu bởi bạn, <Link url="/my_referrer">xem tất cả</Link>.
           </Text>
-        </BlockStack>
-      </InlineStack>
+        </InlineStack>
+      )}
     </>
   );
 }
@@ -79,7 +77,7 @@ type TypedUserAvatarGroup = {
   user_avatar: string;
 };
 
-function UserAvatarGroup({ data }: { data: TypedUserAvatarGroup[] }) {
+function UserAvatarGroup({ data, hasMore = 0 }: { data: TypedUserAvatarGroup[]; hasMore?: number }) {
   return (
     <div className="avatar-group">
       {data?.map((people) => {
@@ -90,6 +88,11 @@ function UserAvatarGroup({ data }: { data: TypedUserAvatarGroup[] }) {
           </div>
         );
       })}
+      {hasMore > 0 && (
+        <div className="avatar">
+          <span className="has-more">+{hasMore}</span>
+        </div>
+      )}
     </div>
   );
 }
