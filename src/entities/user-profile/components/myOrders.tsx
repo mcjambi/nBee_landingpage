@@ -56,7 +56,7 @@ export default function MyOrder() {
   const DataList = () => {
     return (
       <LegacyCard>
-        <LegacyCard.Header title="Đơn hàng của tôi" actions={[{ content: 'xem tất cả', onAction: () => history('/order') }]}></LegacyCard.Header>
+        <LegacyCard.Header title="Đơn hàng của tôi" actions={[{ content: 'Xem tất cả', onAction: () => history('/order') }]}></LegacyCard.Header>
         <DataTable
           columnContentTypes={['text', 'text', 'text', 'text', 'text']}
           headings={['PNR', 'Tình trạng', 'Thanh toán', 'Giá trị', 'Ngày tạo']}

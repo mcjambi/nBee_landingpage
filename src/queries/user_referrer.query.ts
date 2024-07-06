@@ -17,13 +17,52 @@ export interface TypedUser_referrer {
 type IQuery = TypedUser_referrer & IQueryParams;
 
 
-const apiUrl = 'user_referrer';
+
+
+/*
+* List of all referrer
+*/
+export function useGetReferrers(object: IQuery) {
+    const EndURL = helpers.buildEndUrl(object);
+    return useQuery({
+        queryKey: ["user_referrer/fetch_entities_list"],
+        queryFn: () => axios.get<TypedUser_referrer[]>(`/user_referrer${EndURL}`).then(response => {
+            let { data, headers } = response;
+            return {
+                body: data,
+                totalItems: headers['x-total-count'] || 0
+            }
+        }),
+        retry: 1,
+        refetchOnWindowFocus: true,
+        enabled: false,
+    });
+}
+
+export function useGetReferrer(object: IQuery) {
+    let { user_id, ...rest } = object;
+    let _rest = helpers.buildEndUrl(rest);
+    return useQuery({
+        queryKey: ["user_referrer/fetch_entity_list"],
+        queryFn: () => axios.get<TypedUser_referrer[]>(`/user_referrer/${user_id}${_rest}`).then(response => {
+            let { data, headers } = response;
+            return {
+                body: data,
+                totalItems: headers['x-total-count'] || 0
+            }
+        }),
+        retry: 1,
+        refetchOnWindowFocus: true,
+        enabled: false,
+    });
+}
+
 
 
 export function useSetMyReferrer() {
     return useMutation({
         mutationKey: ['user_referrer/set_my_referrer'],
-        mutationFn: (referrer: string) => axios.post<any>(`${apiUrl}/set_my_referrer`, { referrer }),
+        mutationFn: (referrer: string) => axios.post<any>(`user_referrer/set_my_referrer`, { referrer }),
     });
 }
 
@@ -35,6 +74,6 @@ export function useSetMyReferrer() {
 export function useUpdateReferrer() {
     return useMutation({
         mutationKey: ['user_referrer/update_referrer'],
-        mutationFn: (entity: { customer_id: any, referrer_id: any }) => axios.post<any>(`${apiUrl}/`, helpers.cleanEntity(entity))
+        mutationFn: (entity: { customer_id: any, referrer_id: any }) => axios.post<any>(`user_referrer/`, helpers.cleanEntity(entity))
     });
 }

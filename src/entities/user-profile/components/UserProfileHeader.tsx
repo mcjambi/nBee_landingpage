@@ -7,7 +7,7 @@ import __ from 'languages/index';
 import { useAuth } from 'AuthContext';
 import { useUpdateProfile } from 'queries/user.query';
 
-export default function UserProfileComponent() {
+export default function UserProfileHeader() {
   const { user: profileData } = useAuth();
 
   const { mutateAsync: updateProfile } = useUpdateProfile();
@@ -37,7 +37,8 @@ export default function UserProfileComponent() {
             </QuickUploadImage>
           </div>
           <Text as="p" variant="headingLg">
-            {profileData?.display_name ? profileData?.display_name : profileData?.user_email} {`(${profileData?.user_role})`}
+            {profileData?.display_name ? profileData?.display_name : profileData?.user_email}{' '}
+            {`(${profileData?.user_title ?? profileData?.user_role})`}
           </Text>
         </BlockStack>
       </div>

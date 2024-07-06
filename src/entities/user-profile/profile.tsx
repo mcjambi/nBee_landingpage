@@ -1,21 +1,32 @@
-import { Card, Text, InlineGrid, Button, Page, BlockStack, LegacyCard, InlineStack, CalloutCard, ExceptionList } from '@shopify/polaris';
+import {
+  Card,
+  Text,
+  InlineGrid,
+  Button,
+  Page,
+  BlockStack,
+  LegacyCard,
+  InlineStack,
+  CalloutCard,
+  ExceptionList,
+  SkeletonDisplayText,
+} from '@shopify/polaris';
 import { GiftCardFilledIcon, EmailIcon, LocationIcon, PhoneIcon, EditIcon } from '@shopify/polaris-icons';
 
-import { useState, useCallback, useEffect, useMemo, Suspense, lazy, useRef } from 'react';
+import { useState, useCallback, useEffect, useRef } from 'react';
 import 'media/css/user_profile.scss';
 import dateandtime from 'date-and-time';
 import { Helmet } from 'react-helmet-async';
 import { useAuth } from 'AuthContext';
-import { TypedUser, useGetEntity } from 'queries/user.query';
-import axios from 'axios';
-import UserProfileComponent from 'components/UserProfileComponent';
+import UserProfileComponent from './components/UserProfileHeader';
 import UserProfileLoading from 'components/userProfileLoading';
 import { useNavigate } from 'react-router-dom';
 import helpers from 'helpers/index';
 import StarRating from 'components/starRating';
 import UserAchievement from 'components/user_achivement';
-import BankCard from 'components/bankCard';
-import MyOrder from 'components/myOrders';
+import MyOrder from './components/myOrders';
+import UserReferrerModule from './components/user_referrer';
+import { useGetEntity } from 'queries/user.query';
 
 /************************************************************ *
  * MAINN
@@ -60,6 +71,9 @@ export default function MyProfile() {
       </Helmet>
       <Page>
         <UserProfileComponent />
+        <br />
+        <br />
+        <UserReferrerModule />
         <br />
         <br />
         {profileData && (
