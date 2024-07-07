@@ -38,7 +38,7 @@ export function useGetApps(object: IQuery) {
             let { data, headers } = response;
             return {
                 body: data,
-                totalItems: headers['x-total-count'] || 0
+                totalItems: Number(headers['x-total-count'] || 0)
             }
         }),
         retry: 1,
