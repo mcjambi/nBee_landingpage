@@ -27,6 +27,8 @@ import ActiveAccount from 'layout/active.account';
 import Register from 'layout/register';
 import RecoverPasswordComponent from 'layout/recover-password';
 import Orders from 'entities/order';
+import MyReferrer from 'entities/my_referrer';
+import MyWallet from 'entities/my_wallet';
 
 const baseHref = document.querySelector('base')?.getAttribute('href')?.replace(/\/$/, '');
 
@@ -60,6 +62,18 @@ root.render(
                   <Route key={'home'} path={'/'} element={<Homepage />} />
 
                   <Route
+                    key={'my_referrer'}
+                    path="/my_referrer"
+                    element={
+                      <ProtectedRoute>
+                        <AppFrame>
+                          <MyReferrer />
+                        </AppFrame>
+                      </ProtectedRoute>
+                    }
+                  />
+
+                  <Route
                     key={'profile_user_id'}
                     path="/profile/:user_id"
                     element={
@@ -89,6 +103,28 @@ root.render(
                       <ProtectedRoute>
                         <AppFrame>
                           <Orders />
+                        </AppFrame>
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    key={'my_wallet'}
+                    path="/my-wallet"
+                    element={
+                      <ProtectedRoute>
+                        <AppFrame>
+                          <MyWallet />
+                        </AppFrame>
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    key={'my_wallet_in_detail'}
+                    path="/my-wallet/:wallet_slug"
+                    element={
+                      <ProtectedRoute>
+                        <AppFrame>
+                          <MyWallet />
                         </AppFrame>
                       </ProtectedRoute>
                     }

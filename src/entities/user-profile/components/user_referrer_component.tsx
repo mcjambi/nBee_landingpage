@@ -8,7 +8,7 @@ import { TypedMyReferrer, useGetReferrer } from 'queries/user_referrer.query';
 import __helpers from 'helpers/index';
 
 /** Hiển thị tóm tắt đội nhóm của một ai đó ... */
-export default function UserReferrerModule() {
+export default function UserReferrerComponent() {
   const { user: current_user_data } = useAuth();
 
   const {

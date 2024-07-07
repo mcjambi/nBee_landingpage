@@ -25,8 +25,9 @@ import helpers from 'helpers/index';
 import StarRating from 'components/starRating';
 import UserAchievement from 'components/user_achivement';
 import MyOrder from './components/myOrders';
-import UserReferrerModule from './components/user_referrer';
+import UserReferrerComponent from './components/user_referrer_component';
 import { useGetEntity } from 'queries/user.query';
+import UserWalletCard from './components/user_wallet_card';
 
 /************************************************************ *
  * MAINN
@@ -73,7 +74,10 @@ export default function MyProfile() {
         <UserProfileComponent />
         <br />
         <br />
-        <UserReferrerModule />
+        <UserWalletCard />
+        <br />
+        <br />
+        <UserReferrerComponent />
         <br />
         <br />
         {profileData && (

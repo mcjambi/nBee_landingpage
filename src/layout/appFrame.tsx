@@ -1,5 +1,14 @@
 import { FooterHelp, Frame, Link, Loading, Navigation, Toast, Text, TopBar, Divider, BlockStack, Icon } from '@shopify/polaris';
-import { HomeIcon, QuestionCircleIcon, EmailIcon, NotificationIcon, FlowerIcon, MoneyIcon, OrderIcon } from '@shopify/polaris-icons';
+import {
+  HomeIcon,
+  QuestionCircleIcon,
+  EmailIcon,
+  NotificationIcon,
+  FlowerIcon,
+  MoneyIcon,
+  CollectionReferenceIcon,
+  OrderIcon,
+} from '@shopify/polaris-icons';
 import { useState, useCallback, useRef } from 'react';
 import { useAuth } from '../AuthContext';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -127,6 +136,11 @@ export default function AppFrame({ children }: any) {
         separator
         title="Công cụ"
         items={[
+          {
+            url: '/my_referrer',
+            label: 'Cây gia phả',
+            icon: CollectionReferenceIcon,
+          },
           {
             url: '/order',
             label: 'Các đơn hàng',
