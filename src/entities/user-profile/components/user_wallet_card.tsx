@@ -84,19 +84,23 @@ export default function UserWalletCard() {
                 </InlineGrid>
                 <InlineStack gap="200" align="start" blockAlign="center"></InlineStack>
               </InlineGrid>
-              <Divider />
-              <InlineGrid alignItems="center" gap="200" columns={{ xs: 1, md: myWallet?.length ?? 0 }}>
-                {myWallet?.map((wallet, index) => {
-                  return (
-                    <Link url={`/my-wallet/${wallet.wallet_type.wallet_unit}`} removeUnderline key={`my_wallet_` + index}>
-                      <Text as="p">{wallet?.wallet_type?.wallet_name}</Text>
-                      <Text as="h3" variant="headingLg" tone="subdued">
-                        {__helpers.formatNumber(wallet.balance ?? 0)} {wallet.wallet_type.wallet_unit}
-                      </Text>
-                    </Link>
-                  );
-                })}
-              </InlineGrid>
+              {Array.isArray(myWallet) && !__helpers.isEmpty(myWallet) && (
+                <>
+                  <Divider />
+                  <InlineGrid alignItems="center" gap="200" columns={{ xs: 1, md: myWallet?.length ?? 0 }}>
+                    {myWallet?.map((wallet, index) => {
+                      return (
+                        <Link url={`/my-wallet/${wallet.wallet_type.wallet_unit}`} removeUnderline key={`my_wallet_` + index}>
+                          <Text as="p">{wallet?.wallet_type?.wallet_name}</Text>
+                          <Text as="h3" variant="headingLg" tone="subdued">
+                            {__helpers.formatNumber(wallet.balance ?? 0)} {wallet.wallet_type.wallet_unit}
+                          </Text>
+                        </Link>
+                      );
+                    })}
+                  </InlineGrid>
+                </>
+              )}
             </BlockStack>
           </Box>
         )}

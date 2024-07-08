@@ -102,7 +102,7 @@ export default function MyProfile() {
                           },
                           {
                             icon: LocationIcon,
-                            description: profileData?.user_address ? fullAddress.current : '',
+                            description: profileData?.user_address ? fullAddress.current : '-',
                           },
                         ]}
                       />
