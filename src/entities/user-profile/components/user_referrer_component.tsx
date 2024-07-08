@@ -80,16 +80,16 @@ type TypedUserAvatarGroup = {
 function UserAvatarGroup({ data, hasMore = 0 }: { data: TypedUserAvatarGroup[]; hasMore?: number }) {
   return (
     <div className="avatar-group">
-      {data?.map((people) => {
+      {data?.map((people, index) => {
         return (
-          <div className="avatar">
+          <div className="avatar" key={index + '_user_group_profile'}>
             <span className="avatar-name">{people.display_name}</span>
             <img src={people.user_avatar} alt="" />
           </div>
         );
       })}
       {hasMore > 0 && (
-        <div className="avatar">
+        <div className="avatar" key="people_get_more">
           <span className="has-more">+{hasMore}</span>
         </div>
       )}

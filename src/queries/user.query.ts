@@ -52,6 +52,7 @@ export interface TypedUser {
     user_achievement_count?: number;
     user_verified_email?: number;
     user_verified_phone?: number;
+    user_verified_profile?: number;
     createdAt?: string;
     updatedAt?: string | null;
     createdBy?: string | null;

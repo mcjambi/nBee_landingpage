@@ -18,7 +18,6 @@ import 'media/css/user_profile.scss';
 import dateandtime from 'date-and-time';
 import { Helmet } from 'react-helmet-async';
 import { useAuth } from 'AuthContext';
-import UserProfileComponent from './components/UserProfileHeader';
 import UserProfileLoading from 'components/userProfileLoading';
 import { useNavigate } from 'react-router-dom';
 import helpers from 'helpers/index';
@@ -28,6 +27,7 @@ import MyOrder from './components/myOrders';
 import UserReferrerComponent from './components/user_referrer_component';
 import { useGetEntity } from 'queries/user.query';
 import UserWalletCard from './components/user_wallet_card';
+import UserProfileHeader from './components/UserProfileHeader';
 
 /************************************************************ *
  * MAINN
@@ -71,7 +71,7 @@ export default function MyProfile() {
         <title>Trang chủ</title>
       </Helmet>
       <Page>
-        <UserProfileComponent />
+        <UserProfileHeader />
         <br />
         <br />
         <UserWalletCard />
