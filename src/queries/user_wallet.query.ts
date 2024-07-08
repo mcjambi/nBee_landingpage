@@ -41,10 +41,26 @@ type IQuery = TypedWallet & IQueryParams;
 /*
 * List of all user wallet
 */
-export function useGetMyWallet(wallet_unit?: string) {
+export function useGetMyWallet() {
     return useQuery({
         queryKey: ["my_wallet/fetch_wallet_list"],
-        queryFn: () => axios.get<TypedWallet[]>(`/wallet/my_wallet/${wallet_unit || ''}`).then(response => {
+        queryFn: () => axios.get<TypedWallet[]>(`/wallet/my_wallet`).then(response => {
+            let { data, headers } = response;
+            return {
+                body: data,
+                totalItems: Number(headers['x-total-count'] || 0)
+            }
+        }),
+        retry: 1,
+        refetchOnWindowFocus: true,
+        enabled: false,
+    });
+}
+
+export function useGetMyOneWallet(wallet_unit: string) {
+    return useQuery({
+        queryKey: ["my_wallet/fetch_wallet_list"],
+        queryFn: () => axios.get<TypedWallet>(`/wallet/my_wallet/${wallet_unit}`).then(response => {
             let { data, headers } = response;
             return {
                 body: data,

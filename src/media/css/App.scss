@@ -23,3 +23,25 @@ code {
 
 
 
+
+
+.paginationtable_wrap {
+  padding: 10px;
+  margin-bottom: 15px;
+
+  .paginationtable_item {
+    cursor: pointer;
+    padding: 0 10px;
+  }
+
+  .paginationtable_item.disabled {
+    cursor: default;
+  }
+
+  .paginationtable_item.active {
+    cursor: default;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    padding: 0 10px;
+  }
+}

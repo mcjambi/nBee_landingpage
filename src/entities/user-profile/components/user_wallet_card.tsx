@@ -17,6 +17,7 @@ export default function UserWalletCard() {
   useEffect(() => {
     if (data) {
       let { body, totalItems } = data;
+      if (!Array.isArray(body)) return;
       let myDefaultWallet = body?.filter((el) => el.wallet_type.is_default === 1);
       let myOtherWallet = body?.filter((el) => el.wallet_type.is_default === 0);
       setDefaultWallet(myDefaultWallet?.pop());
