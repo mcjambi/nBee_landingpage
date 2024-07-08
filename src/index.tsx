@@ -98,7 +98,7 @@ root.render(
                   />
                   <Route
                     key={'my_order_detail'}
-                    path="/order/:slug"
+                    path="/order/view/:slug"
                     element={
                       <ProtectedRoute>
                         <AppFrame>

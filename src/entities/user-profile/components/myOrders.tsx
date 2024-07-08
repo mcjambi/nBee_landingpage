@@ -63,7 +63,7 @@ export default function MyOrder() {
           rows={entities?.map((orderData) => {
             const { order_id, order_pnr, order_status, order_total_price, payment_status, createdAt } = orderData;
             return [
-              <Link url={'/order/' + order_id}>{order_pnr}</Link>,
+              <Link url={'/order/view/' + order_id}>{order_pnr}</Link>,
               <Badge tone={getOrderBadge(order_status)}>{orderStatus[order_status]}</Badge>,
               <Badge tone={payment_status === 0 ? 'new' : 'success'} progress={payment_status === 1 ? 'complete' : 'incomplete'}>
                 {payment_status === 0 ? 'Chưa thanh toán' : 'Đã thanh toán'}
