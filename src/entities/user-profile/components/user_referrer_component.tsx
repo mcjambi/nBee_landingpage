@@ -4,7 +4,7 @@ import 'media/css/user_avatar_group.scss';
 import user_referrer_placeholder from 'media/lottie_files/user_referrer_placeholder.json';
 import Lottie from 'lottie-react';
 import { useAuth } from 'AuthContext';
-import { TypedMyReferrer, useGetReferrer } from 'queries/user_referrer.query';
+import { TypedMyReferrers, useMyReferrers } from 'queries/user_referrer.query';
 import __helpers from 'helpers/index';
 
 /** Hiển thị tóm tắt đội nhóm của một ai đó ... */
@@ -15,8 +15,7 @@ export default function UserReferrerComponent() {
     refetch: getReferrer,
     isLoading: loadingUserReferrer,
     data: referrerData,
-  } = useGetReferrer({
-    user_id: current_user_data?.user_id,
+  } = useMyReferrers({
     limit: 5,
   });
 
@@ -25,7 +24,7 @@ export default function UserReferrerComponent() {
   }, []);
 
   const [totalItems, setTotalItems] = useState(0);
-  const [referrerEntity, setReferrerEntity] = useState<TypedMyReferrer | null>(null);
+  const [referrerEntity, setReferrerEntity] = useState<TypedMyReferrers[] | null>(null);
 
   useEffect(() => {
     if (referrerData) {
@@ -55,7 +54,7 @@ export default function UserReferrerComponent() {
       ) : (
         <InlineStack blockAlign="center" gap={'100'} align="start">
           <UserAvatarGroup
-            data={referrerEntity.referrers.map((element) => {
+            data={referrerEntity.map((element) => {
               return {
                 display_name: element.display_name,
                 user_avatar: __helpers.getMediaLink(element.user_avatar),

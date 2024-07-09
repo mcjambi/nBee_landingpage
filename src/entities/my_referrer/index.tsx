@@ -1,23 +1,51 @@
-import React, { useEffect, useState } from 'react';
-import { BlockStack, Card, DescriptionList, Divider, InlineGrid, Modal, Page, SkeletonDisplayText, Text, TextField } from '@shopify/polaris';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import {
+  Avatar,
+  BlockStack,
+  Box,
+  Card,
+  DescriptionList,
+  Divider,
+  EmptyState,
+  ExceptionList,
+  Image,
+  IndexTable,
+  InlineGrid,
+  InlineStack,
+  Link,
+  Modal,
+  Page,
+  SkeletonDisplayText,
+  Text,
+  TextField,
+  Thumbnail,
+} from '@shopify/polaris';
 import { Helmet } from 'react-helmet-async';
-import { useCountReferrer } from 'queries/user_referrer.query';
+import { TypedMyReferrers, useCountReferrer, useMyRecentReferrers, useMyReferrers } from 'queries/user_referrer.query';
 import __helpers from 'helpers/index';
-import { QuestionCircleIcon } from '@shopify/polaris-icons';
+import { QuestionCircleIcon, NoteIcon } from '@shopify/polaris-icons';
 import __ from 'languages/index';
 import { useAuth } from 'AuthContext';
+import { useNavigate } from 'react-router-dom';
+
+import dateandtime from 'date-and-time';
+import MyReferrers from './list';
+
 export default function MyReferrer() {
+  const history = useNavigate();
   const { user: currentUserData } = useAuth();
   const { mutateAsync: getCountReferrer, isPending, data } = useCountReferrer();
+  const { refetch: getMyRecentReferrers, isFetching: loadingMyRecentReferrer, data: myRecentReferrerData } = useMyRecentReferrers();
 
   const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
     getCountReferrer();
+    getMyRecentReferrers();
   }, []);
 
-  return (
-    <>
+  const GuideModal = useCallback(() => {
+    return (
       <Modal
         title="Mã giới thiệu của bạn"
         open={showModal}
@@ -68,73 +96,145 @@ export default function MyReferrer() {
           </BlockStack>
         </Modal.Section>
       </Modal>
+    );
+  }, [showModal]);
+
+  const EmptyTemplate = useCallback(() => {
+    return (
+      <EmptyState heading="Bạn chưa mời ai?" image="https://cdn.shopify.com/s/files/1/2376/3301/products/emptystate-files.png">
+        <p>Tạo thu nhập thụ động, phần thưởng, vé du lịch và rất nhiều nguồn lợi từ việc giới thiệu thêm người.</p>
+      </EmptyState>
+    );
+  }, []);
+
+  const BodyHasData = useCallback(() => {
+    return (
+      <>
+        <Box background="bg-fill">
+          <Box padding={'400'}>
+            <BlockStack gap={'400'}>
+              <Text as="h2" variant="heading2xl">
+                Một ngày tuyệt vời, {currentUserData.display_name}
+              </Text>
+              <Text as="p" tone="subdued">
+                Đây là tóm tắt những người bạn giới thiệu được.
+              </Text>
+              <InlineGrid gap={'200'} columns={{ xs: 1, md: 4 }}>
+                <BlockStack gap="200">
+                  <Text as="p">Trực tiếp</Text>
+                  <div>
+                    <Text as="p" variant="headingLg" tone="subdued">
+                      {isPending ? <SkeletonDisplayText /> : __helpers.formatNumber(data?.level1 ?? 0)}
+                    </Text>
+                  </div>
+                </BlockStack>
+
+                <BlockStack gap="200">
+                  <Text as="p">Cấp 2</Text>
+                  <div>
+                    <Text as="p" variant="headingLg" tone="subdued">
+                      {isPending ? <SkeletonDisplayText /> : __helpers.formatNumber(data?.level2 ?? 0)}
+                    </Text>
+                  </div>
+                </BlockStack>
+
+                <BlockStack gap="200">
+                  <Text as="p">Cấp 3</Text>
+                  <div>
+                    <Text as="p" variant="headingLg" tone="subdued">
+                      {isPending ? <SkeletonDisplayText /> : __helpers.formatNumber(data?.level3 ?? 0)}
+                    </Text>
+                  </div>
+                </BlockStack>
+
+                <BlockStack gap="200">
+                  <Text as="p">Cấp 4</Text>
+                  <div>
+                    <Text as="p" variant="headingLg" tone="subdued">
+                      {isPending ? <SkeletonDisplayText /> : __helpers.formatNumber(data?.level4 ?? 0)}
+                    </Text>
+                  </div>
+                </BlockStack>
+              </InlineGrid>
+            </BlockStack>
+          </Box>
+          <Box background="bg-fill-active" padding={'400'}>
+            <ExceptionList
+              items={[
+                {
+                  icon: NoteIcon,
+                  description: (
+                    <Text as="p">
+                      Mọi thứ đang rất tuyệt, bạn có thể ghé <Link url="/edu">TRUNG TÂM GIÁO DỤC</Link> bất kỳ lúc nào để nhận chia sẻ về cách TĂNG
+                      TỐC
+                    </Text>
+                  ),
+                },
+              ]}
+            />
+          </Box>
+        </Box>
+        <br />
+        <br />
+        <Box padding="400">
+          <Text as="h4" variant="headingMd" tone="base">
+            Vừa mới gia nhập
+          </Text>
+          <br />
+          <InlineGrid columns={{ md: 4, xs: 1 }} gap={'100'}>
+            {myRecentReferrerData?.body?.map((el, index) => {
+              return (
+                <InlineStack align="start" blockAlign="center" gap={'200'} key={index + '_latest_referrer'}>
+                  <Thumbnail
+                    size="small"
+                    source={el.user_avatar ? __helpers.getMediaLink(el.user_avatar) : 'https://placehold.co/100x100'}
+                    alt={''}
+                  />
+                  <BlockStack>
+                    <Text as="h4" fontWeight="bold" tone="base">
+                      {el.display_name}
+                    </Text>
+                    <Text as="p" tone="subdued" variant="bodyXs">
+                      Cấp {el.level} - {__helpers.subtractTimeHistory(el.createdAt)}
+                    </Text>
+                  </BlockStack>
+                </InlineStack>
+              );
+            })}
+          </InlineGrid>
+          <br />
+          <Divider />
+          <br />
+          <Text as="h4" variant="headingMd" tone="base">
+            Danh sách giới thiệu trực tiếp
+          </Text>
+          <br />
+          <MyReferrers />
+        </Box>
+      </>
+    );
+  }, [data]);
+
+  return (
+    <>
+      <GuideModal />
+      <Helmet>
+        <title>Giới thiệu nhận hoa hồng</title>
+      </Helmet>
 
       <Page
-        fullWidth
-        title="Dữ liệu giới thiệu của bạn"
+        title=""
         primaryAction={{
           content: 'Hướng dẫn',
           icon: QuestionCircleIcon,
           onAction: () => setShowModal(true),
         }}
+        backAction={{
+          content: 'Back',
+          onAction: () => history('/'),
+        }}
       >
-        <Helmet>
-          <title>Giới thiệu nhận hoa hồng</title>
-        </Helmet>
-
-        <InlineGrid gap={'200'} columns={{ xs: 1, md: 4 }}>
-          <Card>
-            <BlockStack gap="200">
-              <Text as="p">Trực tiếp</Text>
-              <Divider />
-              <div>
-                <Text as="p" variant="headingLg" tone="subdued">
-                  {isPending ? <SkeletonDisplayText /> : __helpers.formatNumber(data?.level1 ?? 0)}
-                </Text>
-                <Text as="p">Tài khoản</Text>
-              </div>
-            </BlockStack>
-          </Card>
-
-          <Card>
-            <BlockStack gap="200">
-              <Text as="p">Cấp 2</Text>
-              <Divider />
-              <div>
-                <Text as="p" variant="headingLg" tone="subdued">
-                  {isPending ? <SkeletonDisplayText /> : __helpers.formatNumber(data?.level2 ?? 0)}
-                </Text>
-                <Text as="p">Tài khoản</Text>
-              </div>
-            </BlockStack>
-          </Card>
-
-          <Card>
-            <BlockStack gap="200">
-              <Text as="p">Cấp 3</Text>
-              <Divider />
-              <div>
-                <Text as="p" variant="headingLg" tone="subdued">
-                  {isPending ? <SkeletonDisplayText /> : __helpers.formatNumber(data?.level3 ?? 0)}
-                </Text>
-                <Text as="p">Tài khoản</Text>
-              </div>
-            </BlockStack>
-          </Card>
-
-          <Card>
-            <BlockStack gap="200">
-              <Text as="p">Cấp 4</Text>
-              <Divider />
-              <div>
-                <Text as="p" variant="headingLg" tone="subdued">
-                  {isPending ? <SkeletonDisplayText /> : __helpers.formatNumber(data?.level4 ?? 0)}
-                </Text>
-                <Text as="p">Tài khoản</Text>
-              </div>
-            </BlockStack>
-          </Card>
-        </InlineGrid>
+        {data?.level1 > 0 ? <BodyHasData /> : <EmptyTemplate />}
       </Page>
     </>
   );

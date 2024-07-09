@@ -16,7 +16,7 @@ export interface TypedUser_referrer {
 
 type IQuery = TypedUser_referrer & IQueryParams;
 
-
+/** Admin only */
 export type TypedMyReferrer = {
     "user": TypedUser,
     "referrers": {
@@ -56,6 +56,7 @@ export function useGetReferrers(object: IQuery) {
     });
 }
 
+/** Admin only ...  */
 export function useGetReferrer(object: IQuery) {
     let { user_id, ...rest } = object;
     let _rest = helpers.buildEndUrl(rest);
@@ -112,5 +113,61 @@ export function useCountReferrer() {
     return useMutation({
         mutationKey: ['user_referrer/count_my_sumarize'],
         mutationFn: () => axios.get<TypedCountReferrer>(`user_referrer/my_sumarize`).then(r => r.data)
+    });
+}
+
+
+export type TypedMyReferrers = {
+    "user_id": string,
+    "display_name": string,
+    "user_email": string,
+    "user_avatar": string,
+    "user_status": number,
+    "user_rate": string,
+    "user_rate_count": string,
+    "createdAt": string,
+    "customer_to_user"?: {
+        "customer_order_count": string,
+        "customer_moneyspent_count": string
+    }
+    "level"?: number; // sử dụngn bởi danh sách những người vừa giới thiệu ... có level để hiển thị
+}
+
+/*
+* User: get list of all my referrer
+*/
+export function useMyReferrers(object: IQuery) {
+    const EndURL = helpers.buildEndUrl(object);
+    return useQuery({
+        queryKey: ["user_referrer/my_referrers"],
+        queryFn: () => axios.get<TypedMyReferrers[]>(`/user_referrer/my_referrers${EndURL}`).then(response => {
+            let { data, headers } = response;
+            return {
+                body: data,
+                totalItems: Number(headers['x-total-count'] || 0)
+            }
+        }),
+        retry: 1,
+        refetchOnWindowFocus: true,
+        enabled: false,
+    });
+}
+
+/*
+* User: get list of my_recent_referrer
+*/
+export function useMyRecentReferrers() {
+    return useQuery({
+        queryKey: ["user_referrer/my_recent_referrer"],
+        queryFn: () => axios.get<TypedMyReferrers[]>(`/user_referrer/my_recent_referrer`).then(response => {
+            let { data, headers } = response;
+            return {
+                body: data,
+                totalItems: Number(headers['x-total-count'] || 0)
+            }
+        }),
+        retry: 1,
+        refetchOnWindowFocus: true,
+        enabled: false,
     });
 }
