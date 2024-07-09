@@ -89,11 +89,14 @@ export default function MyOrder() {
         </>
       )}
       {isSuccess && entities.length < 1 ? (
-        <Card>
-          <EmptyState image={product_placeholder} heading="Bạn chưa có đơn nào cả!">
-            Mọi đơn hàng khi bạn mua sắm sẽ được liệt kê tại đây!
-          </EmptyState>
-        </Card>
+        <>
+          <br />
+          <Card>
+            <EmptyState image={product_placeholder} heading="Bạn chưa có đơn nào cả!">
+              Mọi đơn hàng khi bạn mua sắm sẽ được liệt kê tại đây!
+            </EmptyState>
+          </Card>
+        </>
       ) : (
         <DataList />
       )}
