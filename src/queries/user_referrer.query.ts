@@ -47,7 +47,7 @@ export function useGetReferrers(object: IQuery) {
             let { data, headers } = response;
             return {
                 body: data,
-                totalItems: headers['x-total-count'] || 0
+                totalItems: Number(headers['x-total-count'] || 0)
             }
         }),
         retry: 1,
@@ -65,7 +65,7 @@ export function useGetReferrer(object: IQuery) {
             let { data, headers } = response;
             return {
                 body: data,
-                totalItems: headers['x-total-count'] || 0
+                totalItems: Number(headers['x-total-count'] || 0)
             }
         }),
         retry: 1,
@@ -92,5 +92,25 @@ export function useUpdateReferrer() {
     return useMutation({
         mutationKey: ['user_referrer/update_referrer'],
         mutationFn: (entity: { customer_id: any, referrer_id: any }) => axios.post<any>(`user_referrer/`, helpers.cleanEntity(entity))
+    });
+}
+
+
+/**
+ * Analytics
+ * Đếm toàn bộ số người giới thiệu được, chia làm 4 level
+ */
+
+type TypedCountReferrer = {
+    level1: number,
+    level2: number,
+    level3: number,
+    level4: number,
+}
+
+export function useCountReferrer() {
+    return useMutation({
+        mutationKey: ['user_referrer/count_my_sumarize'],
+        mutationFn: () => axios.get<TypedCountReferrer>(`user_referrer/my_sumarize`).then(r => r.data)
     });
 }

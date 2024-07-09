@@ -57,6 +57,7 @@ export interface TypedUser {
     updatedAt?: string | null;
     createdBy?: string | null;
     lastActive?: string;
+    referrer_code?: string;
     _count?: {
         user_activity: number;
         orders: number;

@@ -138,7 +138,7 @@ export default function AppFrame({ children }: any) {
         items={[
           {
             url: '/my_referrer',
-            label: 'Cây gia phả',
+            label: 'Đội nhóm của bạn',
             icon: CollectionReferenceIcon,
           },
           {
