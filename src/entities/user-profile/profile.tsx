@@ -144,6 +144,9 @@ export default function MyProfile() {
           </InlineGrid>
         )}
       </Page>
+      <br />
+      <br />
+      <br />
     </>
   );
 }

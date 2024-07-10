@@ -30,6 +30,7 @@ import Orders from 'entities/order';
 import MyReferrer from 'entities/my_referrer';
 import MyWallet from 'entities/my_wallet';
 import MyHelpCenter from 'entities/my_help_center';
+import EDUCenter from 'entities/edu_center';
 
 const baseHref = document.querySelector('base')?.getAttribute('href')?.replace(/\/$/, '');
 
@@ -162,6 +163,42 @@ root.render(
                       <ProtectedRoute>
                         <AppFrame>
                           <MyHelpCenter />
+                        </AppFrame>
+                      </ProtectedRoute>
+                    }
+                  />
+
+                  <Route
+                    key={'edu_view_detail'}
+                    path="/edu/:slug/:course_slug"
+                    element={
+                      <ProtectedRoute>
+                        <AppFrame>
+                          <EDUCenter />
+                        </AppFrame>
+                      </ProtectedRoute>
+                    }
+                  />
+
+                  <Route
+                    key={'edu_view'}
+                    path="/edu/:slug"
+                    element={
+                      <ProtectedRoute>
+                        <AppFrame>
+                          <EDUCenter />
+                        </AppFrame>
+                      </ProtectedRoute>
+                    }
+                  />
+
+                  <Route
+                    key={'edu'}
+                    path="/edu"
+                    element={
+                      <ProtectedRoute>
+                        <AppFrame>
+                          <EDUCenter />
                         </AppFrame>
                       </ProtectedRoute>
                     }
