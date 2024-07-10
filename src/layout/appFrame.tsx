@@ -148,7 +148,7 @@ export default function AppFrame({ children }: any) {
           },
           {
             url: '/my_help_center',
-            label: 'Trung tâm trợ giúp',
+            label: 'Trung tâm liên hệ',
             icon: QuestionCircleIcon,
           },
           {

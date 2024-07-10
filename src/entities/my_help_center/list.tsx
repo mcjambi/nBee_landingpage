@@ -112,11 +112,15 @@ export default function MyHelpCenterList() {
   return (
     <>
       <Helmet>
-        <title>Trung tâm trợ giúp</title>
+        <title>Liên hệ và yêu cầu</title>
       </Helmet>
       <CreateHelpModal show={showModal} onClose={closeModalCallback} />
 
-      <Page title="Trung tâm trợ giúp" primaryAction={{ content: 'Tạo yêu cầu', onAction: () => setShowModal(true), icon: PlusIcon }}>
+      <Page
+        title="Trung tâm liên hệ"
+        subtitle="Quản lý các ticket bạn yêu cầu"
+        primaryAction={{ content: 'Tạo yêu cầu', onAction: () => setShowModal(true), icon: PlusIcon }}
+      >
         <Card padding="0">
           <SimpleFilter
             loading={loading}
