@@ -29,6 +29,7 @@ import RecoverPasswordComponent from 'layout/recover-password';
 import Orders from 'entities/order';
 import MyReferrer from 'entities/my_referrer';
 import MyWallet from 'entities/my_wallet';
+import MyHelpCenter from 'entities/my_help_center';
 
 const baseHref = document.querySelector('base')?.getAttribute('href')?.replace(/\/$/, '');
 
@@ -137,6 +138,30 @@ root.render(
                       <ProtectedRoute>
                         <AppFrame>
                           <EditMyProfile />
+                        </AppFrame>
+                      </ProtectedRoute>
+                    }
+                  />
+
+                  <Route
+                    key={'my_help_center_view'}
+                    path="/my_help_center/:slug/:contactform_id"
+                    element={
+                      <ProtectedRoute>
+                        <AppFrame>
+                          <MyHelpCenter />
+                        </AppFrame>
+                      </ProtectedRoute>
+                    }
+                  />
+
+                  <Route
+                    key={'my_help_center'}
+                    path="/my_help_center"
+                    element={
+                      <ProtectedRoute>
+                        <AppFrame>
+                          <MyHelpCenter />
                         </AppFrame>
                       </ProtectedRoute>
                     }

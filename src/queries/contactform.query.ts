@@ -28,6 +28,8 @@ export interface TypedContactform {
     updater?: any;
     user?: any;
     device_uuid?: string;
+
+    user_to_contactform?: any
 }
 
 type IQuery = TypedContactform & IQueryParams;
@@ -60,6 +62,19 @@ export function useGetContactform() {
     return useMutation({
         mutationKey: ['contactform/fetch_entity'],
         mutationFn: (contactform_id: string) => axios.get<TypedContactform>(`contactform/${contactform_id}`).then((res) => res.data),
+    });
+}
+
+
+
+
+export function useCreateContactform() {
+    return useMutation({
+        mutationKey: ['contactform/create_entity'],
+        mutationFn: (entity: TypedContactform) => axios.post<TypedContactform>(`contactform`, helpers.cleanEntity(entity)).then((res) => res.data),
+        onSettled: () => {
+            queryClient.invalidateQueries({ queryKey: ['contactform/fetch_entities_list'] })
+        }
     });
 }
 
