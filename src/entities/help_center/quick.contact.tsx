@@ -13,9 +13,18 @@ export default function QuickContactForm() {
   }, []);
 
   const useFields = {
-    contactform_title: useField<string>({
-      value: __('contact_technical_department'),
+    contactform_category: useField<string>({
+      value: 'general',
       validates: [],
+    }),
+
+    contactform_title: useField<string>({
+      value: '',
+      validates: [
+        notEmpty(__('this_field_cannot_be_left_blank')),
+        lengthLessThan(550, __('Cannot be longer than 255 characters')),
+        lengthMoreThan(2, __('Cannot be shorter than 2 characters')),
+      ],
     }),
     contactform_content: useField<string>({
       value: '',
@@ -59,6 +68,7 @@ export default function QuickContactForm() {
           .post(
             process.env.REACT_APP_BACKEND_URL + '/contactform',
             {
+              contactform_category: values.contactform_category,
               contactform_title: values.contactform_title,
               contactform_content: values.contactform_content,
               contactform_email: values.contactform_email,
@@ -104,13 +114,17 @@ export default function QuickContactForm() {
           <Select
             label={__('contact_department_label')}
             options={[
-              { label: __('contact_technical_department'), value: __('contact_technical_department') },
-              { label: __('contact_accounting_department'), value: __('contact_accounting_department') },
-              { label: __('contact_manager_department'), value: __('contact_manager_department') },
+              { label: __('contact_general_department'), value: 'general' },
+              { label: __('contact_technical_department'), value: 'technical' },
+              { label: __('contact_sale_department'), value: 'sale' },
+              { label: __('contact_accounting_department'), value: 'accountant' },
+              { label: __('contact_manager_department'), value: 'manager' },
             ]}
-            onChange={(v) => fields.contactform_title.onChange(v)}
-            value={String(fields.contactform_title.value)}
+            onChange={(v) => fields.contactform_category.onChange(v)}
+            value={String(fields.contactform_category.value)}
           />
+
+          <TextField label={__('contact_title_input_label')} autoComplete="off" {...fields.contactform_title} />
 
           <FormLayout.Group>
             <TextField type="text" label={__('contact_name_label')} {...fields.contactform_name} autoComplete="off" />
