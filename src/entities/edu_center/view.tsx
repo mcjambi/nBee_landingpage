@@ -20,6 +20,7 @@ import { Helmet } from 'react-helmet-async';
 import Parser from 'html-react-parser';
 import { SelectIcon } from '@shopify/polaris-icons';
 import CommentCourse from './comment';
+import CourseLoopElement from './components/loop-course-block';
 
 export default function EduView() {
   let { course_slug } = useParams(); //course_slug
@@ -280,7 +281,23 @@ export default function EduView() {
             </MediaCard>
           </div>
         </InlineGrid>
+        <Box padding={{ xs: '400' }} paddingBlock="400">
+          <Text as="h3" variant="headingLg">
+            Những bài học mới
+          </Text>
+          <br />
+          <div id="course_list_wrap">
+            <InlineGrid gap="400" columns={{ md: 3, xs: 1 }}>
+              {Array(3)
+                .fill(2)
+                .map((el, index) => {
+                  return <CourseLoopElement index={index} />;
+                })}
+            </InlineGrid>
+          </div>
+        </Box>
       </Page>
+
       <br />
       <br />
       <br />
