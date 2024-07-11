@@ -16,7 +16,7 @@ export default function EduList() {
       backSpeed: 100,
       backDelay: 100,
       loop: true,
-      cursorChar: '_',
+      cursorChar: '',
     });
 
     // Destropying
@@ -43,14 +43,14 @@ export default function EduList() {
                 Mọi thứ ...
               </Text>
 
-              <Text as="p" variant="bodyLg">
+              <Text as="h4" variant="headingLg" tone="subdued" fontWeight="regular">
                 Nhận được sự chia sẻ từ các chuyên gia hàng đầu trong lĩnh vực kinh doanh.
               </Text>
             </div>
             {mdUp && (
-              <div>
+              <InlineStack align="end">
                 <Image width={'auto'} height={'300px'} alt={''} source={learning_team_background} />
-              </div>
+              </InlineStack>
             )}
           </InlineGrid>
         </Page>
@@ -89,7 +89,7 @@ export default function EduList() {
                         <BlockStack gap="200">
                           <small className="card-subtitle">Code</small>
                           <Text as="h3" variant="headingLg">
-                            <Link url="/demo-course/course-overview.html" removeUnderline>
+                            <Link url="/edu/view/1" removeUnderline>
                               Complete Python Bootcamp: Go from zero to hero in Python
                             </Link>
                           </Text>
