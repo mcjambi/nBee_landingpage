@@ -45,8 +45,8 @@ export default function MyProfile() {
     getEntity(currentUserData.user_id);
   }, [currentUserData]);
 
-  const fullAddress = useRef('Chưa có thông tin');
-  const getFullAddress = useCallback(async (profileData) => {
+  const [fullAddress, setFullAddress] = useState('Chưa có thông tin');
+  const getFullAddress = useCallback(async () => {
     try {
       if (!profileData?.user_address) return;
 
@@ -57,12 +57,12 @@ export default function MyProfile() {
       let fullAddressArray = [profileData?.user_address, ward?.name ?? undefined, distric?.name ?? undefined, city?.name ?? undefined];
       fullAddressArray = helpers.filterEmptyArray(fullAddressArray);
 
-      fullAddress.current = fullAddressArray.join(', ');
+      setFullAddress(fullAddressArray.join(', '));
     } catch (e) {}
-  }, []);
+  }, [profileData]);
 
   useEffect(() => {
-    getFullAddress(profileData);
+    getFullAddress();
   }, [profileData]);
 
   return (
@@ -102,7 +102,7 @@ export default function MyProfile() {
                           },
                           {
                             icon: LocationIcon,
-                            description: profileData?.user_address ? fullAddress.current : '-',
+                            description: fullAddress,
                           },
                         ]}
                       />
@@ -127,7 +127,7 @@ export default function MyProfile() {
             </div>
 
             <div>
-              {(!currentUserData.user_address || !currentUserData.user_birthday || !currentUserData.user_avatar) && (
+              {!currentUserData.user_address || !currentUserData.user_birthday || !currentUserData.user_avatar ? (
                 <CalloutCard
                   title="Bạn chưa cập nhật thông tin"
                   illustration="https://cdn.shopify.com/s/assets/admin/checkout/settings-customizecart-705f57c725ac05be5a34ec20c05b94298cb8afd10aac7bd9c7ad02030f48cfa0.svg"
@@ -138,7 +138,7 @@ export default function MyProfile() {
                 >
                   <p>Điền đầy đủ thông tin và nhận về những phần quà đầu tiên.</p>
                 </CalloutCard>
-              )}
+              ) : null}
               <MyOrder />
             </div>
           </InlineGrid>
