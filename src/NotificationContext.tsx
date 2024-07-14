@@ -15,6 +15,10 @@ type TypedGlobalNotification = {
 };
 const NotificationContext = createContext<TypedGlobalNotification | undefined>(undefined);
 
+/**
+ * Add notification using: addNotification('error' | 'info, content: string);
+ * @returns
+ */
 export const useNotification = (): TypedGlobalNotification => useContext(NotificationContext);
 
 /**

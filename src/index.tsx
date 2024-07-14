@@ -31,6 +31,7 @@ import MyReferrer from 'entities/my_referrer';
 import MyWallet from 'entities/my_wallet';
 import MyHelpCenter from 'entities/my_help_center';
 import EDUCenter from 'entities/edu_center';
+import Gamification from 'entities/game';
 
 const baseHref = document.querySelector('base')?.getAttribute('href')?.replace(/\/$/, '');
 
@@ -199,6 +200,30 @@ root.render(
                       <ProtectedRoute>
                         <AppFrame>
                           <EDUCenter />
+                        </AppFrame>
+                      </ProtectedRoute>
+                    }
+                  />
+
+                  <Route
+                    key={'gamification'}
+                    path="/game"
+                    element={
+                      <ProtectedRoute>
+                        <AppFrame>
+                          <Gamification />
+                        </AppFrame>
+                      </ProtectedRoute>
+                    }
+                  />
+
+                  <Route
+                    key={'gamification_detail'}
+                    path="/game/:slug"
+                    element={
+                      <ProtectedRoute>
+                        <AppFrame>
+                          <Gamification />
                         </AppFrame>
                       </ProtectedRoute>
                     }
