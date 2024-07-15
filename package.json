@@ -18,6 +18,7 @@
     "@types/react-dom": "^18.3.0",
     "axios": "^1.7.2",
     "date-and-time": "^3.3.0",
+    "gsap": "^3.12.5",
     "html-react-parser": "^5.1.10",
     "lottie-react": "^2.4.0",
     "million": "^3.1.11",
@@ -57,6 +58,7 @@
   "devDependencies": {
     "@craco/craco": "^7.1.0",
     "@craco/types": "^7.1.0",
+    "@types/gsap": "^3.0.0",
     "sass": "^1.77.6"
   }
 }
