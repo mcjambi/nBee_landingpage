@@ -206,25 +206,11 @@ root.render(
                   />
 
                   <Route
-                    key={'gamification'}
-                    path="/game"
-                    element={
-                      <ProtectedRoute>
-                        <AppFrame>
-                          <Gamification />
-                        </AppFrame>
-                      </ProtectedRoute>
-                    }
-                  />
-
-                  <Route
                     key={'gamification_detail'}
                     path="/game/:slug"
                     element={
                       <ProtectedRoute>
-                        <AppFrame>
-                          <Gamification />
-                        </AppFrame>
+                        <Gamification />
                       </ProtectedRoute>
                     }
                   />

@@ -26,6 +26,8 @@ import dateandtime from 'date-and-time';
 import { CheckIcon, XIcon, ClipboardCheckFilledIcon } from '@shopify/polaris-icons';
 import rank_empty_placeholder from 'media/lottie_files/rank_empty_placeholder.json';
 import Lottie from 'lottie-react';
+import { useNavigate } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 
 /**
  * Module ...
@@ -34,6 +36,7 @@ import Lottie from 'lottie-react';
 
 export default function CheckIn() {
   const { user } = useAuth();
+  const history = useNavigate();
   /** Kiểm tra xem join hay chưa ... */
   const { addNotification } = useNotification();
   const { data: checkJoinData, refetch: reCheckJoin } = useCheckJoin();
@@ -91,6 +94,7 @@ export default function CheckIn() {
   const doCheckinCallback = useCallback(async () => {
     try {
       await doCheckin();
+      getMyCheckin();
     } catch (e) {
       addNotification('error', e?.message ?? 'something_went_wrong');
     }
@@ -98,20 +102,15 @@ export default function CheckIn() {
 
   const NOTAreadyJoined = () => {
     return (
-      <LegacyCard sectioned>
-        <EmptyState
-          fullWidth
-          heading={gameData?.game_title}
-          action={{ content: 'Tham gia ngay', onAction: letMeJoinCallback }}
-          image="https://cdn.shopify.com/s/files/1/0262/4071/2726/files/emptystate-files.png"
-        >
-          <div>
-            <Text alignment="start" as="p">
-              Click vào nút tham gia ngay để bắt đầu cuộc chơi ...
-            </Text>
-          </div>
-        </EmptyState>
-      </LegacyCard>
+      <EmptyState fullWidth heading={null} action={{ content: 'Tham gia ngay', onAction: letMeJoinCallback }} image={null}>
+        <Lottie animationData={rank_empty_placeholder} loop={false} />
+        <Text as="h2" variant="headingLg">
+          {gameData?.game_title}
+        </Text>
+        <Text alignment="center" as="p">
+          Click vào nút tham gia ngay để bắt đầu cuộc chơi ...
+        </Text>
+      </EmptyState>
     );
   };
 
@@ -128,9 +127,6 @@ export default function CheckIn() {
   let { mdUp } = useBreakpoints();
 
   const MainTemplate = useCallback(() => {
-    let today = dateandtime.format(new Date(), 'YYYY-MM-DD');
-    let isCheckedInToday = allMyCheckin.some((u) => u === today);
-
     return (
       <Box padding={'400'}>
         <BlockStack gap="400">
@@ -138,17 +134,6 @@ export default function CheckIn() {
             <Avatar source={user.user_avatar ?? null} size="lg" />
             <Text as="p">{user.display_name}</Text>
           </InlineStack>
-          {!isCheckedInToday ? (
-            <div>
-              <Button icon={ClipboardCheckFilledIcon} loading={doCheckining} onClick={doCheckinCallback}>
-                Checkin ngay
-              </Button>
-            </div>
-          ) : (
-            <Text as="p" variant="bodySm" tone="subdued">
-              Bạn đã checkin ngày hôm nay, chúc mừng bạn!
-            </Text>
-          )}
 
           {mdUp && (
             <InlineStack gap="400" align="space-between" blockAlign="center">
@@ -220,5 +205,35 @@ export default function CheckIn() {
     );
   }, [allMyCheckin, user, doCheckining, rankDatas]);
 
-  return isPending ? <SkeletonPageLoading /> : <Page>{!join ? <NOTAreadyJoined /> : <MainTemplate />}</Page>;
+  const isCheckedInToday = useCallback((): boolean => {
+    let today = dateandtime.format(new Date(), 'YYYY-MM-DD');
+    let is = allMyCheckin.some((u) => u === today);
+    return is ? true : false;
+  }, [allMyCheckin]);
+
+  return (
+    <>
+      <Helmet>
+        <title>Điểm danh nhận quà</title>
+      </Helmet>
+      {isPending ? (
+        <SkeletonPageLoading />
+      ) : (
+        <Page
+          title={gameData?.game_title}
+          subtitle={gameData?.game_excerpt}
+          backAction={{ content: 'Trang chủ', onAction: () => history('/') }}
+          primaryAction={{
+            content: 'Check in',
+            loading: doCheckining,
+            icon: ClipboardCheckFilledIcon,
+            disabled: isCheckedInToday(),
+            onAction: doCheckinCallback,
+          }}
+        >
+          {!join ? <NOTAreadyJoined /> : <MainTemplate />}
+        </Page>
+      )}
+    </>
+  );
 }
