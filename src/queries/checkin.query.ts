@@ -3,7 +3,17 @@ import axios from "axios";
 import helpers from "helpers/index";
 import queryClient, { IQueryParams } from 'queries';
 
-
+type TypedRankData = {
+    "id": string,
+    "user_id": string,
+    "count": number,
+    "createdAt": string,
+    "user": {
+        user_id: string,
+        display_name: string | null,
+        user_avatar: string | null
+    }
+}
 
 /**
  * Check Join or Not ...
@@ -24,6 +34,28 @@ export function useLetMeJoin() {
     return useMutation({
         mutationKey: ['game/checkin/join'],
         mutationFn: () => axios.post('/game/checkin/join')
+    })
+}
+
+export function useMyCheckin() {
+    // {{local_url}}/game/checkin/my_checkin
+    return useMutation({
+        mutationKey: ['game/checkin/my_checkin'],
+        mutationFn: () => axios.get('/game/checkin/my_checkin').then(r => r.data)
+    })
+}
+export function useDoCheckin() {
+    //{{local_url}}/game/checkin/do_checkin
+    return useMutation({
+        mutationKey: ['game/checkin/do_checkin'],
+        mutationFn: () => axios.post('/game/checkin/do_checkin').then(r => r.data)
+    })
+}
+export function useGetRankCheckin() {
+    // {{local_url}}/game/checkin/rank
+    return useMutation({
+        mutationKey: ['game/checkin/rank'],
+        mutationFn: () => axios.get<TypedRankData[]>('/game/checkin/rank').then(r => r.data)
     })
 }
 
