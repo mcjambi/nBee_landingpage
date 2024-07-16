@@ -1,30 +1,6 @@
-import {
-  FooterHelp,
-  Frame,
-  Link,
-  Loading,
-  Navigation,
-  Toast,
-  Text,
-  TopBar,
-  Divider,
-  BlockStack,
-  Icon,
-  InlineGrid,
-  Thumbnail,
-} from '@shopify/polaris';
-import {
-  HomeIcon,
-  QuestionCircleIcon,
-  EmailIcon,
-  NotificationIcon,
-  FlowerIcon,
-  MoneyIcon,
-  CollectionReferenceIcon,
-  OrderIcon,
-  GiftCardFilledIcon,
-} from '@shopify/polaris-icons';
-
+import { Frame, Link, Navigation, Toast, Text, TopBar, BlockStack, Icon } from '@shopify/polaris';
+import { HomeIcon, QuestionCircleIcon, NotificationIcon, FlowerIcon, CollectionReferenceIcon, OrderIcon } from '@shopify/polaris-icons';
+import main_logo from 'media/images/logo.svg';
 import { useState, useCallback, useRef } from 'react';
 import { useAuth } from '../AuthContext';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -37,8 +13,6 @@ import SidebarPopup from './sidebarPopup';
 import NotificationLog from './notificationLog';
 // import { useIsFetching } from '@tanstack/react-query';
 import { useNotification } from 'NotificationContext';
-import FloatingBanner from 'components/floatingBanner';
-import { useGetGame } from 'queries/game.query';
 
 // How many queries are fetching?
 export default function AppFrame({ children }: any) {
@@ -93,7 +67,7 @@ export default function AppFrame({ children }: any) {
       detail={user?.user_role}
       initials={String(user?.display_name || user?.user_email || user?.user_login || 'unknown').charAt(0)}
       open={userMenuActive}
-      avatar={user.user_avatar ?? null}
+      avatar={user?.user_avatar ?? null}
       onToggle={toggleUserMenuActive}
     />
   );
@@ -199,21 +173,13 @@ export default function AppFrame({ children }: any) {
 
   const logo = {
     width: 86,
-    topBarSource: 'https://cdn.shopify.com/s/files/1/2376/3301/files/Shopify_Secondary_Inverted.png',
-    contextualSaveBarSource: 'https://cdn.shopify.com/s/files/1/2376/3301/files/Shopify_Secondary_Inverted.png',
-    accessibilityLabel: 'Shopify',
+    topBarSource: main_logo,
+    contextualSaveBarSource: main_logo,
+    accessibilityLabel: 'Customer Care',
   };
 
   /** Global notification */
   const { notification, clearNotification } = useNotification();
-
-  const {
-    data: gameData,
-    isLoading: gameLoading,
-    isSuccess,
-  } = useGetGame({
-    limit: 4,
-  });
 
   return (
     <Frame
@@ -224,32 +190,6 @@ export default function AppFrame({ children }: any) {
       onNavigationDismiss={toggleMobileNavigationActive}
       skipToContentTarget={skipToContentRef}
     >
-      <FloatingBanner icon={GiftCardFilledIcon} title={'Thử vận may của bạn'}>
-        <BlockStack gap="400">
-          {isSuccess &&
-            gameData &&
-            gameData.body.map((game) => {
-              return (
-                <InlineGrid columns={['oneThird', 'twoThirds']} gap="100">
-                  <div>
-                    <Thumbnail source={game.game_thumbnail} alt={''} />
-                  </div>
-                  <div>
-                    <Link url={'/game/' + game.game_slug} removeUnderline>
-                      <Text as="h4" variant="headingMd">
-                        {game.game_title}
-                      </Text>
-                    </Link>
-                    <Text as="p" variant="bodyMd">
-                      {game.game_excerpt}
-                    </Text>
-                  </div>
-                </InlineGrid>
-              );
-            })}
-        </BlockStack>
-      </FloatingBanner>
-
       {notification && (
         <Toast
           content={notification.message}

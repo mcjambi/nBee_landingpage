@@ -128,7 +128,7 @@ export default function UserAchievement({ user_id }: { user_id: bigint | string;
         </Card>
       )}
       {userAchievementListCount > 0 && (
-        <>
+        <Box padding="400">
           <Text as="h3" tone="subdued" variant="headingMd">
             Bạn có {userAchievementListCount} huy chương!
           </Text>
@@ -152,7 +152,7 @@ export default function UserAchievement({ user_id }: { user_id: bigint | string;
               );
             })}
           </div>
-        </>
+        </Box>
       )}
     </div>
   );

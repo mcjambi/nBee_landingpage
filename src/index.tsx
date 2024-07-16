@@ -62,7 +62,17 @@ root.render(
             <AuthProvider>
               <BrowserRouter basename={baseHref}>
                 <Routes>
-                  <Route key={'home'} path={'/'} element={<Homepage />} />
+                  <Route
+                    key={'home'}
+                    path={'/'}
+                    element={
+                      <ProtectedRoute>
+                        <AppFrame>
+                          <Homepage />
+                        </AppFrame>
+                      </ProtectedRoute>
+                    }
+                  />
 
                   <Route
                     key={'my_referrer'}

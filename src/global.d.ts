@@ -3,6 +3,7 @@ declare module '*.jpg';
 declare module '*.png';
 declare module '*.gif';
 declare module '*.webm';
+declare module '*.mp3';
 declare module "*.svg" {
     const content: any;
     export default content;
