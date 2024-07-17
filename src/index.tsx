@@ -216,6 +216,15 @@ root.render(
                   />
 
                   <Route
+                    key={'gamification'}
+                    path="/game"
+                    element={
+                      <ProtectedRoute>
+                        <Gamification />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
                     key={'gamification_detail'}
                     path="/game/:slug"
                     element={
