@@ -23,7 +23,7 @@ export default function ListNews() {
   const initialQuery = {
     query: '',
     page: 1,
-    limit: 20,
+    limit: 18,
     post_type: 'post',
     'post_to_content.lang': 'vi',
     lang: 'vi',
@@ -48,22 +48,6 @@ export default function ListNews() {
     if (useParam.search !== buildURLSearch) history('/news' + buildURLSearch);
     getEntities();
   }, [mainQuery]);
-
-  /**
-   * I do not know ...
-   * Bug: In React, do NOT remove this code
-   */
-  // let m = mainQuery;
-  const filterCallback = useCallback((_value: any) => {
-    if (_value === false) {
-      return setMainQuery(initialQuery);
-    } else {
-      // m = Object.assign({}, m, _value);
-      setMainQuery((oldValue) => {
-        return { ...oldValue, ..._value };
-      });
-    }
-  }, []);
 
   const [totalItems, setTotalItems] = useState(0);
   const [entities, setEntities] = useState<TypedPosts[] | null>(null);
@@ -126,9 +110,13 @@ export default function ListNews() {
             );
           })}
         </InlineGrid>
+        <br />
+        <br />
         {totalItems > mainQuery.limit ? (
           <Pagination TotalRecord={totalItems} activeCurrentPage={mainQuery.page} pageSize={mainQuery.limit} onChange={onChangePagination} />
         ) : null}
+        <br />
+        <br />
       </Page>
     </div>
   );

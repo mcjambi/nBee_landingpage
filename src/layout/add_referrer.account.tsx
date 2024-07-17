@@ -65,57 +65,63 @@ export default function AddReferrer() {
         backgroundColor: '#000',
       }}
     >
+      <Helmet>
+        <title>Thêm mã giới thiệu vào tài khoản</title>
+      </Helmet>
+
       <Frame>
-        <Page>
-          <Helmet>
-            <title>Thêm mã giới thiệu vào tài khoản</title>
-          </Helmet>
-          <InlineStack blockAlign="center" align="center" gap="100">
-            <div id="login_page">
-              {internalInformation && (
-                <Banner tone="success" onDismiss={toggleBannerActive}>
-                  {internalInformation}
-                </Banner>
-              )}
-
-              <br />
-
-              <Box background="bg-fill" padding={'400'} borderRadius="200">
-                <Form onSubmit={submit} key={'active_account'}>
-                  <Text as="h2" variant="headingLg">
-                    Xin chào {account?.display_name || account?.user_email || account?.user_phonenumber}
-                  </Text>
-                  <br />
-                  <Text as="p" variant="bodySm" tone="subdued">
-                    Phiếu giảm giá, khuyến mại, nhận sự trợ giúp từ người hướng dẫn bạn, và rất nhiều giá trị khác mà một người giới thiệu mang lại.
-                  </Text>
+        <div id="login_register_outer_wrap">
+          <InlineStack blockAlign="center" align="center">
+            <div id="login_page" style={{ maxWidth: '400px' }}>
+              <InlineStack blockAlign="center" align="center" gap="100">
+                <div id="login_page">
+                  {internalInformation && (
+                    <Banner tone="success" onDismiss={toggleBannerActive}>
+                      {internalInformation}
+                    </Banner>
+                  )}
 
                   <br />
 
-                  <TextField
-                    autoFocus
-                    label={__('register_referrer_form_label')}
-                    helpText={__('register_referrer_form_helptext')}
-                    autoComplete="off"
-                    {...useFields.user_referrer}
-                  />
+                  <Box background="bg-fill" padding={'400'} borderRadius="200">
+                    <Form onSubmit={submit} key={'active_account'}>
+                      <Text as="h2" variant="headingLg">
+                        Xin chào {account?.display_name || account?.user_email || account?.user_phonenumber}
+                      </Text>
+                      <br />
+                      <Text as="p" variant="bodySm" tone="subdued">
+                        Phiếu giảm giá, khuyến mại, nhận sự trợ giúp từ người hướng dẫn bạn, và rất nhiều giá trị khác mà một người giới thiệu mang
+                        lại.
+                      </Text>
 
-                  <br />
-                  <Button submit variant="primary" loading={submitting} fullWidth disabled={!dirty} onClick={submit}>
-                    {__('add_my_referrer_button')}
-                  </Button>
-                </Form>
-              </Box>
-              {/* 
+                      <br />
+
+                      <TextField
+                        autoFocus
+                        label={__('register_referrer_form_label')}
+                        helpText={__('register_referrer_form_helptext')}
+                        autoComplete="off"
+                        {...useFields.user_referrer}
+                      />
+
+                      <br />
+                      <Button submit variant="primary" loading={submitting} fullWidth disabled={!dirty} onClick={submit}>
+                        {__('add_my_referrer_button')}
+                      </Button>
+                    </Form>
+                  </Box>
+                  {/* 
             <FooterHelp>
               {___('Go back to {homepage_link} or {login_link}', {
                 homepage_link: <Link url="/">{__('homepage')}</Link>,
                 login_link: <Link url="/login">{__('login')}</Link>,
               })}
             </FooterHelp> */}
+                </div>
+              </InlineStack>
             </div>
           </InlineStack>
-        </Page>
+        </div>
       </Frame>
     </div>
   );

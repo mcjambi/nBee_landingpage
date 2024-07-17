@@ -140,37 +140,38 @@ export default function Register() {
       <Helmet>
         <title>{__('register_page_title')}</title>
       </Helmet>
-      <InlineStack blockAlign="center" align="center">
-        <div id="login_page">
-          <Box background="bg-fill" padding={'400'}>
-            <Form onSubmit={submit}>
-              <div className="Login_logo" style={{ textAlign: 'center', marginBottom: '50px' }}>
-                <img src={LoginLogo} alt="Logo" />
-                <Text as="h1">{__('welcome_register_header')}, </Text>
-                <Text as="h3">{__('register_title')}</Text>
-              </div>
-              {errorBanner}
-              <FormLayout>
-                <TextField
-                  label={__('register_form_your_email_phone_number_label')} //"Your email"
-                  {...fields.user_input}
-                  requiredIndicator
-                  autoFocus={true}
-                  clearButton
-                  onClearButtonClick={() => fields.user_input.reset()}
-                  autoComplete="off"
-                />
+      <div id="login_register_outer_wrap">
+        <InlineStack blockAlign="center" align="center">
+          <div id="login_page">
+            <Box background="bg-fill" padding={'400'} borderRadius="400">
+              <Form onSubmit={submit}>
+                <div className="Login_logo" style={{ textAlign: 'center', marginBottom: '50px' }}>
+                  <img src={LoginLogo} alt="Logo" />
+                  <Text as="h1">{__('welcome_register_header')}, </Text>
+                  <Text as="h3">{__('register_title')}</Text>
+                </div>
+                {errorBanner}
+                <FormLayout>
+                  <TextField
+                    label={__('register_form_your_email_phone_number_label')} //"Your email"
+                    {...fields.user_input}
+                    requiredIndicator
+                    autoFocus={true}
+                    clearButton
+                    onClearButtonClick={() => fields.user_input.reset()}
+                    autoComplete="off"
+                  />
 
-                <TextField
-                  type="text"
-                  placeholder={''} //"Your display name"
-                  label={__('register_form_your_name_label')}
-                  {...fields.display_name}
-                  requiredIndicator
-                  autoComplete="off"
-                />
+                  <TextField
+                    type="text"
+                    placeholder={''} //"Your display name"
+                    label={__('register_form_your_name_label')}
+                    {...fields.display_name}
+                    requiredIndicator
+                    autoComplete="off"
+                  />
 
-                {/* {settingData?.setting_value === '1' && (
+                  {/* {settingData?.setting_value === '1' && (
                   <TextField
                     type="text"
                     placeholder={''} //"Your display name"
@@ -182,28 +183,29 @@ export default function Register() {
                   />
                 )} */}
 
-                <Checkbox
-                  label={___('I have read and agree to the {term_of_service_link}.', {
-                    term_of_service_link: <Link url={'/help_center/tos'}>{__('Term of Service')}</Link>,
-                  })} //"I have read and agree to the Terms of Use."
-                  {...asChoiceField(fields.agreement)}
-                  helpText={''}
-                />
+                  <Checkbox
+                    label={___('I have read and agree to the {term_of_service_link}.', {
+                      term_of_service_link: <Link url={'/help_center/tos'}>{__('Term of Service')}</Link>,
+                    })} //"I have read and agree to the Terms of Use."
+                    {...asChoiceField(fields.agreement)}
+                    helpText={''}
+                  />
 
-                <Button submit variant="primary" fullWidth disabled={!dirty} loading={submitting} onClick={submit} size="large">
-                  {__('register_and_active_now')}
-                </Button>
-              </FormLayout>
-            </Form>
-          </Box>
-          <FooterHelp>
-            {___('Go back to {homepage_link} or {login_link}', {
-              homepage_link: <Link url="/">{__('homepage')}</Link>,
-              login_link: <Link url="/login">{__('login')}</Link>,
-            })}
-          </FooterHelp>
-        </div>
-      </InlineStack>
+                  <Button submit variant="primary" fullWidth disabled={!dirty} loading={submitting} onClick={submit} size="large">
+                    {__('register_and_active_now')}
+                  </Button>
+                </FormLayout>
+              </Form>
+            </Box>
+            <FooterHelp>
+              {___('Go back to {homepage_link} or {login_link}', {
+                homepage_link: <Link url="/">{__('homepage')}</Link>,
+                login_link: <Link url="/login">{__('login')}</Link>,
+              })}
+            </FooterHelp>
+          </div>
+        </InlineStack>
+      </div>
     </Frame>
   );
 }

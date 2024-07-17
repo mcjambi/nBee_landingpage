@@ -76,65 +76,62 @@ export default function RecoverPasswordComponent() {
 
   return (
     <Frame>
-      <Page>
-        <InlineStack blockAlign="center" align="center" gap="100">
-          <div id="login_page">
-            <Box background="bg-fill" padding={'400'}>
-              <Form onSubmit={submit}>
-                <div className="Login_logo" style={{ textAlign: 'center', marginBottom: '50px' }}>
-                  <img src={LoginLogo} alt="Logo" />
-                  <Text as="h1" variant="headingMd">
-                    {__('welcome')},{' '}
+      <div id="login_register_outer_wrap">
+        <InlineStack blockAlign="center" align="center">
+          <div id="login_page" style={{ maxWidth: '400px' }}>
+            <InlineStack blockAlign="center" align="center" gap="100">
+              <div id="login_page">
+                <Box background="bg-fill" padding={'400'}>
+                  <Form onSubmit={submit}>
+                    <div className="Login_logo" style={{ textAlign: 'center', marginBottom: '50px' }}>
+                      <img src={LoginLogo} alt="Logo" />
+                      <Text as="h1" variant="headingMd">
+                        {__('welcome')},{' '}
+                      </Text>
+                      <Text as="h3" variant="headingSm">
+                        {__('Reset your password')}...
+                      </Text>
+                    </div>
+
+                    {errorBanner}
+                    <br />
+
+                    <Text as="h4" variant="headingMd">
+                      {__('warning_use_browser_in_the_last_login_success')}
+                    </Text>
+
+                    <br />
+
+                    <TextField
+                      type="email"
+                      placeholder="Email@mail.com"
+                      label={__('forgot_email_form_label')}
+                      {...fields.user_email}
+                      requiredIndicator
+                      autoComplete="off"
+                      helpText={__('forgot_password_helptext')} // "Please use your email, also check junk folder to make sure you can receive our email. If you do NOT receive any email from us, check it back after 5 minutes."
+                    />
+
+                    <br />
+
+                    <Button submit variant="primary" loading={submitting} fullWidth disabled={!dirty} onClick={submit}>
+                      {__('send_password_link_button')}
+                    </Button>
+                  </Form>
+                </Box>
+                <FooterHelp>
+                  <Text as="p">
+                    {___('Go back to {homepage_link} or {login_link}', {
+                      homepage_link: <Link url="/">{__('homepage')}</Link>,
+                      login_link: <Link url="/login">{__('login')}</Link>,
+                    })}
                   </Text>
-                  <Text as="h3" variant="headingSm">
-                    {__('Reset your password')}...
-                  </Text>
-                </div>
-
-                {errorBanner}
-                <br />
-
-                <Text as="h4" variant="headingMd">
-                  {__('warning_use_browser_in_the_last_login_success')}
-                </Text>
-
-                <br />
-
-                <TextField
-                  type="email"
-                  placeholder="Email@mail.com"
-                  label={__('forgot_email_form_label')}
-                  {...fields.user_email}
-                  requiredIndicator
-                  autoComplete="off"
-                  helpText={__('forgot_password_helptext')} // "Please use your email, also check junk folder to make sure you can receive our email. If you do NOT receive any email from us, check it back after 5 minutes."
-                />
-
-                <br />
-
-                <Button submit variant="primary" loading={submitting} fullWidth disabled={!dirty} onClick={submit}>
-                  {__('send_password_link_button')}
-                </Button>
-              </Form>
-            </Box>
-            <FooterHelp>
-              <Text as="p">
-                {___('Go back to {homepage_link} or {login_link}', {
-                  homepage_link: <Link url="/">{__('homepage')}</Link>,
-                  login_link: <Link url="/login">{__('login')}</Link>,
-                })}
-              </Text>
-              <br />
-              <Text as="p" variant="bodySm" tone="caution">
-                {___('Can not login? Visit {help_center_link}', {
-                  help_center_link: <Link url="/help_center">{__('help_center_text')}</Link>,
-                })}
-              </Text>
-            </FooterHelp>
+                </FooterHelp>
+              </div>
+            </InlineStack>
           </div>
         </InlineStack>
-      </Page>
+      </div>
     </Frame>
   );
 }
-

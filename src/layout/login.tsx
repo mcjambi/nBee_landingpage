@@ -17,6 +17,8 @@ import {
   Thumbnail,
 } from '@shopify/polaris';
 
+import 'media/css/login_register.scss';
+
 import React, { useState, useCallback, useEffect, useLayoutEffect } from 'react';
 import LoginLogo from 'media/images/LoginLogo.svg';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -279,9 +281,9 @@ export default function Login() {
         <title>{__('login_page_title')}</title>
       </Helmet>
       {loading ? <Loading /> : null}
-      <Page fullWidth>
+      <div id="login_register_outer_wrap">
         <InlineStack blockAlign="center" align="center">
-          <div id="wrapper_login_page" style={{ maxWidth: '500px' }}>
+          <div id="login_page" style={{ maxWidth: '400px' }}>
             <InlineStack blockAlign="center" align="end" gap="200">
               <Popover
                 active={languagePopoverStatus}
@@ -330,7 +332,7 @@ export default function Login() {
               </>
             )}
 
-            <Box background="bg-fill" padding={'400'}>
+            <Box background="bg-fill" padding={'400'} borderRadius="400">
               <Form onSubmit={submit}>
                 <InlineStack wrap={false} gap="200" blockAlign="center" align="start">
                   <div>
@@ -406,11 +408,11 @@ export default function Login() {
                     </Link>
                   )}
 
-                  {browserSupportsWebAuthn() && platformAuthenticatorIsAvailable() && (
+                  {/* {browserSupportsWebAuthn() && platformAuthenticatorIsAvailable() && (
                     <Button size="large" icon={KeyIcon} fullWidth loading={waiting_for_webauthn} key="BA" onClick={handleLoginByWebAuth}>
                       {__('login_using_biometric_authentication_button')}
                     </Button>
-                  )}
+                  )} */}
 
                   <Text as="p" key="C">
                     {___("Forgot your password? {recover_link} to recover! If you don\\'t have an account, you can {register_link} here.", {
@@ -418,23 +420,22 @@ export default function Login() {
                       register_link: <Link url="/register">{__('register')}</Link>,
                     })}
                   </Text>
-
-                  <Text as="p" key="A">
-                    {___('Can not login? Visit {help_center_link}', {
-                      help_center_link: <Link url="/help_center">{__('help_center_text')}</Link>,
-                    })}
-                  </Text>
                 </FormLayout>
               </Form>
             </Box>
-            <FooterHelp>
-              {___('Back to {homepage_link}!', {
-                homepage_link: <Link url="/">{__('homepage')}</Link>,
+            <br />
+            <Text as="p" alignment="center">
+              {___('Can not login? Visit {help_center_link}', {
+                help_center_link: (
+                  <Link monochrome url="/help_center">
+                    {__('help_center_text')}
+                  </Link>
+                ),
               })}
-            </FooterHelp>
+            </Text>
           </div>
         </InlineStack>
-      </Page>
+      </div>
     </Frame>
   );
 }
