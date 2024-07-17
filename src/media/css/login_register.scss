@@ -1,11 +1,11 @@
 @import url('https://fonts.googleapis.com/css?family=Raleway:400,700');
 
 #login_register_outer_wrap {
-  background-color: red;
   min-height: 100vh;
   min-width: 100vw;
-  background: linear-gradient(90deg, #c7c5f4, #776bcc);
   font-family: Raleway, 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: url('../images/login_background.jpg') no-repeat center center #39f390;
+  background-size: cover;
 
   #login_page {
     position: relative;

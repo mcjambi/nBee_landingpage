@@ -339,7 +339,7 @@ export default function Login() {
                     <Thumbnail size="medium" source={loginLogoURI} alt={'Login Logo'} />
                   </div>
                   <div>
-                    <Text as="h3" variant="headingMd" fontWeight="regular">
+                    <Text as="h3" variant="headingLg" fontWeight="regular">
                       {loginMainTitle}
                     </Text>
                     <Text as="h6" variant="bodySm" fontWeight="regular">
@@ -400,13 +400,19 @@ export default function Login() {
                     {__('login_button_context')}
                   </Button>
 
-                  {loginByFacebookURL && (
+                  {/* {loginByFacebookURL && (
                     <Link key="FBA" target="_self" removeUnderline monochrome url={loginByFacebookURL} onClick={loginByFacebookButton}>
                       <Button size="large" icon={EnterIcon} fullWidth loading={buttonFacebookLoading}>
                         {__('login_by_facebook_button')}
                       </Button>
                     </Link>
-                  )}
+                  )} */}
+
+                  <Link key="register_an_account" target="_self" removeUnderline monochrome url={'/register'}>
+                    <Button size="large" icon={EnterIcon} fullWidth>
+                      {__('register_button_label')}
+                    </Button>
+                  </Link>
 
                   {/* {browserSupportsWebAuthn() && platformAuthenticatorIsAvailable() && (
                     <Button size="large" icon={KeyIcon} fullWidth loading={waiting_for_webauthn} key="BA" onClick={handleLoginByWebAuth}>
