@@ -23,7 +23,7 @@ export default function Homepage() {
       <Helmet>
         <title>Trang chủ</title>
       </Helmet>
-      <FloatingBanner icon={GiftCardFilledIcon} title={'Thử vận may của bạn'}>
+      <FloatingBanner icon={GiftCardFilledIcon} title={'Thêm vận may của bạn'}>
         <BlockStack gap="400">
           {isSuccess &&
             gameData &&

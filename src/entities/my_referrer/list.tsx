@@ -1,4 +1,4 @@
-import { Avatar, Badge, Card, IndexTable, InlineGrid, Text } from '@shopify/polaris';
+import { Avatar, Badge, Card, IndexTable, InlineGrid, InlineStack, Text } from '@shopify/polaris';
 import SimpleFilter from 'components/simpleFilter';
 import __helpers from 'helpers/index';
 import { TypedMyReferrers, useMyReferrers } from 'queries/user_referrer.query';
@@ -97,7 +97,7 @@ export default function MyReferrers() {
           {records?.map(({ createdAt, user_avatar, display_name, user_status, customer_to_user }, index) => (
             <IndexTable.Row id={`user_verified_` + index} position={index} key={`user_verified_` + index}>
               <IndexTable.Cell className="table_app_cellMinWidth">
-                <InlineGrid columns={['oneThird', 'twoThirds']} gap={'100'} alignItems="center">
+                <InlineStack gap={'200'} align="start" blockAlign="center">
                   <Avatar
                     size="lg"
                     customer
@@ -108,7 +108,7 @@ export default function MyReferrers() {
                   <Text variant="bodyMd" fontWeight="bold" as="span">
                     {display_name}
                   </Text>
-                </InlineGrid>
+                </InlineStack>
               </IndexTable.Cell>
               <IndexTable.Cell>{user_status === 1 ? <Badge tone="success">Active</Badge> : <Badge>InActive</Badge>}</IndexTable.Cell>
               <IndexTable.Cell>{customer_to_user?.customer_order_count}</IndexTable.Cell>

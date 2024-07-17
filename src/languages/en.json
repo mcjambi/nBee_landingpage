@@ -22,6 +22,7 @@
     "button_set_my_password": "Set Password",
     "request_is_locked": "All request is locked, please try again in some minutes",
     "Forgot your password? {recover_link} to recover! If you don't have an account, you can {register_link} here.": "Forgot your password? {recover_link} to recover! If you don't have an account, you can {register_link} here.",
+    "Forgot your password? {recover_link} to recover!": "Forgot your password? {recover_link} to recover!",
     "Back to {homepage_link}!": "Back to {homepage_link}!",
     "Home page": "Home Page",
     "send_password_link_button": "Next: Receive Activation Code",

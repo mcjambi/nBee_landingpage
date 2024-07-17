@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { BlockStack, Box, InlineGrid, InlineStack, Text, Icon, SkeletonDisplayText, SkeletonThumbnail, Divider, Link } from '@shopify/polaris';
+import { BlockStack, Box, InlineGrid, InlineStack, Text, Image, SkeletonDisplayText, SkeletonThumbnail, Divider, Link } from '@shopify/polaris';
 import { WalletIcon } from '@shopify/polaris-icons';
 import { TypedWallet, useGetMyWallet } from 'queries/user_wallet.query';
 import __helpers from 'helpers/index';
 import 'media/css/user_wallet_card.scss';
+import wallet_background from 'media/lottie_files/wallet_background.json';
+import Lottie from 'lottie-react';
 
 export default function UserWalletCard() {
   const { refetch: getAllMyWallet, data, isLoading } = useGetMyWallet();
@@ -72,12 +74,12 @@ export default function UserWalletCard() {
             <BlockStack gap="400">
               <InlineGrid gap={'400'} alignItems="center" columns={{ xs: '', md: 2, lg: 2 }}>
                 <InlineGrid alignItems="center" columns={['oneThird', 'twoThirds']}>
-                  <Icon source={WalletIcon} />
+                  <Lottie animationData={wallet_background} loop={false} />
                   <div>
                     <Text as="p">Tài khoản chính</Text>
                     <Link url={`/my-wallet/${defaultWallet?.wallet_type?.wallet_unit}`}>
                       <Text as="h3" variant="heading2xl">
-                        {__helpers.formatNumber(defaultWallet?.balance ?? 0)} {defaultWallet?.wallet_type?.wallet_unit}
+                        {__helpers.formatNumber(defaultWallet?.balance ?? 0)} <sup>{defaultWallet?.wallet_type?.wallet_sign}</sup>
                       </Text>
                     </Link>
                   </div>
@@ -87,13 +89,15 @@ export default function UserWalletCard() {
               {Array.isArray(myWallet) && !__helpers.isEmpty(myWallet) && (
                 <>
                   <Divider />
-                  <InlineGrid alignItems="center" gap="200" columns={{ xs: 1, md: myWallet?.length ?? 0 }}>
+                  <InlineGrid alignItems="center" gap="400" columns={{ xs: 1, md: myWallet?.length ?? 0 }}>
                     {myWallet?.map((wallet, index) => {
                       return (
                         <Link url={`/my-wallet/${wallet.wallet_type.wallet_unit}`} removeUnderline key={`my_wallet_` + index}>
-                          <Text as="p">{wallet?.wallet_type?.wallet_name}</Text>
+                          <Text as="p" tone="subdued">
+                            {wallet?.wallet_type?.wallet_name}
+                          </Text>
                           <Text as="h3" variant="headingLg" tone="subdued">
-                            {__helpers.formatNumber(wallet.balance ?? 0)} {wallet.wallet_type.wallet_unit}
+                            <small>{wallet.wallet_type.wallet_sign}</small> {__helpers.formatNumber(wallet.balance ?? 0)}
                           </Text>
                         </Link>
                       );

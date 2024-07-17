@@ -23,6 +23,7 @@
     "button_set_my_password": "Đặt mật khẩu",
     "request_is_locked": "Yêu cầu bị từ chối, vui lòng thử lại trong ít phút!",
     "Forgot your password? {recover_link} to recover! If you don\\'t have an account, you can {register_link} here.": "Quên mật khẩu? {recover_link} để lấy! Nếu bạn chưa có tài khoản, bạn có thể {register_link} tại đây.",
+    "Forgot your password? {recover_link} to recover!": "Quên mật khẩu? {recover_link} để lấy lại.",
     "Back to {homepage_link}!": "Quay trở lại {homepage_link}!",
     "After login, you will be redirect to {app_name}, back to {app_homepage} homepage!": "Sau khi đăng nhập, bạn sẽ được chuyển hướng tới {app_name}, Quay lại trang của {app_homepage}!",
     "Home page": "Trang chủ",

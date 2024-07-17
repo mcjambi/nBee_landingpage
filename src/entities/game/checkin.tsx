@@ -137,16 +137,18 @@ export default function CheckIn() {
 
           {mdUp && (
             <InlineStack gap="400" align="space-between" blockAlign="center">
-              {getPrevious7Days.map((a) => {
-                let isCheckedIn = allMyCheckin.some((u) => u === a);
+              {getPrevious7Days.map((date, index) => {
+                let isCheckedIn = allMyCheckin.some((u) => u === date);
                 return (
-                  <Box background="bg-fill" padding={'400'}>
-                    <BlockStack inlineAlign="center" align="center">
-                      <Icon source={isCheckedIn ? CheckIcon : XIcon} />
-                      <Text as="p" tone="subdued">
-                        {a}
-                      </Text>
-                    </BlockStack>
+                  <Box background={isCheckedIn ? 'bg-fill-info' : 'bg-fill-active'} padding={'400'} key={'checkin_list_' + index} borderRadius="full">
+                    <div className={isCheckedIn ? 'checkin_success' : 'checkin_fail'}>
+                      <BlockStack inlineAlign="center" align="center">
+                        <Icon source={isCheckedIn ? CheckIcon : XIcon} />
+                        <Text as="p" tone="subdued">
+                          {dateandtime.format(new Date(date), 'DD/MM')}
+                        </Text>
+                      </BlockStack>
+                    </div>
                   </Box>
                 );
               })}
@@ -203,7 +205,7 @@ export default function CheckIn() {
         </BlockStack>
       </Box>
     );
-  }, [allMyCheckin, user, doCheckining, rankDatas]);
+  }, [allMyCheckin, user, doCheckining, rankDatas, mdUp]);
 
   const isCheckedInToday = useCallback((): boolean => {
     let today = dateandtime.format(new Date(), 'YYYY-MM-DD');
@@ -224,7 +226,7 @@ export default function CheckIn() {
           subtitle={gameData?.game_excerpt}
           backAction={{ content: 'Trang chủ', onAction: () => history('/') }}
           primaryAction={{
-            content: 'Check in',
+            content: 'Điểm danh',
             loading: doCheckining,
             icon: ClipboardCheckFilledIcon,
             disabled: isCheckedInToday(),

@@ -18,6 +18,7 @@ export interface TypedWallet {
     "wallet_type"?: {
         "id": string,
         "wallet_unit": string,
+        "wallet_sign": string,
         "wallet_name": string,
         "is_default": number,
     }

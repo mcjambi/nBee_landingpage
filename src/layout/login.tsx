@@ -283,7 +283,7 @@ export default function Login() {
       {loading ? <Loading /> : null}
       <div id="login_register_outer_wrap">
         <InlineStack blockAlign="center" align="center">
-          <div id="login_page" style={{ maxWidth: '400px' }}>
+          <div id="login_page" style={{ width: '400px' }}>
             <InlineStack blockAlign="center" align="end" gap="200">
               <Popover
                 active={languagePopoverStatus}
@@ -421,9 +421,8 @@ export default function Login() {
                   )} */}
 
                   <Text as="p" key="C">
-                    {___("Forgot your password? {recover_link} to recover! If you don\\'t have an account, you can {register_link} here.", {
+                    {___('Forgot your password? {recover_link} to recover!', {
                       recover_link: <Link url="/recover_password">{__('click_here')}</Link>,
-                      register_link: <Link url="/register">{__('register')}</Link>,
                     })}
                   </Text>
                 </FormLayout>

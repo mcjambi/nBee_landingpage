@@ -114,7 +114,7 @@ export default function MyReferrer() {
           <Box padding={'400'}>
             <BlockStack gap={'400'}>
               <Text as="h2" variant="heading2xl">
-                Một ngày tuyệt vời, {currentUserData.display_name}
+                {currentUserData.display_name}
               </Text>
               <Text as="p" tone="subdued">
                 Đây là tóm tắt những người bạn giới thiệu được.
@@ -223,7 +223,7 @@ export default function MyReferrer() {
       </Helmet>
 
       <Page
-        title=""
+        title="Giới thiệu nhận hoa hồng"
         primaryAction={{
           content: 'Hướng dẫn',
           icon: QuestionCircleIcon,
