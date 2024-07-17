@@ -1,5 +1,13 @@
 import { Frame, Link, Navigation, Toast, Text, TopBar, BlockStack, Icon } from '@shopify/polaris';
-import { HomeIcon, QuestionCircleIcon, NotificationIcon, FlowerIcon, CollectionReferenceIcon, OrderIcon } from '@shopify/polaris-icons';
+import {
+  HomeIcon,
+  QuestionCircleIcon,
+  NotificationIcon,
+  FlowerIcon,
+  CollectionReferenceIcon,
+  OrderIcon,
+  PaperCheckIcon,
+} from '@shopify/polaris-icons';
 import main_logo from 'media/images/logo.svg';
 import { useState, useCallback, useRef } from 'react';
 import { useAuth } from '../AuthContext';
@@ -126,7 +134,7 @@ export default function AppFrame({ children }: any) {
       />
       <Navigation.Section
         separator
-        title="Công cụ"
+        title="Quản lý"
         items={[
           {
             url: '/my_referrer',
@@ -137,6 +145,18 @@ export default function AppFrame({ children }: any) {
             url: '/order',
             label: 'Các đơn hàng',
             icon: OrderIcon,
+          },
+        ]}
+      />
+
+      <Navigation.Section
+        separator
+        title="Công cụ"
+        items={[
+          {
+            url: '/news',
+            label: 'Tin tức chung',
+            icon: PaperCheckIcon,
           },
           {
             url: '/my_help_center',

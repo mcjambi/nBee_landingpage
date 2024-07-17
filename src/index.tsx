@@ -32,6 +32,7 @@ import MyWallet from 'entities/my_wallet';
 import MyHelpCenter from 'entities/my_help_center';
 import EDUCenter from 'entities/edu_center';
 import Gamification from 'entities/game';
+import News from 'entities/news';
 
 const baseHref = document.querySelector('base')?.getAttribute('href')?.replace(/\/$/, '');
 
@@ -69,6 +70,29 @@ root.render(
                       <ProtectedRoute>
                         <AppFrame>
                           <Homepage />
+                        </AppFrame>
+                      </ProtectedRoute>
+                    }
+                  />
+
+                  <Route
+                    key={'news'}
+                    path={'/news'}
+                    element={
+                      <ProtectedRoute>
+                        <AppFrame>
+                          <News />
+                        </AppFrame>
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    key={'news_view'}
+                    path={'/news/:slug'}
+                    element={
+                      <ProtectedRoute>
+                        <AppFrame>
+                          <News />
                         </AppFrame>
                       </ProtectedRoute>
                     }
