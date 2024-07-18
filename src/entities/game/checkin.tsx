@@ -207,11 +207,21 @@ export default function CheckIn() {
     );
   }, [allMyCheckin, user, doCheckining, rankDatas, mdUp]);
 
-  const isCheckedInToday = useCallback((): boolean => {
+  const allowedCheckin = useCallback((): boolean => {
     let today = dateandtime.format(new Date(), 'YYYY-MM-DD');
     let is = allMyCheckin.some((u) => u === today);
+
+    try {
+      let { checkin_time_from, checkin_time_to } = JSON.parse(gameData.game_setting);
+      let hoursNow = new Date().getHours();
+      if (hoursNow < checkin_time_from && hoursNow > checkin_time_to) {
+        // invalid
+        return false;
+      }
+    } catch (e) {}
+
     return is ? true : false;
-  }, [allMyCheckin]);
+  }, [allMyCheckin, gameData]);
 
   return (
     <>
@@ -229,7 +239,7 @@ export default function CheckIn() {
             content: 'Điểm danh',
             loading: doCheckining,
             icon: ClipboardCheckFilledIcon,
-            disabled: isCheckedInToday(),
+            disabled: allowedCheckin(),
             onAction: doCheckinCallback,
           }}
         >
