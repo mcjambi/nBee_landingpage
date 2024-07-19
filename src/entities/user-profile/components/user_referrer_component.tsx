@@ -1,11 +1,21 @@
-import { BlockStack, InlineStack, Link, SkeletonDisplayText, Text } from '@shopify/polaris';
-import React, { useEffect, useState } from 'react';
+import { BlockStack, Box, Button, InlineStack, Link, SkeletonDisplayText, Text, TextField } from '@shopify/polaris';
+import React, { useCallback, useEffect, useState } from 'react';
 import 'media/css/user_avatar_group.scss';
 import user_referrer_placeholder from 'media/lottie_files/user_referrer_placeholder.json';
 import Lottie from 'lottie-react';
 import { useAuth } from 'AuthContext';
 import { TypedMyReferrers, useMyReferrers } from 'queries/user_referrer.query';
 import __helpers from 'helpers/index';
+import { useNotification } from 'NotificationContext';
+
+function copyToClipboard(_content: string) {
+  var inp = document.createElement('input');
+  document.body.appendChild(inp);
+  inp.value = _content;
+  inp.select();
+  document.execCommand('copy', false);
+  inp.remove();
+}
 
 /** Hiển thị tóm tắt đội nhóm của một ai đó ... */
 export default function UserReferrerComponent() {
@@ -34,6 +44,14 @@ export default function UserReferrerComponent() {
     }
   }, [referrerData]);
 
+  const referrer_link = process.env.REACT_APP_PUBLIC_URL + '/login?ref=' + current_user_data?.referrer_code;
+  const { addNotification } = useNotification();
+  const copyToClipboardCallback = useCallback((_string: string) => {
+    //
+    copyToClipboard(_string);
+    addNotification('info', 'Đã copy mã giới thiệu');
+  }, []);
+
   return (
     <>
       {loadingUserReferrer ? (
@@ -52,20 +70,33 @@ export default function UserReferrerComponent() {
           </BlockStack>
         </InlineStack>
       ) : (
-        <InlineStack blockAlign="center" gap={'100'} align="start">
-          <UserAvatarGroup
-            data={referrerEntity.map((element) => {
-              return {
-                display_name: element.display_name,
-                user_avatar: __helpers.getMediaLink(element.user_avatar),
-              };
-            })}
-            hasMore={totalItems - 5}
+        <Box padding={'400'}>
+          <TextField
+            autoComplete="off"
+            label="Link giới thiệu của bạn"
+            readOnly
+            value={referrer_link}
+            suffix={
+              <Link removeUnderline onClick={() => copyToClipboardCallback(referrer_link)}>
+                COPY
+              </Link>
+            }
           />
-          <Text as="p">
-            được giới thiệu bởi bạn, <Link url="/my_referrer">xem tất cả</Link>.
-          </Text>
-        </InlineStack>
+          <br />
+          <InlineStack blockAlign="center" gap={'200'} align="start">
+            <UserAvatarGroup
+              data={referrerEntity.map((element) => {
+                return {
+                  display_name: element.display_name,
+                  user_avatar: __helpers.getMediaLink(element.user_avatar),
+                };
+              })}
+              hasMore={totalItems - 5}
+            />
+            <Text as="p">Có {totalItems} tài khoản được giới thiệu bởi bạn.</Text>
+            <Link url="/my_referrer">Xem tất cả</Link>
+          </InlineStack>
+        </Box>
       )}
     </>
   );

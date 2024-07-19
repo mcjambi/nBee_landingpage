@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Text, LegacyCard, DataTable, BlockStack, SkeletonBodyText, EmptyState, Card, Link, Badge } from '@shopify/polaris';
+import { Text, LegacyCard, DataTable, BlockStack, SkeletonBodyText, EmptyState, Card, Link, Badge, InlineStack } from '@shopify/polaris';
 import product_placeholder from 'media/images/product_placeholder.svg';
 import helpers from 'helpers/index';
 import orderStatus from 'config/order.status.json';
@@ -55,29 +55,36 @@ export default function MyOrder() {
 
   const DataList = () => {
     return (
-      <LegacyCard>
-        <LegacyCard.Header title="Đơn hàng của tôi" actions={[{ content: 'Xem tất cả', onAction: () => history('/order') }]}></LegacyCard.Header>
-        <DataTable
-          columnContentTypes={['text', 'text', 'text', 'text', 'text']}
-          headings={['PNR', 'Tình trạng', 'Thanh toán', 'Giá trị', 'Ngày tạo']}
-          rows={entities?.map((orderData) => {
-            const { order_id, order_pnr, order_status, order_total_price, payment_status, createdAt } = orderData;
-            return [
-              <Link url={'/order/view/' + order_id}>{order_pnr}</Link>,
-              <Badge tone={getOrderBadge(order_status)}>{orderStatus[order_status]}</Badge>,
-              <Badge tone={payment_status === 0 ? 'new' : 'success'} progress={payment_status === 1 ? 'complete' : 'incomplete'}>
-                {payment_status === 0 ? 'Chưa thanh toán' : 'Đã thanh toán'}
-              </Badge>,
-              order_total_price,
-              helpers.subtractDate(createdAt, ' ngày trước'),
-            ];
-          })}
-          hideScrollIndicator
-          hasZebraStripingOnData
-          increasedTableDensity
-        />
-        {data?.totalItems > 5 && <LegacyCard.Section subdued>Bạn có {data.totalItems} đơn hàng</LegacyCard.Section>}
-      </LegacyCard>
+      <BlockStack gap="400">
+        <InlineStack align="space-between" blockAlign="center">
+          <Text as="h3" tone="subdued" variant="headingMd">
+            Đơn hàng của tôi
+          </Text>
+          <Link url="/orders">Xem tất cả</Link>
+        </InlineStack>
+        <LegacyCard>
+          <DataTable
+            columnContentTypes={['text', 'text', 'text', 'text', 'text']}
+            headings={['PNR', 'Tình trạng', 'Thanh toán', 'Giá trị', 'Ngày tạo']}
+            rows={entities?.map((orderData) => {
+              const { order_id, order_pnr, order_status, order_total_price, payment_status, createdAt } = orderData;
+              return [
+                <Link url={'/order/view/' + order_id}>{order_pnr}</Link>,
+                <Badge tone={getOrderBadge(order_status)}>{orderStatus[order_status]}</Badge>,
+                <Badge tone={payment_status === 0 ? 'new' : 'success'} progress={payment_status === 1 ? 'complete' : 'incomplete'}>
+                  {payment_status === 0 ? 'Chưa thanh toán' : 'Đã thanh toán'}
+                </Badge>,
+                order_total_price,
+                helpers.subtractDate(createdAt, ' ngày trước'),
+              ];
+            })}
+            hideScrollIndicator
+            hasZebraStripingOnData
+            increasedTableDensity
+          />
+          {data?.totalItems > 5 && <LegacyCard.Section subdued>Bạn có {data.totalItems} đơn hàng</LegacyCard.Section>}
+        </LegacyCard>
+      </BlockStack>
     );
   };
   return (

@@ -3,8 +3,18 @@ import 'media/css/floatingBanner.scss';
 import { Button, Collapsible, Icon, InlineStack } from '@shopify/polaris';
 import { ChevronDownIcon, ChevronUpIcon, InfoIcon } from '@shopify/polaris-icons';
 
-export default function FloatingBanner({ icon = InfoIcon, title = 'Tựa đề', children }: { icon: any; title: string; children?: ReactElement }) {
-  const [open, setOpen] = useState(false);
+export default function FloatingBanner({
+  openInFirstView = false,
+  icon = InfoIcon,
+  title = 'Tựa đề',
+  children,
+}: {
+  openInFirstView?: boolean;
+  icon: any;
+  title: string;
+  children?: ReactElement;
+}) {
+  const [open, setOpen] = useState(openInFirstView);
   const handleToggle = useCallback(() => setOpen((open) => !open), []);
 
   return (

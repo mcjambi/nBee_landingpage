@@ -1,17 +1,5 @@
-import {
-  Card,
-  Text,
-  InlineGrid,
-  Button,
-  Page,
-  BlockStack,
-  LegacyCard,
-  InlineStack,
-  CalloutCard,
-  ExceptionList,
-  SkeletonDisplayText,
-} from '@shopify/polaris';
-import { GiftCardFilledIcon, EmailIcon, LocationIcon, PhoneIcon, EditIcon } from '@shopify/polaris-icons';
+import { Text, InlineGrid, Page, BlockStack, LegacyCard, CalloutCard, ExceptionList, Grid, Box, InlineStack, Icon, Divider } from '@shopify/polaris';
+import { GiftCardFilledIcon, EmailIcon, LocationIcon, PhoneIcon, EditIcon, ClockIcon } from '@shopify/polaris-icons';
 
 import { useState, useCallback, useEffect, useRef } from 'react';
 import 'media/css/user_profile.scss';
@@ -21,13 +9,13 @@ import { useAuth } from 'AuthContext';
 import UserProfileLoading from 'components/userProfileLoading';
 import { useNavigate } from 'react-router-dom';
 import helpers from 'helpers/index';
-import StarRating from 'components/starRating';
 import UserAchievement from 'components/user_achivement';
 import MyOrder from './components/myOrders';
 import UserReferrerComponent from './components/user_referrer_component';
 import { useGetEntity } from 'queries/user.query';
 import UserWalletCard from './components/user_wallet_card';
 import UserProfileHeader from './components/UserProfileHeader';
+import RankingByWallet from './components/ranking_by_wallet';
 
 /************************************************************ *
  * MAINN
@@ -65,88 +53,117 @@ export default function MyProfile() {
     getFullAddress();
   }, [profileData]);
 
+  const MySumary = useCallback(() => {
+    return (
+      <Box padding="400">
+        <Text as="h3" tone="subdued" variant="headingMd">
+          Thông tin liên hệ
+        </Text>
+        <br />
+        <ExceptionList
+          items={[
+            {
+              icon: EmailIcon,
+              description: profileData?.user_email ?? '-',
+            },
+            {
+              icon: PhoneIcon,
+              description: profileData?.user_phonenumber ?? '-',
+            },
+            {
+              icon: LocationIcon,
+              description: fullAddress,
+            },
+            {
+              icon: ClockIcon,
+              description: (
+                <Text as="p" variant="bodyMd">
+                  Tham gia từ {dateandtime.format(new Date(Number(profileData?.createdAt)), 'DD/MM/YYYY')}
+                </Text>
+              ),
+            },
+          ]}
+        />
+      </Box>
+    );
+  }, [fullAddress, profileData]);
+
   return (
     <>
       <Helmet prioritizeSeoTags>
         <title>Trang chủ</title>
       </Helmet>
-      <Page>
-        <UserProfileHeader />
-        <br />
-        <br />
-        <UserWalletCard />
-        <br />
-        <br />
-        <UserReferrerComponent />
-        <br />
-        <br />
-        {profileData && (
-          <InlineGrid columns={{ xs: '1', sm: '1', md: '1', lg: ['oneThird', 'twoThirds'] }} gap="400">
-            <div>
-              {isPending ? (
-                <UserProfileLoading />
-              ) : (
-                <LegacyCard title="Thông tin" actions={[{ content: 'Chỉnh sửa', onAction: () => history('/edit-my-profile') }]}>
-                  <LegacyCard.Section>
-                    <br />
-                    <BlockStack gap={'200'}>
-                      <ExceptionList
-                        items={[
-                          {
-                            icon: EmailIcon,
-                            description: profileData?.user_email ?? '-',
-                          },
-                          {
-                            icon: PhoneIcon,
-                            description: profileData?.user_phonenumber ?? '-',
-                          },
-                          {
-                            icon: LocationIcon,
-                            description: fullAddress,
-                          },
-                        ]}
-                      />
-                    </BlockStack>
-                  </LegacyCard.Section>
 
-                  <LegacyCard.Section subdued title="">
-                    <Text as="p" variant="bodyMd">
-                      Tham gia từ {dateandtime.format(new Date(Number(profileData?.createdAt)), 'DD/MM/YYYY')}
-                    </Text>
-                    {profileData?.user_rate > 0 ? (
-                      <div>
-                        <StarRating num={profileData?.user_rate} />
-                        <Text as="span" tone="subdued">{`${profileData?.user_rate_count} đánh giá`}</Text>
-                      </div>
-                    ) : null}
-                  </LegacyCard.Section>
-                </LegacyCard>
-              )}
+      <Box padding={'400'} id="hero_banner">
+        <div className="bg-overlay bg-overlay-5"></div>
+        <Page>
+          <InlineGrid columns={{ xs: 1, sm: 1, md: ['twoThirds', 'oneThird'] }} gap="400" alignItems="center">
+            <BlockStack gap={'400'}>
+              <Text as="h1" id="headline" fontWeight="bold">
+                Đón đầu cuộc chơi <br />
+                <span>Chiến thắng</span>
+              </Text>
               <br />
-              <UserAchievement user_id={profileData?.user_id} />
-            </div>
+              <Text as="p" id="sub-headline" tone="text-inverse-secondary">
+                Bùng nổ 🎁 trong lễ ra mắt ứng dụng <br />
+                ...và Kim cương là chìa khóa 😘
+              </Text>
 
-            <div>
-              {!currentUserData.user_address || !currentUserData.user_birthday || !currentUserData.user_avatar ? (
-                <CalloutCard
-                  title="Bạn chưa cập nhật thông tin"
-                  illustration="https://cdn.shopify.com/s/assets/admin/checkout/settings-customizecart-705f57c725ac05be5a34ec20c05b94298cb8afd10aac7bd9c7ad02030f48cfa0.svg"
-                  primaryAction={{
-                    content: 'Chỉnh sửa profile',
-                    url: '/edit-my-profile',
-                  }}
-                >
-                  <p>Điền đầy đủ thông tin và nhận về những phần quà đầu tiên.</p>
-                </CalloutCard>
-              ) : null}
-              <MyOrder />
-            </div>
+              <Text as="p" variant="headingSm" id="sub-sub-headline" tone="text-inverse-secondary">
+                * Mỗi lượt giới thiệu thành viên thành công được +50 kim cương, chơi game điểm danh nhận +2 kim cương.
+              </Text>
+            </BlockStack>
+            <RankingByWallet />
           </InlineGrid>
-        )}
+        </Page>
+      </Box>
+
+      <Page>
+        <InlineGrid columns={{ xs: 1, sm: 1, md: ['oneThird', 'twoThirds'] }} gap="400">
+          <Box id="profile_cot_a">
+            <UserProfileHeader />
+            <br />
+            <Divider />
+            <br />
+            {isPending ? <UserProfileLoading /> : <MySumary />}
+            <br />
+            <Divider />
+            <br />
+            <UserReferrerComponent />
+            <br />
+            <Divider />
+            <br />
+            <UserAchievement user_id={profileData?.user_id} />
+          </Box>
+          <Box id="profile_cot_b">
+            <UserWalletCard />
+            <br />
+            <br />
+            {profileData && (
+              <BlockStack gap="400">
+                {!currentUserData.user_address || !currentUserData.user_birthday || !currentUserData.user_avatar ? (
+                  <CalloutCard
+                    title="Bạn chưa cập nhật thông tin"
+                    illustration="https://cdn.shopify.com/s/assets/admin/checkout/settings-customizecart-705f57c725ac05be5a34ec20c05b94298cb8afd10aac7bd9c7ad02030f48cfa0.svg"
+                    primaryAction={{
+                      content: 'Chỉnh sửa profile',
+                      url: '/edit-my-profile',
+                    }}
+                  >
+                    <p>Điền đầy đủ thông tin và nhận về những phần quà đầu tiên.</p>
+                  </CalloutCard>
+                ) : null}
+                <MyOrder />
+              </BlockStack>
+            )}
+          </Box>
+          {/** END profile cot b */}
+        </InlineGrid>
+
+        <br />
+        <br />
+        <br />
       </Page>
-      <br />
-      <br />
-      <br />
     </>
   );
 }

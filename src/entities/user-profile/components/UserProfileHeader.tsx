@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
-import { Text, BlockStack, Icon, InlineStack, Tooltip } from '@shopify/polaris';
+import { Text, BlockStack, Icon, InlineStack, Tooltip, Box } from '@shopify/polaris';
 import QuickUploadImage from 'components/oneclick-upload-image';
 import { StatusActiveIcon } from '@shopify/polaris-icons';
 import default_avatar from 'media/images/user-default.svg';
@@ -28,7 +28,7 @@ export default function UserProfileHeader() {
 
   const ProfileHeaderData = () => {
     return (
-      <div id="profile_header">
+      <Box id="profile_header">
         <BlockStack gap="100" align="center" inlineAlign="center">
           <div className="profile_background">&nbsp;</div>
           <div className="profile_header">
@@ -48,7 +48,7 @@ export default function UserProfileHeader() {
             </Text>
           </InlineStack>
         </BlockStack>
-      </div>
+      </Box>
     );
   };
 

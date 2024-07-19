@@ -73,18 +73,15 @@ export default function UserWalletCard() {
           <Box padding="400" background="bg-fill-active">
             <BlockStack gap="400">
               <InlineGrid gap={'400'} alignItems="center" columns={{ xs: '', md: 2, lg: 2 }}>
-                <InlineGrid alignItems="center" columns={['oneThird', 'twoThirds']}>
-                  <Lottie animationData={wallet_background} loop={false} />
-                  <div>
-                    <Text as="p">Tài khoản chính</Text>
-                    <Link url={`/my-wallet/${defaultWallet?.wallet_type?.wallet_unit}`}>
-                      <Text as="h3" variant="heading2xl">
-                        {__helpers.formatNumber(defaultWallet?.balance ?? 0)} <sup>{defaultWallet?.wallet_type?.wallet_sign}</sup>
-                      </Text>
-                    </Link>
-                  </div>
-                </InlineGrid>
-                <InlineStack gap="200" align="start" blockAlign="center"></InlineStack>
+                <Lottie animationData={wallet_background} loop={false} />
+                <div>
+                  <Text as="p">Tài khoản chính</Text>
+                  <Link url={`/my-wallet/${defaultWallet?.wallet_type?.wallet_unit}`}>
+                    <Text as="h3" variant="heading2xl">
+                      {__helpers.formatNumber(defaultWallet?.balance ?? 0)} <sup>{defaultWallet?.wallet_type?.wallet_sign}</sup>
+                    </Text>
+                  </Link>
+                </div>
               </InlineGrid>
               {Array.isArray(myWallet) && !__helpers.isEmpty(myWallet) && (
                 <>

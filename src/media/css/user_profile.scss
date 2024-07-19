@@ -1,8 +1,7 @@
 #profile_header {
-
   .profile_background {
     background: url(../images/user_profile_background.jpg);
-    height: 10rem; 
+    height: 10rem;
     width: 100%;
   }
   .profile_header {
@@ -15,13 +14,38 @@
       border: 4px solid #ccc;
     }
   }
-
-
 }
-
 
 .user_referrer_placeholder {
   display: inline-block;
   width: 100px;
   height: 100px;
+}
+
+#hero_banner {
+  background: url('../images/hero_background_homepage.jpg') no-repeat #000;
+  background-size: cover;
+  position: relative;
+
+  .Polaris-Page {
+    position: relative;
+    z-index: 12;
+  }
+
+  #headline {
+    font-size: 3rem;
+    color: #fff;
+    line-height: 1.1;
+    span {
+      color: rgb(245, 192, 43);
+    }
+  }
+  #sub-headline {
+    color: #fff;
+    font-size: 1.6em;
+    line-height: 1.1;
+  }
+  #sub-sub-headline {
+    color: #fff;
+  }
 }
