@@ -14,11 +14,27 @@ export default function FloatingBanner({
   title: string;
   children?: ReactElement;
 }) {
-  const [open, setOpen] = useState(openInFirstView);
+  const [open, setOpen] = useState(false);
   const handleToggle = useCallback(() => setOpen((open) => !open), []);
 
+  // delay show up
+  const [timetoshow, setTimetoshow] = useState(false);
+  useEffect(() => {
+    setTimeout(() => {
+      setTimetoshow(true);
+    }, 1500);
+  }, []);
+
+  useEffect(() => {
+    if (openInFirstView) {
+      setTimeout(() => {
+        setOpen(true);
+      }, 2000);
+    }
+  }, [openInFirstView]);
+
   return (
-    <div className="floating_banner">
+    <div className={`floating_banner ${timetoshow ? '' : 'hidden'}`}>
       <div className="floating_wrap">
         <div className="floating_header">
           <InlineStack blockAlign="center" align="space-between">
@@ -31,7 +47,7 @@ export default function FloatingBanner({
           </InlineStack>
         </div>
 
-        <Collapsible open={open} id="basic-collapsible" transition={{ duration: '200ms', timingFunction: 'ease-in-out' }} expandOnPrint>
+        <Collapsible open={open} id="basic-collapsible" transition={{ duration: '500ms', timingFunction: 'ease-in-out' }} expandOnPrint>
           <div>
             <br />
             {children}

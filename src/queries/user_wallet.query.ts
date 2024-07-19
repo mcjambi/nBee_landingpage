@@ -96,3 +96,23 @@ export function useGetMyTransaction(wallet_unit: string, object: IQuery) {
         enabled: false,
     });
 }
+
+
+type TypedWalletRank = {
+    "balance": string,
+    "user": {
+        "display_name": string,
+        "user_avatar": string
+    }
+}
+
+/**
+ * Cho phép xếp hạng người dùng theo ví, 
+ * @returns 
+ */
+export function useGetWalletRank() {
+    return useMutation({
+        mutationKey: ['user_wallet/get_rank'],
+        mutationFn: (wallet_slug: string) => axios.get<TypedWalletRank[]>(`wallet/rank/${wallet_slug}?limit=10`).then(res => res.data)
+    });
+}

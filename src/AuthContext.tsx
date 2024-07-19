@@ -1,7 +1,6 @@
 import React, { createContext, useContext, useState, ReactNode, useEffect, useCallback } from 'react';
 import { useGetCurrentUserData, TypedUser } from './queries/user.query';
 import __helpers from './helpers';
-import helpers from './helpers';
 import useRefreshTokenHelper from 'components/useRefreshTokenHelper';
 
 interface AuthContextType {
@@ -41,7 +40,7 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   useEffect(() => {
     if (hash && hash.includes('oauth_access_token=')) {
       let access_token = hash.replace('#oauth_access_token=', '');
-      if (access_token) helpers.cookie_set('AT', access_token, 30);
+      if (access_token) __helpers.cookie_set('AT', access_token, 30);
       window.location.hash = 'sso_success';
       recheckUserLoginornot();
     }
