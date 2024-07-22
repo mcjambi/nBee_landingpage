@@ -53,7 +53,20 @@ export default function UserReferrerComponent() {
   }, []);
 
   return (
-    <>
+    <Box padding={'400'}>
+      <TextField
+        autoComplete="off"
+        label="Link giới thiệu của bạn"
+        readOnly
+        value={referrer_link}
+        suffix={
+          <Link removeUnderline onClick={() => copyToClipboardCallback(referrer_link)}>
+            COPY
+          </Link>
+        }
+      />
+      <br />
+
       {loadingUserReferrer ? (
         <SkeletonDisplayText size="small" />
       ) : totalItems < 1 ? (
@@ -71,18 +84,6 @@ export default function UserReferrerComponent() {
         </InlineStack>
       ) : (
         <Box padding={'400'}>
-          <TextField
-            autoComplete="off"
-            label="Link giới thiệu của bạn"
-            readOnly
-            value={referrer_link}
-            suffix={
-              <Link removeUnderline onClick={() => copyToClipboardCallback(referrer_link)}>
-                COPY
-              </Link>
-            }
-          />
-          <br />
           <InlineStack blockAlign="center" gap={'200'} align="start">
             <UserAvatarGroup
               data={referrerEntity.map((element) => {
@@ -98,7 +99,7 @@ export default function UserReferrerComponent() {
           </InlineStack>
         </Box>
       )}
-    </>
+    </Box>
   );
 }
 
