@@ -113,7 +113,7 @@ export default function MyProfile() {
                 * Mỗi lượt giới thiệu thành viên thành công được +50 kim cương, chơi game điểm danh nhận +2 kim cương.
               </Text>
             </BlockStack>
-            <RankingByWallet wallet_unit={'cash'} />
+            <RankingByWallet wallet_unit={'diamond'} />
           </InlineGrid>
         </Page>
       </Box>

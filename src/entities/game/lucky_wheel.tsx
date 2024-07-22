@@ -202,7 +202,7 @@ export default function LuckyWheel() {
     Array(12)
       .fill('a')
       .map((a, index) => ({
-        present_id: index,
+        present_id: index + 66 * 3,
         present_name: 'Mất lượt',
         present_slug: 'default',
         createdAt: new Date().getTime(),
@@ -213,7 +213,14 @@ export default function LuckyWheel() {
       .then((res) => {
         setPresents((oldValue) => {
           let X = [...res, ...oldValue];
-          return shuffleArray(X);
+          let newA = [];
+          let i = 0;
+          for (let A of X) {
+            i++;
+            if (i > 12) break;
+            newA.push(A);
+          }
+          return shuffleArray(newA);
         });
       })
       .catch((e) => {});
