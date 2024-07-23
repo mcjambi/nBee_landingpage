@@ -4,6 +4,13 @@ import helpers from "../helpers";
 import queryClient from './index';
 
 
+export interface TypedAuthenticationResponse {
+    access_token: string,
+    refresh_token: string,
+    expires_at: string,
+    must_add_referrer?: boolean,
+}
+
 export interface TypedLogin {
     user_input?: string;
     user_email?: string;
@@ -165,31 +172,53 @@ export function useUpdateUserPayment() {
 export function useUserQuickLogin() {
     return useMutation({
         mutationKey: ['quick_login'],
-        mutationFn: (entity: TypedLogin) => axios.post<TypedLogin>(`login/onetimepassword`, helpers.cleanEntity(entity))
+        mutationFn: (entity: TypedLogin) => axios.post<TypedAuthenticationResponse>(`login/onetimepassword`, helpers.cleanEntity(entity))
     })
 }
 
 export function useUserLogin() {
     return useMutation({
         mutationKey: ['manual_login'],
-        mutationFn: (entity: TypedLogin) => axios.post<any>(`login`, helpers.cleanEntity(entity))
+        mutationFn: (entity: TypedLogin) => axios.post<TypedAuthenticationResponse>(`login`, helpers.cleanEntity(entity))
     })
 }
 
-
-export function useActiveAccount() {
-    return useMutation({
-        mutationKey: ['user_active_account'],
-        mutationFn: (entity: any) => axios.post<TypedLogin>(`user/active_account`, helpers.cleanEntity(entity))
-    })
-}
 
 export function useLoginByFacebook() {
     return useMutation({
         mutationKey: ['user_facebook_login'],
-        mutationFn: (entity: TypedLogin) => axios.post<TypedLogin>(`user/active_account`, helpers.cleanEntity(entity))
+        mutationFn: (entity: TypedLogin) => axios.post<TypedLogin>(`login/facebook`, helpers.cleanEntity(entity))
     })
 }
+
+
+
+export function useCheckActiveCode() {
+    return useMutation({
+        mutationKey: ['user_check_active_code'],
+        mutationFn: (entity: any) => axios.post<TypedLogin>(`user/check_active_code`, helpers.cleanEntity(entity))
+    })
+}
+
+
+export function useGetActiveCode() {
+    return useMutation({
+        mutationKey: ['user_get_active_code'],
+        mutationFn: (entity: any) => axios.post<any>(`user/get_active_code`, helpers.cleanEntity(entity))
+    })
+}
+
+/** Gửi mã active lên server để active tài khoản ... */
+export function useActiveAccount() {
+    return useMutation({
+        mutationKey: ['user_active_account'],
+        mutationFn: (entity: { code?: string, user_email?: string, user_phonenumber?: string }) => axios.post<any>(`user/active_account`, helpers.cleanEntity(entity)),
+        onSettled: () => {
+            queryClient.invalidateQueries({ queryKey: ['user'] })
+        }
+    })
+}
+
 
 
 /**
@@ -198,7 +227,7 @@ export function useLoginByFacebook() {
 export function useUserRegister() {
     return useMutation({
         mutationKey: ['user_register'],
-        mutationFn: (entity: TypedRegister) => axios.post<TypedRegister>(`register`, helpers.cleanEntity(entity))
+        mutationFn: (entity: TypedRegister) => axios.post<TypedAuthenticationResponse>(`register`, helpers.cleanEntity(entity))
     })
 }
 
@@ -222,7 +251,7 @@ export function useUserRecoverPassword() {
 export function useUserSetNewPassword() {
     return useMutation({
         mutationKey: ['user_set_new_password'],
-        mutationFn: (entity: { password: string, user_email?: string, code?: string, current_password?: string }) => axios.patch<any>(`user/set_new_password`, helpers.cleanEntity(entity))
+        mutationFn: (entity: { password: string, user_email?: string, user_phonenumber?: string, code?: string, current_password?: string }) => axios.patch<any>(`user/set_new_password`, helpers.cleanEntity(entity))
     })
 }
 

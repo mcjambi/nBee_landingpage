@@ -8,7 +8,7 @@ import helpers from '../helpers';
 import __, { ___ } from 'languages/index';
 import useReferrer from 'components/useReferrer';
 import { Helmet } from 'react-helmet-async';
-import { TypedUser, useUserRegister } from 'queries/user.query';
+import { TypedAuthenticationResponse, TypedUser, useUserRegister } from 'queries/user.query';
 
 export default function Register() {
   const { mutateAsync: register, isPending } = useUserRegister();
@@ -33,22 +33,19 @@ export default function Register() {
   }, []);
 
   /** Do we need validate? */
-  const registerSuccessCallback = useCallback((data: TypedUser) => {
-    if (typeof data.must_validated_account !== 'undefined' && data.must_validated_account === 1) {
-      history('/active-account', {
-        state: {
-          mode: 'set_new_password',
-          user_email: data.user_email,
-        },
-      });
-    } else {
-      history('/active-account', {
-        state: {
-          mode: 'set_new_password_no_need_actived',
-          user_email: data.user_email,
-        },
-      });
-    }
+  const registerSuccessCallback = useCallback((data: TypedAuthenticationResponse) => {
+    // if (typeof data.must_validated_account !== 'undefined' && data.must_validated_account === 1) {
+    let { access_token, refresh_token, expires_at } = data;
+    helpers.cookie_set('AT', access_token, 30);
+    helpers.cookie_set('RT', refresh_token, 30);
+    helpers.cookie_set('EA', expires_at, 30);
+
+    history('/active-account', {
+      state: {
+        mode: 'set_new_password',
+      },
+    });
+    // }
   }, []);
 
   /**
@@ -59,13 +56,9 @@ export default function Register() {
       value: '',
       validates: [
         notEmptyString(__('field_not_allow_empty')),
-        lengthLessThan(50, 'Quá dài!'),
-        lengthMoreThan(6, 'Quá ngắn!'),
+        lengthLessThan(50, 'Bạn nhập quá dài!'),
+        lengthMoreThan(6, 'Bạn nhập quá ngắn!'),
         (inputValue) => {
-          if (!helpers.isPhoneNumber(inputValue))
-            if (!helpers.isEmail(inputValue)) {
-              return 'Định dạng Email/Số điện thoại không hợp lệ! Vui lòng kiểm tra lại!';
-            }
           if (helpers.isUTF8(inputValue)) {
             return 'Trường này không nên có mã Unicode, bạn vui lòng kiểm tra lại!';
           }

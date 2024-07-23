@@ -1,13 +1,34 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
-import { TextField, Form, Button, Page, Link, Text, Frame, FooterHelp, InlineStack, Box, Banner, InlineGrid, ProgressBar } from '@shopify/polaris';
+import {
+  TextField,
+  Form,
+  Button,
+  Page,
+  Link,
+  Text,
+  Frame,
+  FooterHelp,
+  InlineStack,
+  Box,
+  Banner,
+  InlineGrid,
+  ProgressBar,
+  BlockStack,
+} from '@shopify/polaris';
 import { useField, useForm } from '@shopify/react-form';
 import __, { ___ } from 'languages/index';
 
 import { ViewIcon, HideIcon, PasskeyIcon } from '@shopify/polaris-icons';
 import helpers from 'helpers/index';
-import { useActiveAccount, useUserSetNewPassword } from 'queries/user.query';
+import { useCheckActiveCode, useUserSetNewPassword } from 'queries/user.query';
+
+type TypedActiveAccountStage = {
+  mode: 'recover_password' | 'set_new_password';
+  user_email: string | undefined;
+  user_phonenumber: string | undefined;
+};
 
 /**
  * Người dùng sẽ nhập mã active hoặc điền mật khẩu ...
@@ -20,10 +41,23 @@ export default function ActiveAccountLayout() {
   const [internalError, setInternalError] = useState<string>('');
   const [showChangePasswordBox, setShowChangePasswordBox] = useState(false);
 
-  let { mutateAsync: activeAccount } = useActiveAccount();
+  let { mutateAsync: checkActiveCode } = useCheckActiveCode();
 
-  let { state } = useLocation();
+  /**
+   {
+    mode: 'recover_password',
+    user_email: any,
+    user_phonenumber: any
+   }
+   */
+  let { state }: { state: TypedActiveAccountStage } = useLocation();
   // mode, user_email
+
+  useEffect(() => {
+    if (state?.mode === 'set_new_password') {
+      setShowChangePasswordBox(true);
+    }
+  }, [state]);
 
   /**
    * Khai báo field cho form!
@@ -35,12 +69,6 @@ export default function ActiveAccountLayout() {
     }),
   };
 
-  useEffect(() => {
-    if (state?.mode === 'set_new_password_no_need_actived') {
-      setShowChangePasswordBox(true);
-    }
-  }, [state]);
-
   const {
     fields,
     submit,
@@ -50,10 +78,10 @@ export default function ActiveAccountLayout() {
   } = useForm({
     fields: useFields,
     async onSubmit(form) {
-      activeAccount({
-        mode: state?.mode,
+      checkActiveCode({
         code: form.user_active_code,
         user_email: state?.user_email,
+        user_phonenumber: state?.user_phonenumber,
       })
         .then((response) => {
           setShowChangePasswordBox(true);
@@ -140,6 +168,7 @@ export default function ActiveAccountLayout() {
     await setNewPassword({
       code: useFields.user_active_code.value,
       user_email: state.user_email,
+      user_phonenumber: state.user_phonenumber,
       password: passwordField1,
     })
       .then(() => {
@@ -159,166 +188,168 @@ export default function ActiveAccountLayout() {
   return (
     <Frame>
       <div id="login_register_outer_wrap">
-        <InlineStack blockAlign="center" align="center">
+        <InlineStack blockAlign="center" align="center" gap="100">
           <div id="login_page" style={{ maxWidth: '400px' }}>
-            <InlineStack blockAlign="center" align="center" gap="100">
-              <div id="login_page">
-                {errorBanner}
+            {errorBanner}
 
-                {showChangePasswordBox ? (
-                  <Box background="bg-fill" padding={'400'} borderRadius="200">
-                    <Text as="h4" variant="headingSm">
-                      Tuyệt vời, giờ hãy tạo mật khẩu của riêng bạn.
+            {showChangePasswordBox ? (
+              <Box background="bg-fill" padding={'400'} borderRadius="400">
+                <Text as="h4" variant="headingSm">
+                  Tuyệt vời, giờ hãy tạo mật khẩu của riêng bạn.
+                </Text>
+                <br />
+                <TextField
+                  label={__('register_form_your_password_label')}
+                  type={viewPasswordMode ? 'text' : 'password'}
+                  value={passwordField1}
+                  error={errorInMainField}
+                  onChange={(e) => setPasswordField1(e)}
+                  suffix={
+                    <InlineStack blockAlign="center">
+                      <Button
+                        variant="plain"
+                        onClick={() => setViewPasswordMode(!viewPasswordMode)}
+                        icon={viewPasswordMode ? ViewIcon : HideIcon}
+                      ></Button>
+                    </InlineStack>
+                  }
+                  autoComplete="off"
+                  helpText={
+                    <>
+                      <br />
+                      {__(helpers.getPasswordStrengthContext(helpers.getPasswordStrength(passwordField1)))}
+                      <ProgressBar
+                        progress={helpers.getPasswordStrength(passwordField1) * 20}
+                        tone={helpers.getPasswordStrength(passwordField1) < 4 ? 'critical' : 'success'}
+                        size="small"
+                      />
+                    </>
+                  }
+                />
+                <br />
+                <TextField
+                  label={__('register_form_your_password_retype_label')}
+                  value={passwordField2}
+                  type={viewPasswordMode ? 'text' : 'password'}
+                  error={errorInRepeatField}
+                  onChange={(e) => setPasswordField2(e)}
+                  autoComplete="off"
+                />
+
+                <br />
+
+                <Button
+                  variant="primary"
+                  disabled={!allowButtonReset}
+                  icon={PasskeyIcon}
+                  onClick={resetPasswordCallback}
+                  loading={buttonResetLoading}
+                  fullWidth
+                >
+                  {state.mode === 'recover_password' ? __('button_reset_my_password') : __('active_my_account_and_login')}
+                </Button>
+              </Box>
+            ) : (
+              <BlockStack gap="400">
+                <Text as="h2" variant="headingLg">
+                  Active code
+                </Text>
+                <Box background="bg-fill" padding={'400'} borderRadius="200">
+                  <Form onSubmit={submit} key={'active_account'}>
+                    <Text as="p">
+                      Kiểm tra {state.user_email ? `hòm thư (${state.user_email})` : `điện thoại (${state.user_phonenumber})`} của bạn, kể cả thư mục
+                      SPAM để chắc chắn bạn nhận được mã Active gồm 6 chữ số.
                     </Text>
-                    <br />
-                    <TextField
-                      label={__('register_form_your_password_label')}
-                      type={viewPasswordMode ? 'text' : 'password'}
-                      value={passwordField1}
-                      error={errorInMainField}
-                      onChange={(e) => setPasswordField1(e)}
-                      suffix={
-                        <InlineStack blockAlign="center">
-                          <Button
-                            variant="plain"
-                            onClick={() => setViewPasswordMode(!viewPasswordMode)}
-                            icon={viewPasswordMode ? ViewIcon : HideIcon}
-                          ></Button>
-                        </InlineStack>
-                      }
-                      autoComplete="off"
-                      helpText={
-                        <>
-                          <br />
-                          {__(helpers.getPasswordStrengthContext(helpers.getPasswordStrength(passwordField1)))}
-                          <ProgressBar
-                            progress={helpers.getPasswordStrength(passwordField1) * 20}
-                            tone={helpers.getPasswordStrength(passwordField1) < 4 ? 'critical' : 'success'}
-                            size="small"
-                          />
-                        </>
-                      }
-                    />
-                    <br />
-                    <TextField
-                      label={__('register_form_your_password_retype_label')}
-                      value={passwordField2}
-                      type={viewPasswordMode ? 'text' : 'password'}
-                      error={errorInRepeatField}
-                      onChange={(e) => setPasswordField2(e)}
-                      autoComplete="off"
-                    />
 
                     <br />
 
-                    <Button
-                      variant="primary"
-                      disabled={!allowButtonReset}
-                      icon={PasskeyIcon}
-                      onClick={resetPasswordCallback}
-                      loading={buttonResetLoading}
-                      fullWidth
-                    >
-                      {state.mode === 'recover_password' ? __('button_reset_my_password') : __('active_my_account_and_login')}
+                    <Text as="p">{__('active_code_form_label')}</Text>
+                    <br />
+
+                    <InlineGrid gap="200" columns={6}>
+                      <TextField
+                        key={`form_1`}
+                        label=""
+                        placeholder="•"
+                        align="center"
+                        maxLength={1}
+                        focused={focusField === 1}
+                        value={num1}
+                        onChange={(v) => setNum1(v)}
+                        autoComplete="off"
+                      />
+                      <TextField
+                        key={`form_2`}
+                        label=""
+                        placeholder="•"
+                        align="center"
+                        maxLength={1}
+                        focused={focusField === 2}
+                        autoComplete="off"
+                        value={num2}
+                        onChange={(v) => setNum2(v)}
+                      />
+                      <TextField
+                        key={`form_3`}
+                        label=""
+                        placeholder="•"
+                        align="center"
+                        maxLength={1}
+                        focused={focusField === 3}
+                        autoComplete="off"
+                        value={num3}
+                        onChange={(v) => setNum3(v)}
+                      />
+                      <TextField
+                        key={`form_4`}
+                        label=""
+                        placeholder="•"
+                        align="center"
+                        maxLength={1}
+                        focused={focusField === 4}
+                        autoComplete="off"
+                        value={num4}
+                        onChange={(v) => setNum4(v)}
+                      />
+                      <TextField
+                        key={`form_5`}
+                        label=""
+                        placeholder="•"
+                        align="center"
+                        maxLength={1}
+                        focused={focusField === 5}
+                        autoComplete="off"
+                        value={num5}
+                        onChange={(v) => setNum5(v)}
+                      />
+                      <TextField
+                        key={`form_6`}
+                        label=""
+                        placeholder="•"
+                        align="center"
+                        maxLength={1}
+                        focused={focusField === 6}
+                        autoComplete="off"
+                        value={num6}
+                        onChange={(v) => setNum6(v)}
+                      />
+                    </InlineGrid>
+
+                    <br />
+                    <Button submit variant="primary" loading={submitting} fullWidth disabled={!dirty} onClick={submit}>
+                      {__('active_my_account_and_reset_password')}
                     </Button>
-                  </Box>
-                ) : (
-                  <Box background="bg-fill" padding={'400'} borderRadius="200">
-                    <Form onSubmit={submit} key={'active_account'}>
-                      <Text as="h4" variant="headingMd">
-                        Kiểm tra email, kể cả thư mục SPAM để chắc chắn bạn nhận được mã Active gồm 6 chữ số.
-                      </Text>
+                  </Form>
+                </Box>
+              </BlockStack>
+            )}
 
-                      <br />
-
-                      <Text as="p">{__('active_code_form_label')}</Text>
-                      <br />
-
-                      <InlineGrid gap="200" columns={6}>
-                        <TextField
-                          key={`form_1`}
-                          label=""
-                          placeholder="•"
-                          align="center"
-                          maxLength={1}
-                          focused={focusField === 1}
-                          value={num1}
-                          onChange={(v) => setNum1(v)}
-                          autoComplete="off"
-                        />
-                        <TextField
-                          key={`form_2`}
-                          label=""
-                          placeholder="•"
-                          align="center"
-                          maxLength={1}
-                          focused={focusField === 2}
-                          autoComplete="off"
-                          value={num2}
-                          onChange={(v) => setNum2(v)}
-                        />
-                        <TextField
-                          key={`form_3`}
-                          label=""
-                          placeholder="•"
-                          align="center"
-                          maxLength={1}
-                          focused={focusField === 3}
-                          autoComplete="off"
-                          value={num3}
-                          onChange={(v) => setNum3(v)}
-                        />
-                        <TextField
-                          key={`form_4`}
-                          label=""
-                          placeholder="•"
-                          align="center"
-                          maxLength={1}
-                          focused={focusField === 4}
-                          autoComplete="off"
-                          value={num4}
-                          onChange={(v) => setNum4(v)}
-                        />
-                        <TextField
-                          key={`form_5`}
-                          label=""
-                          placeholder="•"
-                          align="center"
-                          maxLength={1}
-                          focused={focusField === 5}
-                          autoComplete="off"
-                          value={num5}
-                          onChange={(v) => setNum5(v)}
-                        />
-                        <TextField
-                          key={`form_6`}
-                          label=""
-                          placeholder="•"
-                          align="center"
-                          maxLength={1}
-                          focused={focusField === 6}
-                          autoComplete="off"
-                          value={num6}
-                          onChange={(v) => setNum6(v)}
-                        />
-                      </InlineGrid>
-
-                      <br />
-                      <Button submit variant="primary" loading={submitting} fullWidth disabled={!dirty} onClick={submit}>
-                        {__('active_my_account_and_reset_password')}
-                      </Button>
-                    </Form>
-                  </Box>
-                )}
-
-                <FooterHelp>
-                  {___('Go back to {homepage_link} or {login_link}', {
-                    homepage_link: <Link url="/">{__('homepage')}</Link>,
-                    login_link: <Link url="/login">{__('login')}</Link>,
-                  })}
-                </FooterHelp>
-              </div>
-            </InlineStack>
+            <FooterHelp>
+              {___('Go back to {homepage_link} or {login_link}', {
+                homepage_link: <Link url="/">{__('homepage')}</Link>,
+                login_link: <Link url="/login">{__('login')}</Link>,
+              })}
+            </FooterHelp>
           </div>
         </InlineStack>
       </div>

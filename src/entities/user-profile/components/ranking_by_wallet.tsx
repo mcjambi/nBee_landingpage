@@ -32,7 +32,7 @@ export default function RankingByWallet({ wallet_unit = 'cash' }: { wallet_unit:
           ) : (
             rankData?.map((element, index) => {
               return (
-                <div className={'topwallet_element top' + (index + 1)}>
+                <div className={'topwallet_element top' + (index + 1)} key={`topwalletElement_` + index}>
                   <InlineStack as="div" align="space-between" blockAlign="center">
                     <InlineStack gap="200">
                       <Avatar source={element?.user?.user_avatar} size={index === 0 ? 'xl' : 'sm'} initials="N" />

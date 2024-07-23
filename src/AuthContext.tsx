@@ -2,6 +2,8 @@ import React, { createContext, useContext, useState, ReactNode, useEffect, useCa
 import { useGetCurrentUserData, TypedUser } from './queries/user.query';
 import __helpers from './helpers';
 import useRefreshTokenHelper from 'components/useRefreshTokenHelper';
+import { useGetSetting } from 'queries/setting.query';
+import ActiveMyAccount from 'components/activeAccountModal';
 
 interface AuthContextType {
   user: TypedUser | null;
@@ -18,6 +20,7 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   /** refresh outdate token */
   useRefreshTokenHelper();
 
+  const { mutateAsync: getSetting } = useGetSetting();
   const { data, error, refetch: recheckUserLoginornot, isLoading, isFetched } = useGetCurrentUserData();
 
   const startSetData = useCallback(async () => {
@@ -46,8 +49,22 @@ const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     }
   }, []);
 
+  const [showActiveMyAccount, setShowActiveMyAccount] = useState(false);
+  useEffect(() => {
+    if (user && user.user_verified_email === 0 && user.user_verified_phone === 0) {
+      getSetting('must_validated_account')
+        .then(({ setting_value }) => {
+          setTimeout(() => {
+            if (setting_value === '1') setShowActiveMyAccount(true);
+          }, 4000);
+        })
+        .catch((e) => {});
+    }
+  }, [getSetting, user]);
+
   return (
     <AuthContext.Provider value={{ user, isAuthenticated: !!user, isAuthenticating: isLoading }}>
+      <ActiveMyAccount show={showActiveMyAccount} />
       {start_display_children && children}
     </AuthContext.Provider>
   );
