@@ -65,7 +65,7 @@ export default function ListNews() {
       <Helmet>
         <title>Tin tức</title>
       </Helmet>
-      <Page title="Tin tức">
+      <Page title="">
         {isLoading && <SkeletonPageLoading />}
         {entities !== null && helpers.isEmpty(entities) && (
           <EmptyState image={''}>

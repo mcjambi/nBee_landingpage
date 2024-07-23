@@ -1,11 +1,15 @@
 #user_wallet_card_profile {
-    
-    a {
-        text-decoration: none;
-        color: unset;
-        cursor: pointer;
-        &:hover {
-            text-decoration: none;
-        }
+  a {
+    text-decoration: none;
+    color: unset;
+    cursor: pointer;
+    &:hover {
+      text-decoration: none;
     }
+  }
+
+  .wallet_background_icon {
+    width: 100px;
+    height: 100px;
+  }
 }

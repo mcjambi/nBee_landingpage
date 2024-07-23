@@ -6,6 +6,7 @@ import {
   FlowerIcon,
   CollectionReferenceIcon,
   OrderIcon,
+  EditIcon,
   PaperCheckIcon,
 } from '@shopify/polaris-icons';
 import main_logo from 'media/images/logo.svg';
@@ -45,9 +46,14 @@ export default function AppFrame({ children }: any) {
     {
       items: [
         {
+          content: 'Trang cá nhân',
+          onAction: () => history('/profile'),
+          icon: ProfileIcon,
+        },
+        {
           content: 'Chỉnh sửa thông tin',
           onAction: () => history('/edit-my-profile'),
-          icon: ProfileIcon,
+          icon: EditIcon,
         },
         {
           content: 'Trung tâm trợ giúp',
@@ -120,6 +126,10 @@ export default function AppFrame({ children }: any) {
             icon: HomeIcon,
             exactMatch: true,
             subNavigationItems: [
+              {
+                url: '/profile',
+                label: 'Trang cá nhân',
+              },
               {
                 url: '/edit-my-profile',
                 label: 'Chỉnh sửa tài khoản',

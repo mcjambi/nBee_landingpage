@@ -33,6 +33,7 @@ import MyHelpCenter from 'entities/my_help_center';
 import EDUCenter from 'entities/edu_center';
 import Gamification from 'entities/game';
 import News from 'entities/news';
+import MyProfile from 'entities/user-profile/profile';
 
 const baseHref = document.querySelector('base')?.getAttribute('href')?.replace(/\/$/, '');
 
@@ -70,6 +71,18 @@ root.render(
                       <ProtectedRoute>
                         <AppFrame>
                           <Homepage />
+                        </AppFrame>
+                      </ProtectedRoute>
+                    }
+                  />
+
+                  <Route
+                    key={'profile'}
+                    path={'/profile'}
+                    element={
+                      <ProtectedRoute>
+                        <AppFrame>
+                          <MyProfile />
                         </AppFrame>
                       </ProtectedRoute>
                     }

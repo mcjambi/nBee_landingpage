@@ -72,8 +72,8 @@ export default function UserWalletCard() {
         ) : (
           <Box padding="400" background="bg-fill-active">
             <BlockStack gap="400">
-              <InlineGrid gap={'400'} alignItems="center" columns={{ xs: '', md: 2, lg: 2 }}>
-                <Lottie animationData={wallet_background} loop={false} />
+              <InlineStack gap={'400'} align="start">
+                <Lottie className="wallet_background_icon" animationData={wallet_background} loop={false} />
                 <div>
                   <Text as="p">Tài khoản chính</Text>
                   <Link url={`/my-wallet/${defaultWallet?.wallet_type?.wallet_unit}`}>
@@ -82,7 +82,7 @@ export default function UserWalletCard() {
                     </Text>
                   </Link>
                 </div>
-              </InlineGrid>
+              </InlineStack>
               {Array.isArray(myWallet) && !__helpers.isEmpty(myWallet) && (
                 <>
                   <Divider />
