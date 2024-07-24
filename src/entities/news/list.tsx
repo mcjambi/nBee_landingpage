@@ -84,7 +84,11 @@ export default function ListNews() {
               <div className="new_list_loop">
                 <Box key={'news_loop_' + index} background="bg-fill">
                   <BlockStack gap="400">
-                    <img className="post_thumbnail" src={helpers.getMediaLink(entity.post_thumbnail, placeholder_thumbnail_course)} alt="A" />
+                    <img
+                      className="post_thumbnail"
+                      src={helpers.getMediaLink(entity.post_thumbnail, placeholder_thumbnail_course)}
+                      alt="Post thumbnail"
+                    />
                     <Box padding={'400'}>
                       <BlockStack gap="400">
                         <Link url={`/news/` + entity.post_name} removeUnderline>
