@@ -121,6 +121,7 @@ export type TypedMyReferrers = {
     "user_id": string,
     "display_name": string,
     "user_email": string,
+    "user_phonenumber": string,
     "user_avatar": string,
     "user_status": number,
     "user_rate": string,

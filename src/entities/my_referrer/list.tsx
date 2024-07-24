@@ -94,7 +94,7 @@ export default function MyReferrers() {
           loading={loadingMyReferrers}
           selectable={false}
         >
-          {records?.map(({ createdAt, user_avatar, display_name, user_status, customer_to_user }, index) => (
+          {records?.map(({ createdAt, user_avatar, user_phonenumber, display_name, user_status, customer_to_user }, index) => (
             <IndexTable.Row id={`user_verified_` + index} position={index} key={`user_verified_` + index}>
               <IndexTable.Cell className="table_app_cellMinWidth">
                 <InlineStack gap={'200'} align="start" blockAlign="center">
@@ -107,6 +107,9 @@ export default function MyReferrers() {
                   />
                   <Text variant="bodyMd" fontWeight="bold" as="span">
                     {display_name}
+                  </Text>
+                  <Text variant="bodyXs" as="span" tone="subdued">
+                    {user_phonenumber}
                   </Text>
                 </InlineStack>
               </IndexTable.Cell>

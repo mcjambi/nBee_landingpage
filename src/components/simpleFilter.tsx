@@ -1,4 +1,4 @@
-import { IndexFilters, IndexFiltersProps, useSetIndexFiltersMode } from '@shopify/polaris';
+import { IndexFilters, IndexFiltersProps, InlineStack, Link, useSetIndexFiltersMode, Text, Button } from '@shopify/polaris';
 import helpers from 'helpers/index';
 import __ from 'languages/index';
 import { useCallback, useEffect, useMemo, useState } from 'react';
@@ -135,29 +135,54 @@ export default function SimpleFilter({
   }, [sortSelected]);
 
   return (
-    <IndexFilters
-      sortOptions={sortOptions}
-      sortSelected={sortSelected}
-      queryValue={queryValue}
-      queryPlaceholder={__('search')}
-      onQueryChange={handleFiltersQueryChange}
-      onQueryClear={handleFiltersClearAll}
-      onSort={setSortSelected}
-      loading={loading || false}
-      cancelAction={{
-        onAction: () => {},
-        disabled: false,
-        loading: false,
-      }}
-      tabs={tabs}
-      selected={selected}
-      onSelect={setSelected}
-      canCreateNewView={false}
-      onCreateNewView={null}
-      onClearAll={handleFiltersClearAll}
-      mode={mode}
-      setMode={setMode}
-      filters={[]}
-    />
+    <>
+      <IndexFilters
+        sortOptions={sortOptions}
+        sortSelected={sortSelected}
+        queryValue={queryValue}
+        queryPlaceholder={__('search')}
+        onQueryChange={handleFiltersQueryChange}
+        onQueryClear={handleFiltersClearAll}
+        onSort={setSortSelected}
+        loading={loading || false}
+        cancelAction={{
+          onAction: () => {},
+          disabled: false,
+          loading: false,
+        }}
+        tabs={tabs}
+        selected={selected}
+        onSelect={setSelected}
+        canCreateNewView={false}
+        onCreateNewView={null}
+        onClearAll={handleFiltersClearAll}
+        mode={mode}
+        setMode={setMode}
+        filters={[]}
+      />
+      <div className="Polaris-Filters__FiltersWrapper Polaris-Filters__FiltersWrapperWithAddButton filterWrapper">
+        <div className="Polaris-Filters__FiltersInner">
+          <InlineStack blockAlign="center" align="start" wrap={false}>
+            {!helpers.isEmpty(queryValue) ? (
+              <InlineStack gap="400">
+                <span onClick={() => setMode('FILTERING' as any)} className="FilterPill clickable">
+                  {`Từ khóa: ${queryValue}`}
+                </span>{' '}
+                <Button tone="critical" variant="plain" size="micro" onClick={handleFiltersClearAll}>
+                  Xóa hết
+                </Button>
+              </InlineStack>
+            ) : (
+              <Link removeUnderline onClick={() => setMode('FILTERING' as any)}>
+                {'   '}{' '}
+                <Text as="span" variant="bodySm" tone="subdued">
+                  Mở bộ lọc (hoặc bấm nút F)
+                </Text>
+              </Link>
+            )}
+          </InlineStack>
+        </div>
+      </div>
+    </>
   );
 }
