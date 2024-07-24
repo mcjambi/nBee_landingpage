@@ -4,34 +4,34 @@
   "version": "1.2.1",
   "private": true,
   "dependencies": {
-    "@million/lint": "^1.0.0-rc.76",
-    "@shopify/polaris": "^13.6.0",
-    "@shopify/react-form": "^2.6.0",
+    "@million/lint": "^1.0.0-rc.81",
+    "@shopify/polaris": "^13.8.0",
+    "@shopify/react-form": "^2.7.2",
     "@simplewebauthn/browser": "^10.0.0",
-    "@tanstack/react-query": "^5.49.0",
+    "@tanstack/react-query": "^5.51.11",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "@types/jest": "^27.5.2",
-    "@types/node": "^16.18.101",
+    "@types/node": "^20.14.12",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
     "@types/react-modal-video": "^1.2.3",
     "axios": "^1.7.2",
-    "date-and-time": "^3.3.0",
+    "date-and-time": "^3.4.1",
     "gsap": "^3.12.5",
-    "html-react-parser": "^5.1.10",
+    "html-react-parser": "^5.1.12",
     "lottie-react": "^2.4.0",
     "million": "^3.1.11",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-helmet-async": "^2.0.5",
     "react-modal-video": "^2.0.2",
-    "react-router-dom": "^6.24.0",
+    "react-router-dom": "^6.25.1",
     "react-scripts": "5.0.1",
     "typed.js": "^2.1.0",
-    "typescript": "^4.9.5",
-    "web-vitals": "^2.1.4"
+    "typescript": "^5.5.4",
+    "web-vitals": "^4.2.2"
   },
   "scripts": {
     "start": "PORT=3006 react-scripts start",
@@ -62,6 +62,6 @@
     "@craco/craco": "^7.1.0",
     "@craco/types": "^7.1.0",
     "@types/gsap": "^3.0.0",
-    "sass": "^1.77.6"
+    "sass": "^1.77.8"
   }
 }
