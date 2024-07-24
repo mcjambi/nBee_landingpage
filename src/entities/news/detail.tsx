@@ -15,13 +15,13 @@ export default function DetailNews({ pageslug = 'error_404' }: { pageslug: strin
 
   const ActualPage = useCallback(() => {
     return (
-      <Page narrowWidth backAction={{ content: 'back to list', onAction: () => history('/news') }} title={entity?.post_to_content?.post_title}>
+      <Page narrowWidth backAction={{ content: 'back to list', onAction: () => history('/news') }} title={entity?.post_title}>
         <BlockStack gap="400">
           <Text as="span" tone="subdued">
             <Text as="span">{entity?.author?.display_name}</Text> - {__helpers.subtractTimeHistory(entity?.createdAt)}
           </Text>
 
-          <div>{Parser(entity?.post_to_content?.post_content ?? ' empty')}</div>
+          <div>{Parser(entity?.post_content ?? ' empty')}</div>
 
           <br />
           <Divider />
@@ -50,7 +50,7 @@ export default function DetailNews({ pageslug = 'error_404' }: { pageslug: strin
   return (
     <>
       <Helmet>
-        <title>{entity?.post_to_content?.post_title ?? 'Not found!'}</title>
+        <title>{entity?.post_title ?? 'Not found!'}</title>
       </Helmet>
 
       {isLoading ? <SkeletonPageLoading /> : isError ? <Template404 /> : <ActualPage />}

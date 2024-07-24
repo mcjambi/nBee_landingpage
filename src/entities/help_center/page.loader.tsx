@@ -4,7 +4,7 @@ import { useCallback, useEffect, useState } from 'react';
 import Parser from 'html-react-parser';
 import dateandtime from 'date-and-time';
 import __, { ___ } from 'languages/index';
-import { TypedPost, TypedPosts } from 'queries/posts.query';
+import { TypedPost } from 'queries/posts.query';
 const helpBanner = require('media/images/help-banner.png');
 
 export default function PageLoader({ slug }) {
@@ -47,13 +47,13 @@ export default function PageLoader({ slug }) {
         <>
           <div className="help-header">
             <Image alt={''} source={helpBanner} />
-            <h1 className="post_title">{data?.post_to_content?.post_title ?? ''}</h1>
+            <h1 className="post_title">{data?.post_title ?? ''}</h1>
           </div>
           <div id="post_wrap">
             <BlockStack gap="500">
-              <div id="post_excerpt">{data?.post_to_content?.post_excerpt ?? ''}</div>
+              <div id="post_excerpt">{data?.post_excerpt ?? ''}</div>
               <div id="post_meta">{pageMeta}</div>
-              <div id="post_content">{Parser(data?.post_to_content?.post_content ?? ' ')}</div>
+              <div id="post_content">{Parser(data?.post_content ?? ' ')}</div>
             </BlockStack>
           </div>
         </>

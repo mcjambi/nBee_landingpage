@@ -6,20 +6,14 @@ import axios from "axios";
 
 
 
-export interface TypedPostToContent {
-    ID?: string | number;
-    post_id?: string;
-    post_title?: string;
-    post_excerpt?: string;
-    post_content?: string;
-    lang?: string;
-}
-
-
 export interface TypedPosts {
     post_id?: number;
     createdBy?: number;
     post_name?: string;
+    post_title?: string;
+    post_excerpt?: string;
+    post_content?: string;
+
     post_status?: "publish" | "draft" | "deleted" | "lock" | "future" | any;
     comment_status?: string | number;
     post_type?: string;
@@ -30,13 +24,16 @@ export interface TypedPosts {
     author?: TypedUser | null,
     createdAt?: any;
     updatedAt?: any;
-    post_to_content?: TypedPostToContent[]
 }
 
 export interface TypedPost {
     post_id?: number;
     createdBy?: number;
     post_name?: string;
+    post_title?: string;
+    post_excerpt?: string;
+    post_content?: string;
+
     post_status?: "publish" | "draft" | "deleted" | "lock" | "future" | any;
     comment_status?: string | number;
     post_type?: string;
@@ -47,7 +44,6 @@ export interface TypedPost {
     author?: TypedUser | null,
     createdAt?: any;
     updatedAt?: any;
-    post_to_content?: TypedPostToContent
 }
 
 type IQuery = TypedPosts & IQueryParams;

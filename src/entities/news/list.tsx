@@ -25,8 +25,6 @@ export default function ListNews() {
     page: 1,
     limit: 18,
     post_type: 'post',
-    'post_to_content.lang': 'vi',
-    lang: 'vi',
     sort: 'createdAt:desc',
   };
   const [mainQuery, setMainQuery] = useState({ ...initialQuery, ...StringQuery });
@@ -93,10 +91,10 @@ export default function ListNews() {
                       <BlockStack gap="400">
                         <Link url={`/news/` + entity.post_name} removeUnderline>
                           <Text as="h2" variant="headingLg">
-                            {entity?.post_to_content[0]?.post_title ?? 'Chưa đặt tên'}
+                            {entity?.post_title ?? 'Chưa đặt tên'}
                           </Text>
                         </Link>
-                        <Text as="p">{helpers.trimContentString(entity?.post_to_content[0]?.post_excerpt ?? '', 100)}</Text>
+                        <Text as="p">{helpers.trimContentString(entity?.post_excerpt ?? '', 100)}</Text>
                         <InlineStack blockAlign="center" align="space-between">
                           <InlineStack align="start" blockAlign="center" gap="100">
                             <Avatar source={entity?.author?.user_avatar} name="A" size="md" />
