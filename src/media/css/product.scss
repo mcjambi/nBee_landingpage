@@ -1,0 +1,13 @@
+.product_variant_option_variant {
+  overflow: auto;
+
+  .variant_option {
+    cursor: pointer;
+    border: 2px solid #ccc;
+    padding: 10px;
+    &.active,
+    &:hover {
+      border-color: rgb(27, 13, 108);
+    }
+  }
+}

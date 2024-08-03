@@ -60,7 +60,7 @@ export function useGetApp() {
 export function useUpdateApp() {
     return useMutation({
         mutationKey: ['app/update_entity'],
-        mutationFn: ({ ID, ...rest }: TypedApp) => axios.patch<any>(`app/${ID}`, helpers.cleanEntity(rest)),
+        mutationFn: ({ ID, ...rest }: TypedApp) => axios.patch<any>(`/app/${ID}`, helpers.cleanEntity(rest)),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['app'] });
         }
@@ -71,7 +71,7 @@ export function useUpdateApp() {
 export function useCreateApp() {
     return useMutation({
         mutationKey: ['app/create_entity'],
-        mutationFn: (entity: TypedApp) => axios.post<any>(`app/`, helpers.cleanEntity(entity)),
+        mutationFn: (entity: TypedApp) => axios.post<any>(`/app/`, helpers.cleanEntity(entity)),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['app'] });
         }
@@ -82,7 +82,7 @@ export function useCreateApp() {
 export function useDeleteApp() {
     return useMutation({
         mutationKey: ['app/delete_entity'],
-        mutationFn: (app_id: string) => axios.delete<any>(`app/${app_id}`)
+        mutationFn: (app_id: string) => axios.delete<any>(`/app/${app_id}`)
     });
 }
 
@@ -90,6 +90,6 @@ export function useDeleteApp() {
 export function useGenerateNewClientPublicKey() {
     return useMutation({
         mutationKey: ['app/create_new_client_public_key'],
-        mutationFn: (app_id: string) => axios.patch<any>(`app/client_public_key/${app_id}`)
+        mutationFn: (app_id: string) => axios.patch<any>(`/app/client_public_key/${app_id}`)
     });
 }

@@ -34,6 +34,7 @@ import EDUCenter from 'entities/edu_center';
 import Gamification from 'entities/game';
 import News from 'entities/news';
 import MyProfile from 'entities/user-profile/profile';
+import Product from 'entities/product';
 
 const baseHref = document.querySelector('base')?.getAttribute('href')?.replace(/\/$/, '');
 
@@ -267,6 +268,54 @@ root.render(
                     element={
                       <ProtectedRoute>
                         <Gamification />
+                      </ProtectedRoute>
+                    }
+                  />
+
+                  <Route
+                    key={'product_detail_include_variant'}
+                    path="/product/:slug/:product_slug/:product_variant_slug"
+                    element={
+                      <ProtectedRoute>
+                        <AppFrame>
+                          <Product />
+                        </AppFrame>
+                      </ProtectedRoute>
+                    }
+                  />
+
+                  <Route
+                    key={'product_detail'}
+                    path="/product/:slug/:product_slug"
+                    element={
+                      <ProtectedRoute>
+                        <AppFrame>
+                          <Product />
+                        </AppFrame>
+                      </ProtectedRoute>
+                    }
+                  />
+
+                  <Route
+                    key={'product_slug'}
+                    path="/product/:slug/"
+                    element={
+                      <ProtectedRoute>
+                        <AppFrame>
+                          <Product />
+                        </AppFrame>
+                      </ProtectedRoute>
+                    }
+                  />
+
+                  <Route
+                    key={'product'}
+                    path="/product"
+                    element={
+                      <ProtectedRoute>
+                        <AppFrame>
+                          <Product />
+                        </AppFrame>
                       </ProtectedRoute>
                     }
                   />

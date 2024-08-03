@@ -6,7 +6,9 @@ import { useGetGame } from 'queries/game.query';
 import RankingByWallet from './user-profile/components/ranking_by_wallet';
 import '../../node_modules/react-modal-video/scss/modal-video.scss';
 import ModalVideo from 'react-modal-video';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useGetProducts } from 'queries/product.query';
+import __helpers from 'helpers/index';
 export default function Homepage() {
   const {
     data: gameData,
@@ -15,6 +17,16 @@ export default function Homepage() {
   } = useGetGame({
     limit: 4,
   });
+
+  const { mutate: getBestSeller, data: bestsellerData, isPending: loadingBestSeller, isSuccess: loadBestSellerSuccess } = useGetProducts();
+
+  useEffect(() => {
+    getBestSeller({
+      limit: 3,
+      'product_to_collection.collection_id': 8,
+      sort: 'createdAt: desc',
+    });
+  }, []);
 
   const [openVideo1, setOpenVideo1] = useState(false);
   const [openVideo2, setOpenVideo2] = useState(false);
@@ -170,61 +182,62 @@ export default function Homepage() {
         </Page>
       </Box>
 
-      <Box background="bg-fill" paddingBlock={{ xs: '1000', md: '1200' }} paddingInline={'400'}>
-        <Page>
-          <h2 style={{ fontSize: '3em', lineHeight: 1.1, fontWeight: 'bold' }}>Sản phẩm Best-Sells</h2>
-          <br />
-          <br />
-          <InlineGrid columns={{ xs: 1, md: 4 }} gap="400">
-            <Box color="text-inverse">
-              <div
-                style={{
-                  minHeight: '400px',
-                  padding: '15px',
-                  background: 'url(https://freshcart.codescandy.com/assets/images/banner/banner-deal.jpg) no-repeat #000',
-                  backgroundSize: 'cover',
-                }}
-              >
-                <Text as="h2" variant="heading2xl">
-                  100% Organic Coffee Beans.
-                </Text>
-                <br />
-                <Text as="h3" variant="headingMd">
-                  <a href="#a" style={{ color: '#fff' }}>
-                    Xem tất cả
-                  </a>
-                </Text>
-              </div>
-            </Box>
-            {Array(3)
-              .fill('a')
-              .map((el, index) => {
+      {bestsellerData && !__helpers.isEmpty(bestsellerData.body) && (
+        <Box background="bg-fill" paddingBlock={{ xs: '1000', md: '1200' }} paddingInline={'400'}>
+          <Page>
+            <h2 style={{ fontSize: '3em', lineHeight: 1.1, fontWeight: 'bold' }}>Sản phẩm Best-Seller</h2>
+            <br />
+            <br />
+            <InlineGrid columns={{ xs: 1, md: 4 }} gap="400">
+              <Box color="text-inverse">
+                <div
+                  style={{
+                    minHeight: '400px',
+                    padding: '15px',
+                    background: 'url(https://freshcart.codescandy.com/assets/images/banner/banner-deal.jpg) no-repeat #000',
+                    backgroundSize: 'cover',
+                  }}
+                >
+                  <Text as="h2" variant="heading2xl">
+                    100% Organic Coffee Beans.
+                  </Text>
+                  <br />
+                  <Text as="h3" variant="headingMd">
+                    <a href="#a" style={{ color: '#fff' }}>
+                      Xem tất cả
+                    </a>
+                  </Text>
+                </div>
+              </Box>
+              {bestsellerData.body.map((el, index) => {
                 return (
-                  <Box background="bg-fill" padding={'400'}>
+                  <Box background="bg-fill" padding={'400'} key={`product_in_best_sellers_` + index}>
                     <BlockStack gap="200">
-                      <img src="https://freshcart.codescandy.com/assets/images/products/product-img-6.jpg" alt="" />
-                      <Text as="p" tone="subdued">
-                        Dairy, Bread & Eggs
-                      </Text>
+                      <img src={__helpers.getMediaLink(el.product_thumbnail)} alt="" />
+                      {el.product_to_category && (
+                        <Text as="p" tone="subdued">
+                          {el.product_to_category[0].product_category.category_name}
+                        </Text>
+                      )}
                       <Text as="h3" variant="headingMd">
-                        <Link removeUnderline>Britannia Cheese Slices</Link>
+                        <Link removeUnderline url={`/product/view/` + el.product_slug}>
+                          {el.product_name}
+                        </Link>
                       </Text>
-                      <InlineStack align="space-between" blockAlign="center">
-                        <Text as="span" variant="headingMd" fontWeight="bold" tone="magic-subdued">
-                          20.000 đ
-                        </Text>
-                        <Text as="span" variant="bodySm" tone="subdued">
-                          Đã bán 400k
-                        </Text>
-                      </InlineStack>
+                      <Text as="span" variant="headingMd" fontWeight="bold" tone="magic-subdued">
+                        {el.product_price_range ? <>Từ {el.product_price_range}</> : <>{__helpers.formatNumber(el.product_price)}</>} đ
+                      </Text>
+                      <Text as="span" variant="bodySm" tone="subdued">
+                        Đã bán {el.product_sold_quantity}
+                      </Text>
                     </BlockStack>
                   </Box>
                 );
               })}
-          </InlineGrid>
-        </Page>
-      </Box>
-
+            </InlineGrid>
+          </Page>
+        </Box>
+      )}
       <Divider />
       <InlineGrid columns={{ xs: 1, sm: 1, md: ['oneThird', 'twoThirds'] }} gap="400">
         <Box background="bg-fill" padding={'400'}>

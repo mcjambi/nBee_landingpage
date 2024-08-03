@@ -7,6 +7,7 @@ import {
   CollectionReferenceIcon,
   OrderIcon,
   EditIcon,
+  StoreIcon,
   PaperCheckIcon,
 } from '@shopify/polaris-icons';
 import main_logo from 'media/images/logo.svg';
@@ -163,6 +164,11 @@ export default function AppFrame({ children }: any) {
         separator
         title="Công cụ"
         items={[
+          {
+            url: '/product',
+            label: 'Sản phẩm',
+            icon: StoreIcon,
+          },
           {
             url: '/news',
             label: 'Tin tức chung',
