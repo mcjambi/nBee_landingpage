@@ -22,7 +22,6 @@ import { useLocation, useParams } from 'react-router-dom';
 import { CartDownIcon, CartSaleIcon } from '@shopify/polaris-icons';
 import StarRating from 'components/starRating';
 import 'media/css/product.scss';
-import helpers from 'helpers/index';
 import { useAddToShoppingCart } from 'queries/shopping_cart.query';
 
 type TypedProductSelected = {
@@ -35,8 +34,12 @@ type TypedProductSelected = {
 
 export default function ViewProduct() {
   let { product_slug, product_variant_slug } = useParams();
-  const { data: productData, isLoading, isError } = useGetProduct(product_slug);
+  const { data: productData, mutate: refetchProductData, isError } = useGetProduct();
   const { data: allMedia, mutate: getProductMedia } = useGetProductMedia();
+
+  useEffect(() => {
+    refetchProductData(product_slug);
+  }, [product_slug]);
 
   /** Người dùng set số lượng ... */
   const [buyerSetQuantity, setBuyerSetQuantity] = useState<number>(1);
@@ -236,7 +239,7 @@ export default function ViewProduct() {
                                         {variantData.variant_name}
                                       </Text>
                                       <Text as="span" tone="subdued">
-                                        {variantData.variant_price} đ
+                                        {__helpers.formatNumber(variantData.variant_price)} đ
                                       </Text>
                                     </BlockStack>
                                   </InlineStack>
@@ -264,7 +267,7 @@ export default function ViewProduct() {
                                         {variantData.variant_name}
                                       </Text>
                                       <Text as="span" tone="subdued">
-                                        {variantData.variant_price} đ
+                                        {__helpers.formatNumber(variantData.variant_price)} đ
                                       </Text>
                                     </BlockStack>
                                   </InlineStack>

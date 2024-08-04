@@ -79,12 +79,11 @@ export function useGetProducts() {
 
 
 
-export function useGetProduct(product_slug: string) {
-    return useQuery({
-        queryKey: ['product/fetch_entity'],
-        queryFn: () => axios.get<TypedProduct>(`/product/${product_slug}`).then((res) => res.data),
+export function useGetProduct() {
+    return useMutation({
+        mutationKey: ['product/fetch_entity'],
+        mutationFn: (product_slug: string) => axios.get<TypedProduct>(`/product/${product_slug}`).then((res) => res.data),
         retry: 1,
-        refetchOnWindowFocus: true,
     });
 }
 

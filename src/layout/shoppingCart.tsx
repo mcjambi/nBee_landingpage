@@ -3,14 +3,18 @@ import { BlockStack, Box, Button, Divider, EmptyState, InlineStack, Link, Text, 
 import { useEffect, useState } from 'react';
 import { useAuth } from 'AuthContext';
 import 'media/css/shopping_cart.scss';
-import { TypedShopping_cart_item, useGetShoppingCartItem } from 'queries/shopping_cart.query';
+import { TypedShopping_cart_item, useGetShopingCart, useGetShoppingCartItem } from 'queries/shopping_cart.query';
 import Lottie from 'lottie-react';
 import empty_cart from 'media/lottie_files/empty_cart.json';
+import __helpers from 'helpers/index';
+import { useNavigate } from 'react-router-dom';
 
 export default function ShoppingCartPopup({ show }: { show: boolean }) {
   const { user: account } = useAuth();
+  const history = useNavigate();
 
   const { data: shoppingcartitemlist, isLoading: loading } = useGetShoppingCartItem();
+  const { data: shoppingCartData } = useGetShopingCart();
 
   const [entities, setEntities] = useState<TypedShopping_cart_item[] | null>([]);
   const [totalItems, setTotalItems] = useState(0);
@@ -56,7 +60,7 @@ export default function ShoppingCartPopup({ show }: { show: boolean }) {
                   <Thumbnail size="medium" source={helpers.getMediaLink(product?.product_thumbnail)} alt={''} />
                   <div style={{ maxWidth: '174px' }}>
                     <Text as="p" tone="subdued" fontWeight="bold">
-                      <Link removeUnderline url={`/product/view/` + product.product_slug}>
+                      <Link removeUnderline onClick={() => history(`/product/view/` + product.product_slug)}>
                         {product?.product_name}
                       </Link>
                     </Text>
@@ -73,9 +77,27 @@ export default function ShoppingCartPopup({ show }: { show: boolean }) {
               </InlineStack>
             );
           })}
-          <br />
           <Divider />
           <br />
+          <BlockStack gap="400">
+            <InlineStack align="space-between" blockAlign="center">
+              <Text as="p" variant="headingMd">
+                Tổng sản phẩm
+              </Text>
+              <Text as="p" variant="headingMd">
+                {shoppingCartData.total_quantity}
+              </Text>
+            </InlineStack>
+            <InlineStack align="space-between" blockAlign="center">
+              <Text as="p" variant="headingMd">
+                Tổng Giá trị
+              </Text>
+              <Text as="p" variant="headingMd">
+                {__helpers.formatNumber(shoppingCartData.total_value)} đ
+              </Text>
+            </InlineStack>
+          </BlockStack>
+
           <Button size="large">Xem toàn bộ giỏ hàng</Button>
         </BlockStack>
       )}
