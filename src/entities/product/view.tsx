@@ -23,6 +23,7 @@ import { CartDownIcon, CartSaleIcon } from '@shopify/polaris-icons';
 import StarRating from 'components/starRating';
 import 'media/css/product.scss';
 import helpers from 'helpers/index';
+import { useAddToShoppingCart } from 'queries/shopping_cart.query';
 
 type TypedProductSelected = {
   product_price?: number;
@@ -134,9 +135,13 @@ export default function ViewProduct() {
   }, [product_variant_slug, productData]);
 
   // thêm vào giỏ hàng ...
+  const { mutate: addToShoppingCart, isPending: addingShoppingCart } = useAddToShoppingCart();
   const addToCartCallback = useCallback(() => {
-    console.log(productDataForBuyer, 'productDataForBuyer <<<<');
-    console.log(buyerSetQuantity, 'buyerSetQuantity <<<<');
+    addToShoppingCart({
+      product_id: productDataForBuyer?.product_id,
+      variant_id: productDataForBuyer?.variant_id,
+      cart_quantity: buyerSetQuantity,
+    });
   }, [productDataForBuyer, buyerSetQuantity]);
 
   // Mua luôn
@@ -172,9 +177,25 @@ export default function ViewProduct() {
               <Text as="p" variant="bodySm" tone="subdued">
                 {productData?.product_excerpt}
               </Text>
-              <br />
-              <Divider />
-              <br />
+
+              <Box padding={'400'} background="bg-surface-warning">
+                {productData?.product_has_variants ? (
+                  <Text as="span" variant="headingLg" fontWeight="regular" tone="magic">
+                    Từ {productData?.product_price_range} đ
+                  </Text>
+                ) : (
+                  <InlineStack align="start" blockAlign="center" gap="600">
+                    <Text as="span" variant="headingLg" fontWeight="regular" tone="magic">
+                      {__helpers.formatNumber(productData?.product_price)} đ
+                    </Text>
+                    {productData?.product_original_price > 0 && (
+                      <Text as="span" variant="headingMd" fontWeight="regular" tone="subdued">
+                        <del>{__helpers.formatNumber(productData?.product_original_price)} đ</del>
+                      </Text>
+                    )}
+                  </InlineStack>
+                )}
+              </Box>
               {productData?.product_has_variants === 1 && (
                 <>
                   <BlockStack gap="400">
@@ -263,16 +284,6 @@ export default function ViewProduct() {
               )}
               {productDataForBuyer && (
                 <>
-                  <InlineStack align="start" blockAlign="center" gap="600">
-                    <Text as="span" variant="headingLg" fontWeight="regular" tone="magic">
-                      {__helpers.formatNumber(productDataForBuyer.product_price)} đ
-                    </Text>
-                    {productDataForBuyer.product_original_price > 0 && (
-                      <Text as="span" variant="headingMd" fontWeight="regular" tone="subdued">
-                        <del>{__helpers.formatNumber(productDataForBuyer.product_original_price)} đ</del>
-                      </Text>
-                    )}
-                  </InlineStack>
                   <TextField
                     align="center"
                     autoComplete="off"
@@ -291,7 +302,7 @@ export default function ViewProduct() {
                     }
                   />
                   <InlineGrid alignItems="center" columns={2} gap="400">
-                    <Button onClick={addToCartCallback} icon={CartDownIcon}>
+                    <Button loading={addingShoppingCart} onClick={addToCartCallback} icon={CartDownIcon}>
                       Thêm vào giỏ hàng
                     </Button>
                     <Button onClick={buynowCallback} icon={CartSaleIcon} variant="primary">

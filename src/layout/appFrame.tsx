@@ -1,4 +1,4 @@
-import { Frame, Link, Navigation, Toast, Text, TopBar, BlockStack, Icon } from '@shopify/polaris';
+import { Frame, Link, Navigation, Toast, Text, TopBar, BlockStack, Icon, Badge } from '@shopify/polaris';
 import {
   HomeIcon,
   QuestionCircleIcon,
@@ -7,6 +7,7 @@ import {
   CollectionReferenceIcon,
   OrderIcon,
   EditIcon,
+  CartIcon,
   StoreIcon,
   PaperCheckIcon,
 } from '@shopify/polaris-icons';
@@ -23,10 +24,14 @@ import SidebarPopup from './sidebarPopup';
 import NotificationLog from './notificationLog';
 // import { useIsFetching } from '@tanstack/react-query';
 import { useNotification } from 'NotificationContext';
+import { useGetShopingCart } from 'queries/shopping_cart.query';
+import ShoppingCartPopup from './shoppingCart';
 
 // How many queries are fetching?
 export default function AppFrame({ children }: any) {
   const skipToContentRef = useRef<HTMLAnchorElement>(null);
+
+  const { data: shopping_cart_data } = useGetShopingCart();
 
   const { user, isAuthenticated } = useAuth();
   const history = useNavigate();
@@ -84,6 +89,22 @@ export default function AppFrame({ children }: any) {
       open={userMenuActive}
       avatar={user?.user_avatar ?? null}
       onToggle={toggleUserMenuActive}
+      // message={{
+      //   title: 'Hi',
+      //   description: 'ÀDDSC',
+      //   badge: {
+      //     content: 'AHIHI',
+      //     tone: 'attention',
+      //   },
+      //   action: {
+      //     onClick: () => {},
+      //     content: 'HAHAHA',
+      //   },
+      //   link: {
+      //     to: '',
+      //     content: 'LINK ING LINK',
+      //   },
+      // }}
     />
   );
   const [showNotification, setShowNotification] = useState(false);
@@ -99,7 +120,25 @@ export default function AppFrame({ children }: any) {
       open={false}
       actions={[]}
       onOpen={() => setShowNotification(true)}
-      onClose={() => alert('close notification')}
+      onClose={() => {}}
+    />
+  );
+
+  const [showShoppingCart, setShowShoppingCart] = useState(false);
+
+  const shoppingCartMenuActivator = (
+    <TopBar.Menu
+      key="shoppingCartMenuActivator"
+      activatorContent={
+        <div id="shopping_cart_badge">
+          <Icon source={CartIcon} />
+          <span className="shopping_cart_badge_quantity">{shopping_cart_data?.total_quantity ?? 0}</span>
+        </div>
+      }
+      open={false}
+      actions={[]}
+      onOpen={() => setShowShoppingCart(true)}
+      onClose={() => {}}
     />
   );
 
@@ -108,7 +147,7 @@ export default function AppFrame({ children }: any) {
       showNavigationToggle
       userMenu={userMenuMarkup}
       onNavigationToggle={toggleMobileNavigationActive}
-      secondaryMenu={isAuthenticated ? notificationSidebarMenuActivator : []}
+      secondaryMenu={isAuthenticated ? [shoppingCartMenuActivator, notificationSidebarMenuActivator] : []}
     />
   );
 
@@ -238,6 +277,12 @@ export default function AppFrame({ children }: any) {
       {isAuthenticated && (
         <SidebarPopup title="Thông báo" show={showNotification} onClose={() => setShowNotification(false)}>
           <NotificationLog show={showNotification} />
+        </SidebarPopup>
+      )}
+
+      {isAuthenticated && (
+        <SidebarPopup title="Giỏ hàng" show={showShoppingCart} onClose={() => setShowShoppingCart(false)}>
+          <ShoppingCartPopup show={showShoppingCart} />
         </SidebarPopup>
       )}
       {children}
