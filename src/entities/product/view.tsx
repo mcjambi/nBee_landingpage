@@ -209,10 +209,15 @@ export default function ViewProduct() {
                       {productData?.product_excerpt}
                     </Text>
 
-                    <Box padding={'400'} background="bg-surface-warning">
+                    <div>
                       {productData?.product_has_variants ? (
                         <Text as="span" variant="headingLg" fontWeight="regular" tone="magic">
-                          Từ {productData?.product_price_range} đ
+                          Từ{' '}
+                          {productData?.product_price_range
+                            .split('-')
+                            .map((el) => __helpers.formatNumber(Number(el)))
+                            .join(' -> ')}{' '}
+                          <sup>đ</sup>
                         </Text>
                       ) : (
                         <InlineStack align="start" blockAlign="center" gap="600">
@@ -226,7 +231,7 @@ export default function ViewProduct() {
                           )}
                         </InlineStack>
                       )}
-                    </Box>
+                    </div>
                     {productData?.product_has_variants === 1 && (
                       <>
                         <BlockStack gap="400">
@@ -252,6 +257,8 @@ export default function ViewProduct() {
                               <br />
 
                               <div className="product_variant_option_variant">
+                                <Text as="p">{productData?.product_variant_group[1]?.variant_group_name}</Text>
+                                <br />
                                 <InlineStack align="start" blockAlign="center" gap="400">
                                   {filtedVariant?.map((variantData, index) => {
                                     return (
@@ -333,7 +340,9 @@ export default function ViewProduct() {
                     <Text as="p" tone="success">
                       Nhận hàng từ 2 tới 5 ngày. Sau ngày này, bạn sẽ nhận được mã vouncher 10.000 đ cho các đơn hàng tiếp theo.
                     </Text>
-
+                    <br />
+                    <Divider />
+                    <br />
                     <Text as="p" variant="headingLg" fontWeight="regular" tone="success">
                       Có sẵn hàng
                     </Text>
