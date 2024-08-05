@@ -41,6 +41,7 @@ export interface TypedProduct {
     product_name?: string;
     product_slug?: string;
     product_excerpt?: string;
+    product_description?: string;
 
     product_thumbnail?: string;
     product_price?: number;

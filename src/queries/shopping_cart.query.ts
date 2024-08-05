@@ -37,6 +37,7 @@ export function useClearShoppingCart() {
         mutationFn: () => axios.delete(`/shopping_cart/mine/clear_all`).then((res) => res.data),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['shopping_cart/mine'] });
+            queryClient.invalidateQueries({ queryKey: ['shopping_cart_item/fetch_entity'] });
         },
     });
 }
@@ -102,6 +103,17 @@ export function useAddToShoppingCart() {
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['shopping_cart/mine'] });
             queryClient.invalidateQueries({ queryKey: ['shopping_cart_item/fetch_entity'] });
+        },
+    });
+}
+
+export function useUpdateShoppingCartItemQuantity() {
+    return useMutation({
+        mutationKey: ['shopping_cart_item/update_shopping_cart_item_quantity'],
+        mutationFn: (entity: { id: string; cart_quantity: number }[]) => axios.patch(`/shopping_cart_item/mine/`, helpers.cleanEntity(entity)).then((res) => res.data),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['shopping_cart/mine'] });
+            // queryClient.invalidateQueries({ queryKey: ['shopping_cart_item/fetch_entity'] });
         },
     });
 }

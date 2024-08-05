@@ -11,3 +11,14 @@
     }
   }
 }
+
+.product_image_slide {
+  overflow: auto;
+  margin: 15px 0;
+  text-align: center;
+
+  img.product_slide_thumbnail {
+    height: 50px;
+    width: auto;
+  }
+}

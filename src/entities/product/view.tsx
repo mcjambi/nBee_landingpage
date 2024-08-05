@@ -18,11 +18,14 @@ import Template404 from 'layout/404';
 import { ProductVariant, useGetProduct, useGetProductMedia } from 'queries/product.query';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { useLocation, useParams } from 'react-router-dom';
-import { CartDownIcon, CartSaleIcon } from '@shopify/polaris-icons';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { CartDownIcon, CartSaleIcon, CategoriesIcon } from '@shopify/polaris-icons';
 import StarRating from 'components/starRating';
 import 'media/css/product.scss';
 import { useAddToShoppingCart } from 'queries/shopping_cart.query';
+import Parser from 'html-react-parser';
+import CommentCourse from 'entities/edu_center/comment';
+import { useNotification } from 'NotificationContext';
 
 type TypedProductSelected = {
   product_price?: number;
@@ -33,6 +36,8 @@ type TypedProductSelected = {
 };
 
 export default function ViewProduct() {
+  const history = useNavigate();
+  const { addNotification } = useNotification();
   let { product_slug, product_variant_slug } = useParams();
   const { data: productData, mutate: refetchProductData, isError } = useGetProduct();
   const { data: allMedia, mutate: getProductMedia } = useGetProductMedia();
@@ -138,13 +143,20 @@ export default function ViewProduct() {
   }, [product_variant_slug, productData]);
 
   // thêm vào giỏ hàng ...
-  const { mutate: addToShoppingCart, isPending: addingShoppingCart } = useAddToShoppingCart();
-  const addToCartCallback = useCallback(() => {
-    addToShoppingCart({
-      product_id: productDataForBuyer?.product_id,
-      variant_id: productDataForBuyer?.variant_id,
-      cart_quantity: buyerSetQuantity,
-    });
+  const { mutateAsync: addToShoppingCart } = useAddToShoppingCart();
+  const [addingShoppingCart, setAddingShoppingCart] = useState(false);
+  const addToCartCallback = useCallback(async () => {
+    setAddingShoppingCart(true);
+    try {
+      await addToShoppingCart({
+        product_id: productDataForBuyer?.product_id,
+        variant_id: productDataForBuyer?.variant_id,
+        cart_quantity: buyerSetQuantity,
+      });
+      addNotification('info', 'product_added_to_cart_successfully');
+    } catch (e) {}
+    await __helpers.sleep(1500);
+    setAddingShoppingCart(false);
   }, [productDataForBuyer, buyerSetQuantity]);
 
   // Mua luôn
@@ -155,19 +167,31 @@ export default function ViewProduct() {
 
   const Found = () => {
     return (
-      <Page>
-        <InlineGrid columns={{ xs: 1, md: 2 }} gap="400">
-          <Box>
+      <Page fullWidth title="" backAction={{ content: 'back to list', onAction: () => history('/product') }}>
+        <InlineGrid columns={{ xs: 1, md: ['oneThird', 'twoThirds'] }} gap="400" alignItems="start">
+          <Box paddingInline={{ sm: '400', md: '0' }}>
             <Image alt={''} source={__helpers.getMediaLink(productData?.product_thumbnail)} />
             <div className="product_image_slide">
-              {allMedia?.map((el, index) => {
-                return <Image source={__helpers.getMediaLink(el.media.media_filename)} alt="" className="product_slide_thumbnail" />;
-              })}
+              <InlineStack gap="200" align="start" blockAlign="center">
+                {allMedia?.map((el, index) => {
+                  return (
+                    <Link url="" key={'product_slide_image_link_key'}>
+                      <Image source={__helpers.getMediaLink(el.media.media_filename)} alt="" className="product_slide_thumbnail" />
+                    </Link>
+                  );
+                })}
+              </InlineStack>
             </div>
           </Box>
-          <Box>
-            <BlockStack gap="400">
-              {productData?.product_to_category && <Text as="p">{productData?.product_to_category[0].product_category.category_name}</Text>}
+          <Box paddingInline={{ xs: '400', md: '2000' }}>
+            <BlockStack gap="400" align="start">
+              {productData?.product_to_category && (
+                <p>
+                  <Button icon={CategoriesIcon} textAlign="start" variant="monochromePlain">
+                    {productData?.product_to_category[0].product_category.category_name}
+                  </Button>
+                </p>
+              )}
               <Text as="h1" variant="heading2xl">
                 {productData?.product_name}
               </Text>
@@ -287,24 +311,24 @@ export default function ViewProduct() {
               )}
               {productDataForBuyer && (
                 <>
-                  <TextField
-                    align="center"
-                    autoComplete="off"
-                    label=""
-                    labelHidden
-                    value={'' + buyerSetQuantity}
-                    suffix={
-                      <Button onClick={() => increaseMyQuantity()} variant="monochromePlain">
-                        +
-                      </Button>
-                    }
-                    prefix={
-                      <Button onClick={() => decreaseMyQuantity()} variant="monochromePlain">
-                        -
-                      </Button>
-                    }
-                  />
-                  <InlineGrid alignItems="center" columns={2} gap="400">
+                  <InlineGrid alignItems="center" columns={3} gap="400">
+                    <TextField
+                      align="center"
+                      autoComplete="off"
+                      label=""
+                      labelHidden
+                      value={'' + buyerSetQuantity}
+                      suffix={
+                        <Button onClick={() => increaseMyQuantity()} variant="monochromePlain">
+                          +
+                        </Button>
+                      }
+                      prefix={
+                        <Button onClick={() => decreaseMyQuantity()} variant="monochromePlain">
+                          -
+                        </Button>
+                      }
+                    />
                     <Button loading={addingShoppingCart} onClick={addToCartCallback} icon={CartDownIcon}>
                       Thêm vào giỏ hàng
                     </Button>
@@ -317,6 +341,21 @@ export default function ViewProduct() {
             </BlockStack>
           </Box>
         </InlineGrid>
+        <Divider />
+        <br />
+        <Text as="h2" variant="headingLg">
+          Mô tả
+        </Text>
+        <br />
+        <div className="product_content">{Parser(productData?.product_description ?? ' ')}</div>
+        <br />
+        <Divider />
+        <br />
+        <Text as="h2" variant="headingLg">
+          Đánh giá
+        </Text>
+        <br />
+        <CommentCourse heading="" />
       </Page>
     );
   };

@@ -2,13 +2,15 @@ import React from 'react';
 import { Avatar, BlockStack, Box, Divider, InlineGrid, InlineStack, Text } from '@shopify/polaris';
 import StarRating from 'components/starRating';
 
-export default function CommentCourse() {
+export default function CommentCourse({ heading = 'Nhận xét' }: { heading?: string }) {
   return (
     <>
       <BlockStack gap="400">
-        <Text as="h2" variant="headingLg">
-          Review
-        </Text>
+        {heading && (
+          <Text as="h2" variant="headingLg">
+            {heading}
+          </Text>
+        )}
         <Box>
           <InlineStack align="space-between" blockAlign="center">
             <BlockStack>
