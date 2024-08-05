@@ -1,7 +1,7 @@
 import helpers from 'helpers/index';
 import { BlockStack, Box, Button, Divider, EmptyState, InlineStack, Link, Text, TextField, Thumbnail } from '@shopify/polaris';
 import { XIcon, PaymentIcon } from '@shopify/polaris-icons';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useAuth } from 'AuthContext';
 import 'media/css/shopping_cart.scss';
 import {
@@ -60,10 +60,14 @@ export default function ShoppingCartPopup({ show }: { show: boolean }) {
     }, 1000);
   }, []);
 
-  /** Nó đang chạy patch mất dạy, chưa nghiên cứu tại sao ... */
+  /** Nó đang chạy patch mất dạy, Đã fixed ... */
+  const alreadyUpdate = useRef(null);
   useEffect(() => {
-    if (buyerSetQuantity) reduceRequestMemo(buyerSetQuantity);
-  }, [buyerSetQuantity]);
+    if (buyerSetQuantity && alreadyUpdate.current) {
+      reduceRequestMemo(buyerSetQuantity);
+      alreadyUpdate.current = null;
+    }
+  }, [buyerSetQuantity, alreadyUpdate.current]);
 
   useEffect(() => {
     let r = [];
@@ -76,26 +80,34 @@ export default function ShoppingCartPopup({ show }: { show: boolean }) {
     setBuyerSetQuantity(r);
   }, [entities]);
 
-  const increaseMyQuantity = useCallback((id: string) => {
-    setBuyerSetQuantity((old) =>
-      old.map((a) => {
-        if (a.id === id) {
-          a.cart_quantity = a.cart_quantity + 1;
-        }
-        return a;
-      })
-    );
-  }, []);
-  const decreaseMyQuantity = useCallback((id: string) => {
-    setBuyerSetQuantity((old) =>
-      old.map((a) => {
-        if (a.id === id && a.cart_quantity > 0) {
-          a.cart_quantity = a.cart_quantity - 1;
-        }
-        return a;
-      })
-    );
-  }, []);
+  const increaseMyQuantity = useCallback(
+    (id: string) => {
+      setBuyerSetQuantity((old) =>
+        old.map((a) => {
+          if (a.id === id) {
+            a.cart_quantity = a.cart_quantity + 1;
+          }
+          return a;
+        })
+      );
+      alreadyUpdate.current = true;
+    },
+    [alreadyUpdate]
+  );
+  const decreaseMyQuantity = useCallback(
+    (id: string) => {
+      setBuyerSetQuantity((old) =>
+        old.map((a) => {
+          if (a.id === id && a.cart_quantity > 0) {
+            a.cart_quantity = a.cart_quantity - 1;
+          }
+          return a;
+        })
+      );
+      alreadyUpdate.current = true;
+    },
+    [alreadyUpdate]
+  );
 
   const [showDeleteModal, setShowDeleteModal] = useState(false);
 
