@@ -73,7 +73,7 @@ export default function ViewProduct() {
         product_quantity: 1,
         product_original_price: productData.product_original_price,
         product_id: productData.product_id,
-        variant_id: null,
+        variant_id: undefined,
       });
     } else {
       setProductDataForBuyer(null);

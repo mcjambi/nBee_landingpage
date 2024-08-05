@@ -7,7 +7,6 @@ import RankingByWallet from './user-profile/components/ranking_by_wallet';
 import '../../node_modules/react-modal-video/scss/modal-video.scss';
 import ModalVideo from 'react-modal-video';
 import { useEffect, useState } from 'react';
-import { useGetProducts } from 'queries/product.query';
 import __helpers from 'helpers/index';
 import { useGetProductToCollections } from 'queries/product_to_collection.query';
 export default function Homepage() {
