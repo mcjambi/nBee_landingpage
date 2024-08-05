@@ -9,6 +9,7 @@ import ModalVideo from 'react-modal-video';
 import { useEffect, useState } from 'react';
 import { useGetProducts } from 'queries/product.query';
 import __helpers from 'helpers/index';
+import { useGetProductToCollections } from 'queries/product_to_collection.query';
 export default function Homepage() {
   const {
     data: gameData,
@@ -18,12 +19,17 @@ export default function Homepage() {
     limit: 4,
   });
 
-  const { mutate: getBestSeller, data: bestsellerData, isPending: loadingBestSeller, isSuccess: loadBestSellerSuccess } = useGetProducts();
+  const {
+    mutate: getBestSeller,
+    data: bestsellerData,
+    isPending: loadingBestSeller,
+    isSuccess: loadBestSellerSuccess,
+  } = useGetProductToCollections();
 
   useEffect(() => {
     getBestSeller({
       limit: 3,
-      'product_to_collection.collection_id': 8,
+      'product_to_collection.collection_slug': 'best-sellers',
       sort: 'createdAt: desc',
     });
   }, []);
@@ -209,26 +215,26 @@ export default function Homepage() {
                   </Text>
                 </div>
               </Box>
-              {bestsellerData.body.map((el, index) => {
+              {bestsellerData.body.map(({ product }, index) => {
                 return (
                   <Box background="bg-fill" padding={'400'} key={`product_in_best_sellers_` + index}>
                     <BlockStack gap="200">
-                      <img src={__helpers.getMediaLink(el.product_thumbnail)} alt="" />
-                      {el.product_to_category && (
+                      <img src={__helpers.getMediaLink(product.product_thumbnail)} alt="" />
+                      {product.product_to_category && (
                         <Text as="p" tone="subdued">
-                          {el.product_to_category[0].product_category.category_name}
+                          {product.product_to_category[0].product_category.category_name}
                         </Text>
                       )}
                       <Text as="h3" variant="headingMd">
-                        <Link removeUnderline url={`/product/view/` + el.product_slug}>
-                          {el.product_name}
+                        <Link removeUnderline url={`/product/view/` + product.product_slug}>
+                          {product.product_name}
                         </Link>
                       </Text>
                       <Text as="span" variant="headingMd" fontWeight="bold" tone="magic-subdued">
-                        {el.product_price_range ? <>Từ {el.product_price_range}</> : <>{__helpers.formatNumber(el.product_price)}</>} đ
+                        {product.product_price_range ? <>Từ {product.product_price_range}</> : <>{__helpers.formatNumber(product.product_price)}</>} đ
                       </Text>
                       <Text as="span" variant="bodySm" tone="subdued">
-                        Đã bán {el.product_sold_quantity}
+                        Đã bán {product.product_sold_quantity}
                       </Text>
                     </BlockStack>
                   </Box>
