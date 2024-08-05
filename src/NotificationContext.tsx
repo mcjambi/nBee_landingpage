@@ -36,6 +36,7 @@ export const NotificationProvider = ({
   const [notifications, setNotifications] = useState([]);
   const [notification, setNotification] = useState(null);
 
+  /** Popup hiển thị modal yêu cầu ký */
   const [showUserSignModal, setShowUserSignModal] = useState(false);
 
   useEffect(() => {

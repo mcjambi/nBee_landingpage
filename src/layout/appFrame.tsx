@@ -247,7 +247,7 @@ export default function AppFrame({ children }: any) {
   );
 
   const logo = {
-    width: 86,
+    width: 186,
     topBarSource: main_logo,
     contextualSaveBarSource: main_logo,
     accessibilityLabel: 'Customer Care',

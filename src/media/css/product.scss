@@ -22,3 +22,22 @@
     width: auto;
   }
 }
+
+#add_to_cart_button_group {
+  border: 1px solid #ccc;
+  max-width: 252px;
+  padding: 15px;
+  background-color: #fff;
+  border-radius: 10px;
+
+  #cart_quantity_selected {
+  }
+  #add_to_cart_main_button {
+    background-color: #ffa41c !important;
+    color: #000 !important;
+
+    svg {
+      fill: #000 !important;
+    }
+  }
+}

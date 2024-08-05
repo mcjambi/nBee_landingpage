@@ -4,6 +4,7 @@ import {
   Button,
   ButtonGroup,
   Divider,
+  ExceptionList,
   Image,
   InlineGrid,
   InlineStack,
@@ -19,7 +20,7 @@ import { ProductVariant, useGetProduct, useGetProductMedia } from 'queries/produ
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import { CartDownIcon, CartSaleIcon, CategoriesIcon } from '@shopify/polaris-icons';
+import { CartDownIcon, InfoIcon, DeliveryFilledIcon, CategoriesIcon, NoteIcon } from '@shopify/polaris-icons';
 import StarRating from 'components/starRating';
 import 'media/css/product.scss';
 import { useAddToShoppingCart } from 'queries/shopping_cart.query';
@@ -167,152 +168,179 @@ export default function ViewProduct() {
 
   const Found = () => {
     return (
-      <Page fullWidth title="" backAction={{ content: 'back to list', onAction: () => history('/product') }}>
-        <InlineGrid columns={{ xs: 1, md: ['oneThird', 'twoThirds'] }} gap="400" alignItems="start">
-          <Box paddingInline={{ sm: '400', md: '0' }}>
-            <Image alt={''} source={__helpers.getMediaLink(productData?.product_thumbnail)} />
-            <div className="product_image_slide">
-              <InlineStack gap="200" align="start" blockAlign="center">
-                {allMedia?.map((el, index) => {
-                  return (
-                    <Link url="" key={'product_slide_image_link_key'}>
-                      <Image source={__helpers.getMediaLink(el.media.media_filename)} alt="" className="product_slide_thumbnail" />
-                    </Link>
-                  );
-                })}
-              </InlineStack>
-            </div>
-          </Box>
-          <Box paddingInline={{ xs: '400', md: '2000' }}>
-            <BlockStack gap="400" align="start">
-              {productData?.product_to_category && (
-                <p>
-                  <Button icon={CategoriesIcon} textAlign="start" variant="monochromePlain">
-                    {productData?.product_to_category[0].product_category.category_name}
-                  </Button>
-                </p>
-              )}
-              <Text as="h1" variant="heading2xl">
-                {productData?.product_name}
-              </Text>
-              <InlineStack align="start" blockAlign="center" gap="400">
-                <StarRating num={4} />
-                <Text as="span" tone="subdued">
-                  32 đánh giá
-                </Text>
-              </InlineStack>
-              <Text as="p" variant="bodySm" tone="subdued">
-                {productData?.product_excerpt}
-              </Text>
-
-              <Box padding={'400'} background="bg-surface-warning">
-                {productData?.product_has_variants ? (
-                  <Text as="span" variant="headingLg" fontWeight="regular" tone="magic">
-                    Từ {productData?.product_price_range} đ
-                  </Text>
-                ) : (
-                  <InlineStack align="start" blockAlign="center" gap="600">
-                    <Text as="span" variant="headingLg" fontWeight="regular" tone="magic">
-                      {__helpers.formatNumber(productData?.product_price)} đ
-                    </Text>
-                    {productData?.product_original_price > 0 && (
-                      <Text as="span" variant="headingMd" fontWeight="regular" tone="subdued">
-                        <del>{__helpers.formatNumber(productData?.product_original_price)} đ</del>
-                      </Text>
-                    )}
+      <>
+        <Page fullWidth title="" backAction={{ content: 'back to list', onAction: () => history('/product') }}>
+          <Box padding={{ xs: '400', md: '0' }}>
+            <InlineGrid columns={{ xs: 1, md: ['oneThird', 'twoThirds'] }} gap="400" alignItems="start">
+              <Box>
+                <Image alt={''} source={__helpers.getMediaLink(productData?.product_thumbnail)} />
+                <div className="product_image_slide">
+                  <InlineStack gap="200" align="start" blockAlign="center">
+                    {allMedia?.map((el, index) => {
+                      return (
+                        <Link url="" key={'product_slide_image_link_key'}>
+                          <Image source={__helpers.getMediaLink(el.media.media_filename)} alt="" className="product_slide_thumbnail" />
+                        </Link>
+                      );
+                    })}
                   </InlineStack>
-                )}
+                </div>
               </Box>
-              {productData?.product_has_variants === 1 && (
-                <>
-                  <BlockStack gap="400">
-                    <Text as="h4" variant="headingMd">
-                      Chọn một tùy chọn
+              <InlineGrid columns={{ xs: 1, md: ['twoThirds', 'oneThird'] }} gap="400" alignItems="start">
+                <Box paddingInline={{ xs: '0', md: '2000' }}>
+                  <BlockStack gap="400" align="start">
+                    {productData?.product_to_category && (
+                      <p>
+                        <Button icon={CategoriesIcon} textAlign="start" variant="monochromePlain">
+                          {productData?.product_to_category[0].product_category.category_name}
+                        </Button>
+                      </p>
+                    )}
+                    <Text as="h1" variant="heading2xl">
+                      {productData?.product_name}
+                    </Text>
+                    <InlineStack align="start" blockAlign="center" gap="400">
+                      <StarRating num={4} />
+                      <Text as="span" tone="subdued">
+                        32 đánh giá
+                      </Text>
+                    </InlineStack>
+                    <Text as="p" variant="bodySm" tone="subdued">
+                      {productData?.product_excerpt}
                     </Text>
 
-                    {mode === 'multi_variants' ? (
+                    <Box padding={'400'} background="bg-surface-warning">
+                      {productData?.product_has_variants ? (
+                        <Text as="span" variant="headingLg" fontWeight="regular" tone="magic">
+                          Từ {productData?.product_price_range} đ
+                        </Text>
+                      ) : (
+                        <InlineStack align="start" blockAlign="center" gap="600">
+                          <Text as="span" variant="headingLg" fontWeight="regular" tone="magic">
+                            {__helpers.formatNumber(productData?.product_price)} đ
+                          </Text>
+                          {productData?.product_original_price > 0 && (
+                            <Text as="span" variant="headingMd" fontWeight="regular" tone="subdued">
+                              <del>{__helpers.formatNumber(productData?.product_original_price)} đ</del>
+                            </Text>
+                          )}
+                        </InlineStack>
+                      )}
+                    </Box>
+                    {productData?.product_has_variants === 1 && (
                       <>
-                        <Text as="p">{productData?.product_variant_group[0]?.variant_group_name}</Text>
-                        <ButtonGroup>
-                          {productData?.product_variant_group[0].variant_group_value
-                            .split(',')
-                            .map((el) => el.trim())
-                            .map((el, index) => {
-                              return (
-                                <Button pressed={firstVariantSelected === el} onClick={() => setFirstVariantSelected(el)}>
-                                  {el}
-                                </Button>
-                              );
-                            })}
-                        </ButtonGroup>
-                        <br />
+                        <BlockStack gap="400">
+                          <Text as="h4" variant="headingMd">
+                            Chọn một tùy chọn
+                          </Text>
 
-                        <div className="product_variant_option_variant">
-                          <InlineStack align="start" blockAlign="center" gap="400">
-                            {filtedVariant?.map((variantData, index) => {
-                              return (
-                                <div
-                                  className={`variant_option ${current_variant === variantData.id && 'active'} clickable`}
-                                  key={index + '_map_for_variant'}
-                                  onClick={() => setVariant(variantData.id)}
-                                >
-                                  <InlineStack align="start" blockAlign="center" gap="200">
-                                    <Thumbnail size="small" source={__helpers.getMediaLink(variantData.variant_thumbnail)} alt={''} />
-                                    <BlockStack align="start" inlineAlign="start" gap="100">
-                                      <Text as="span" fontWeight="bold">
-                                        {variantData.variant_name}
-                                      </Text>
-                                      <Text as="span" tone="subdued">
-                                        {__helpers.formatNumber(variantData.variant_price)} đ
-                                      </Text>
-                                    </BlockStack>
-                                  </InlineStack>
-                                </div>
-                              );
-                            })}
-                          </InlineStack>
-                        </div>
-                      </>
-                    ) : (
-                      <>
-                        <div className="product_variant_option_variant">
-                          <InlineStack align="start" blockAlign="center" gap="400">
-                            {productData?.product_variant?.map((variantData, index) => {
-                              return (
-                                <div
-                                  className={`variant_option ${current_variant === variantData.id && 'active'} clickable`}
-                                  key={index + '_map_for_variant'}
-                                  onClick={() => setVariant(variantData.id)}
-                                >
-                                  <InlineStack align="start" blockAlign="center" gap="200">
-                                    <Thumbnail size="small" source={__helpers.getMediaLink(variantData.variant_thumbnail)} alt={''} />
-                                    <BlockStack align="start" inlineAlign="start" gap="100">
-                                      <Text as="span" fontWeight="bold">
-                                        {variantData.variant_name}
-                                      </Text>
-                                      <Text as="span" tone="subdued">
-                                        {__helpers.formatNumber(variantData.variant_price)} đ
-                                      </Text>
-                                    </BlockStack>
-                                  </InlineStack>
-                                </div>
-                              );
-                            })}
-                          </InlineStack>
-                        </div>
+                          {mode === 'multi_variants' ? (
+                            <>
+                              <Text as="p">{productData?.product_variant_group[0]?.variant_group_name}</Text>
+                              <ButtonGroup>
+                                {productData?.product_variant_group[0].variant_group_value
+                                  .split(',')
+                                  .map((el) => el.trim())
+                                  .map((el, index) => {
+                                    return (
+                                      <Button pressed={firstVariantSelected === el} onClick={() => setFirstVariantSelected(el)}>
+                                        {el}
+                                      </Button>
+                                    );
+                                  })}
+                              </ButtonGroup>
+                              <br />
+
+                              <div className="product_variant_option_variant">
+                                <InlineStack align="start" blockAlign="center" gap="400">
+                                  {filtedVariant?.map((variantData, index) => {
+                                    return (
+                                      <div
+                                        className={`variant_option ${current_variant === variantData.id && 'active'} clickable`}
+                                        key={index + '_map_for_variant'}
+                                        onClick={() => setVariant(variantData.id)}
+                                      >
+                                        <InlineStack align="start" blockAlign="center" gap="200">
+                                          <Thumbnail size="small" source={__helpers.getMediaLink(variantData.variant_thumbnail)} alt={''} />
+                                          <BlockStack align="start" inlineAlign="start" gap="100">
+                                            <Text as="span" fontWeight="bold">
+                                              {variantData.variant_name}
+                                            </Text>
+                                            <Text as="span" tone="subdued" fontWeight="bold">
+                                              {__helpers.formatNumber(variantData.variant_price)} đ
+                                            </Text>
+                                          </BlockStack>
+                                        </InlineStack>
+                                      </div>
+                                    );
+                                  })}
+                                </InlineStack>
+                              </div>
+                            </>
+                          ) : (
+                            <>
+                              <div className="product_variant_option_variant">
+                                <InlineStack align="start" blockAlign="center" gap="400">
+                                  {productData?.product_variant?.map((variantData, index) => {
+                                    return (
+                                      <div
+                                        className={`variant_option ${current_variant === variantData.id && 'active'} clickable`}
+                                        key={index + '_map_for_variant'}
+                                        onClick={() => setVariant(variantData.id)}
+                                      >
+                                        <InlineStack align="start" blockAlign="center" gap="200">
+                                          <Thumbnail size="small" source={__helpers.getMediaLink(variantData.variant_thumbnail)} alt={''} />
+                                          <BlockStack align="start" inlineAlign="start" gap="100">
+                                            <Text as="span" fontWeight="bold">
+                                              {variantData.variant_name}
+                                            </Text>
+                                            <Text as="span" tone="subdued" fontWeight="bold">
+                                              {__helpers.formatNumber(variantData.variant_price)} đ
+                                            </Text>
+                                          </BlockStack>
+                                        </InlineStack>
+                                      </div>
+                                    );
+                                  })}
+                                </InlineStack>
+                              </div>
+                            </>
+                          )}
+                        </BlockStack>
+
+                        <br />
+                        <Divider />
+                        <br />
                       </>
                     )}
                   </BlockStack>
+                </Box>
 
-                  <br />
-                  <Divider />
-                  <br />
-                </>
-              )}
-              {productDataForBuyer && (
-                <>
-                  <InlineGrid alignItems="center" columns={3} gap="400">
+                <div id="add_to_cart_button_group">
+                  <BlockStack gap="400">
+                    <Text as="p" variant="heading2xl" fontWeight="regular">
+                      {__helpers.formatNumber(productDataForBuyer?.product_price ?? 0)} <sup>đ</sup>
+                    </Text>
+
+                    <ExceptionList
+                      items={[
+                        {
+                          icon: InfoIcon,
+                          description: 'Phí vận chuyển có thể áp dụng trong trang thanh toán, được vận chuyển từ các kho gần bạn nhất.',
+                        },
+                      ]}
+                    />
+                    <Text as="p" tone="success">
+                      Nhận hàng từ 2 tới 5 ngày. Sau ngày này, bạn sẽ nhận được mã vouncher 10.000 đ cho các đơn hàng tiếp theo.
+                    </Text>
+
+                    <Text as="p" variant="headingLg" fontWeight="regular" tone="success">
+                      Có sẵn hàng
+                    </Text>
+
                     <TextField
+                      disabled={!productDataForBuyer}
+                      id="cart_quantity_selected"
                       align="center"
                       autoComplete="off"
                       label=""
@@ -329,34 +357,44 @@ export default function ViewProduct() {
                         </Button>
                       }
                     />
-                    <Button loading={addingShoppingCart} onClick={addToCartCallback} icon={CartDownIcon}>
+                    <Button
+                      size="large"
+                      id="add_to_cart_main_button"
+                      disabled={!productDataForBuyer}
+                      variant="primary"
+                      loading={addingShoppingCart}
+                      onClick={addToCartCallback}
+                      icon={CartDownIcon}
+                    >
                       Thêm vào giỏ hàng
                     </Button>
-                    <Button onClick={buynowCallback} icon={CartSaleIcon} variant="primary">
-                      Mua ngay
-                    </Button>
-                  </InlineGrid>
-                </>
-              )}
-            </BlockStack>
+                  </BlockStack>
+                </div>
+                {/** END RIGHT COLUMN */}
+              </InlineGrid>
+            </InlineGrid>
+            <Divider />
+            <br />
+            <Text as="h2" variant="headingLg">
+              Mô tả
+            </Text>
+            <br />
+            <div className="product_content">{Parser(productData?.product_description ?? ' ')}</div>
           </Box>
-        </InlineGrid>
-        <Divider />
-        <br />
-        <Text as="h2" variant="headingLg">
-          Mô tả
-        </Text>
-        <br />
-        <div className="product_content">{Parser(productData?.product_description ?? ' ')}</div>
-        <br />
-        <Divider />
-        <br />
-        <Text as="h2" variant="headingLg">
-          Đánh giá
-        </Text>
-        <br />
-        <CommentCourse heading="" />
-      </Page>
+        </Page>
+        <Page>
+          <br />
+          <Divider />
+          <br />
+          <Box padding={'400'}>
+            <Text as="h2" variant="headingLg">
+              Đánh giá
+            </Text>
+            <br />
+            <CommentCourse heading="" />
+          </Box>
+        </Page>
+      </>
     );
   };
 
