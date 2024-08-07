@@ -21,7 +21,7 @@ export default function DetailNews({ pageslug = 'error_404' }: { pageslug: strin
             <Text as="span">{entity?.author?.display_name}</Text> - {__helpers.subtractTimeHistory(entity?.createdAt)}
           </Text>
 
-          <div>{Parser(entity?.post_content ?? ' empty')}</div>
+          <div className="ck-content">{Parser(entity?.post_content ?? ' empty')}</div>
 
           <br />
           <Divider />

@@ -388,7 +388,7 @@ export default function ViewProduct() {
               Mô tả
             </Text>
             <br />
-            <div className="product_content">{Parser(productData?.product_description ?? ' ')}</div>
+            <div className="product_content ck-content">{Parser(productData?.product_description ?? ' ')}</div>
           </Box>
         </Page>
         <Page>
