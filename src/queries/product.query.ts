@@ -100,6 +100,9 @@ type TypedProductMedia = {
         "media_url": string,
         "media_description": string,
         "media_filename": string,
+        "media_thumbnail"?: {
+            [propKey: string]: string
+        },
         "media_filetype": string
     }
 

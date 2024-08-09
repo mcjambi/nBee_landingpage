@@ -179,7 +179,13 @@ export default function ViewProduct() {
                     {allMedia?.map((el, index) => {
                       return (
                         <Link url="" key={'product_slide_image_link_key'}>
-                          <Image source={__helpers.getMediaLink(el.media.media_filename)} alt="" className="product_slide_thumbnail" />
+                          <Image
+                            source={
+                              el.media.media_thumbnail ? __helpers.getMediaLink(el.media.media_thumbnail['256x169']) : 'https://placehold.co/256x169'
+                            }
+                            alt=""
+                            className="product_slide_thumbnail"
+                          />
                         </Link>
                       );
                     })}
