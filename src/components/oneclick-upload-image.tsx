@@ -1,10 +1,11 @@
 import axios from 'axios';
 import 'media/css/quickUpload.scss';
-import { Children, useEffect, useState } from 'react';
+import { useState } from 'react';
 
 type TypedUploadResult = {
   media_id: number;
   media_filename: string;
+  media_url: string;
   media_filetype: string;
 };
 
@@ -21,17 +22,13 @@ interface IUpload {
  */
 export default function QuickUploadImage({ onSuccess, onError, title, children, placeholder }: IUpload) {
   const [loadingPercent, setLoadingPercent] = useState(0);
-  const [imagePlaceholder, setImagePlaceholder] = useState<string | null>(placeholder);
-
-  useEffect(() => {
-    if (placeholder) setImagePlaceholder(placeholder);
-  }, [placeholder]);
+  const [imagePlaceholder, setImagePlaceholder] = useState<string | null>();
 
   /**
    * return to main progress file, callback
    */
   function uploadSuccess(rep: any) {
-    setImagePlaceholder(process.env.REACT_APP_AJAX_UPLOAD_PERMALINK + rep.media_filename);
+    setImagePlaceholder(rep.media_url);
     onSuccess?.call(this, rep);
   }
 
@@ -104,7 +101,7 @@ export default function QuickUploadImage({ onSuccess, onError, title, children, 
             </svg>
           </span>
         </div>
-        {imagePlaceholder && <img src={imagePlaceholder} alt="" className="imageAfterUploadPlaceholder" />}
+        {<img src={imagePlaceholder ?? placeholder} alt="" className="imageAfterUploadPlaceholder" />}
         <div className="children_wrap">
           {title && <span className="textPlaceholder">{title}</span>}
           {children}

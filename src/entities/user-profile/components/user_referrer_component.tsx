@@ -115,7 +115,7 @@ function UserAvatarGroup({ data, hasMore = 0 }: { data: TypedUserAvatarGroup[]; 
         return (
           <div className="avatar" key={index + '_user_group_profile'}>
             <span className="avatar-name">{people.display_name}</span>
-            <img src={people.user_avatar} alt="" />
+            <img src={people.user_avatar ? __helpers.getMediaLink(people.user_avatar) : null} alt="" />
           </div>
         );
       })}

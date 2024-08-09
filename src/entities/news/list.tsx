@@ -97,7 +97,11 @@ export default function ListNews() {
                         <Text as="p">{helpers.trimContentString(entity?.post_excerpt ?? '', 100)}</Text>
                         <InlineStack blockAlign="center" align="space-between">
                           <InlineStack align="start" blockAlign="center" gap="100">
-                            <Avatar source={entity?.author?.user_avatar} name="A" size="md" />
+                            <Avatar
+                              source={entity?.author?.user_avatar ? __helpers.getMediaLink(entity?.author?.user_avatar) : null}
+                              name="A"
+                              size="md"
+                            />
                             <Text as="span">{entity?.author?.display_name}</Text>
                           </InlineStack>
                           <Text as="span" tone="subdued">

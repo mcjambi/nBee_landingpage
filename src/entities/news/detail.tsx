@@ -31,7 +31,7 @@ export default function DetailNews({ pageslug = 'error_404' }: { pageslug: strin
           </Text>
           <InlineStack blockAlign="center" align="space-between">
             <InlineStack align="start" blockAlign="center" gap="400">
-              <Thumbnail source={entity?.author?.user_avatar} alt={''} size="medium" />
+              <Thumbnail source={entity?.author?.user_avatar ? __helpers.getMediaLink(entity?.author?.user_avatar) : null} alt={''} size="medium" />
               <BlockStack>
                 <Text as="h3" variant="headingMd">
                   {entity?.author?.display_name}

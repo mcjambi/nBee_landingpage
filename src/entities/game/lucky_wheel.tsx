@@ -625,7 +625,7 @@ export default function LuckyWheel() {
                       <div key={'XXX_' + index} className={`user_rank ${el.user_id === user.user_id ? 'active' : ''}`}>
                         <InlineStack align="space-between" blockAlign="center">
                           <InlineStack align="start" blockAlign="center" gap="400">
-                            <Avatar source={el.user?.user_avatar ?? null} size="lg" />
+                            <Avatar source={el.user?.user_avatar ? __helpers.getMediaLink(el.user?.user_avatar) : null} size="lg" />
                             <BlockStack>
                               <Text as="p" variant="headingMd">
                                 {el.user?.display_name ?? 'Chưa có tên'}

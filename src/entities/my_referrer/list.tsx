@@ -103,7 +103,7 @@ export default function MyReferrers() {
                     customer
                     name={display_name}
                     initials={String(display_name || 'R').charAt(0)}
-                    source={user_avatar ? process.env.REACT_APP_AJAX_UPLOAD_PERMALINK + user_avatar : 'https://placehold.co/100x100'}
+                    source={user_avatar ? __helpers.getMediaLink(user_avatar) : 'https://placehold.co/100x100'}
                   />
                   <Text variant="bodyMd" fontWeight="bold" as="span">
                     {display_name}

@@ -110,7 +110,7 @@ export default function Login() {
         localStorage.setItem('redirect', appData.app_homepage);
       }
 
-      if (appData.app_thumbnail) setLoginLogoURI(process.env.REACT_APP_AJAX_UPLOAD_PERMALINK + '/' + appData.app_thumbnail);
+      if (appData.app_thumbnail) setLoginLogoURI(helpers.getMediaLink(appData.app_thumbnail));
 
       setLoginMainTitle(appData.app_name);
       setLoginSubTitle(appData.app_description);

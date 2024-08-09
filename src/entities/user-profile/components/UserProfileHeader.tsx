@@ -6,23 +6,24 @@ import default_avatar from 'media/images/user-default.svg';
 import __ from 'languages/index';
 import { useAuth } from 'AuthContext';
 import { useUpdateProfile } from 'queries/user.query';
+import __helpers from 'helpers/index';
 
 export default function UserProfileHeader() {
   const { user: profileData } = useAuth();
 
   const { mutateAsync: updateProfile } = useUpdateProfile();
 
-  const [srcImageAvatar, setSrcImageAvatar] = useState(default_avatar);
+  const [srcImageAvatar, setSrcImageAvatar] = useState('');
 
   useEffect(() => {
-    setSrcImageAvatar(profileData?.user_avatar ?? default_avatar);
+    setSrcImageAvatar(profileData?.user_avatar);
   }, [profileData]);
 
   const handQuickUpdateSuccess = useCallback((res: any) => {
-    setSrcImageAvatar(process.env.REACT_APP_BACKEND_URL + '/media/download/' + res.media_filename);
+    setSrcImageAvatar(res.media_url);
     updateProfile({
       user_id: profileData?.user_id,
-      user_avatar: `${process.env.REACT_APP_BACKEND_URL}/media/download/${res.media_filename}`,
+      user_avatar: res.media_url,
     });
   }, []);
 
@@ -33,7 +34,12 @@ export default function UserProfileHeader() {
           <div className="profile_background">&nbsp;</div>
           <div className="profile_header">
             <QuickUploadImage onSuccess={handQuickUpdateSuccess} onError={() => {}}>
-              <img src={srcImageAvatar} crossOrigin="anonymous" alt="User Profile" style={{ width: '115px' }} />
+              <img
+                src={srcImageAvatar ? __helpers.getMediaLink(srcImageAvatar) : default_avatar}
+                crossOrigin="anonymous"
+                alt="User Profile"
+                style={{ width: '115px' }}
+              />
             </QuickUploadImage>
           </div>
           <InlineStack align="center" blockAlign="center" gap="200">

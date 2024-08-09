@@ -87,7 +87,7 @@ export default function AppFrame({ children }: any) {
       detail={user?.user_role}
       initials={String(user?.display_name || user?.user_email || user?.user_login || 'unknown').charAt(0)}
       open={userMenuActive}
-      avatar={user?.user_avatar ?? null}
+      avatar={user?.user_avatar ? helpers.getMediaLink(user?.user_avatar) : null}
       onToggle={toggleUserMenuActive}
       // message={{
       //   title: 'Hi',

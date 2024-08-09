@@ -131,7 +131,7 @@ export default function CheckIn() {
       <Box padding={'400'}>
         <BlockStack gap="400">
           <InlineStack align="start" blockAlign="center" gap="400">
-            <Avatar source={user.user_avatar ?? null} size="lg" />
+            <Avatar source={user.user_avatar ? __helpers.getMediaLink(user.user_avatar) : null} size="lg" />
             <Text as="p">{user.display_name}</Text>
           </InlineStack>
 
@@ -179,7 +179,7 @@ export default function CheckIn() {
                           <div key={'XXX_' + index} className={`normal_user_rank ${r.user.user_id === user.user_id ? 'active' : ''}`}>
                             <InlineStack align="space-between" blockAlign="center">
                               <InlineStack align="start" blockAlign="center" gap="400">
-                                <Avatar source={r.user?.user_avatar ?? null} size="lg" />
+                                <Avatar source={r.user?.user_avatar ? __helpers.getMediaLink(r.user.user_avatar) : null} size="lg" />
                                 <BlockStack>
                                   <Text as="p" variant="headingMd">
                                     {r.user?.display_name ?? 'Chưa có tên'}

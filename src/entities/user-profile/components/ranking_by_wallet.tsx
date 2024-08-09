@@ -35,7 +35,11 @@ export default function RankingByWallet({ wallet_unit = 'cash' }: { wallet_unit:
                 <div className={'topwallet_element top' + (index + 1)} key={`topwalletElement_` + index}>
                   <InlineStack as="div" align="space-between" blockAlign="center">
                     <InlineStack gap="200">
-                      <Avatar source={element?.user?.user_avatar} size={index === 0 ? 'xl' : 'sm'} initials="N" />
+                      <Avatar
+                        source={element?.user?.user_avatar ? __helpers.getMediaLink(element?.user?.user_avatar) : null}
+                        size={index === 0 ? 'xl' : 'sm'}
+                        initials="N"
+                      />
                       <Text as="span" fontWeight="bold">
                         {element?.user?.display_name}
                       </Text>
