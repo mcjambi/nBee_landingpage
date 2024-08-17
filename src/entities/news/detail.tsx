@@ -10,7 +10,6 @@ import Parser from 'html-react-parser';
 
 export default function DetailNews({ pageslug = 'error_404' }: { pageslug: string }) {
   const { data: entity, isLoading, isError } = useGetPost(pageslug);
-  console.log(entity, 'post___entity');
   const history = useNavigate();
 
   const ActualPage = useCallback(() => {

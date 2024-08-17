@@ -20,7 +20,7 @@ export default function HeroBanner() {
                 Mới về
               </Text>
 
-              <Text as="h2" variant="heading3xl">
+              <Text as="h2" variant="heading2xl">
                 Bobby big shark
               </Text>
 

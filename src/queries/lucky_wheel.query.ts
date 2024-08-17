@@ -107,7 +107,7 @@ export function useSetMyPresent() {
     return useMutation({
         mutationKey: ['game/lucky_wheel/set_my_presents'],
         mutationFn: (present_slug: string) => axios.post('/game/lucky_wheel/set_my_presents', { present_slug }).then((res) => res.data),
-        onSettled: () => {
+        onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['game/lucky_wheel/is_join_today'] })
             queryClient.invalidateQueries({ queryKey: ['game/lucky_wheel/list'] })
         }

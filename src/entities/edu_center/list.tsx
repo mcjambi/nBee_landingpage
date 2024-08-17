@@ -37,7 +37,7 @@ export default function EduList() {
         <Page>
           <InlineGrid columns={{ xs: 1, md: 2 }} gap="300" alignItems="center">
             <div>
-              <Text as="h2" variant="heading3xl">
+              <Text as="h2" variant="heading2xl">
                 Bạn muốn <span id="typingJS" style={{ color: 'green', borderBottom: '4px solid green' }}></span>
                 <br />
                 Mọi thứ ...

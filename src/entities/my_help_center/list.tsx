@@ -5,7 +5,7 @@ import { Helmet } from 'react-helmet-async';
 import SimpleFilter from 'components/simpleFilter';
 import dateandtime from 'date-and-time';
 
-import { useGetContactform, useGetContactforms } from 'queries/contactform.query';
+import { useGetContactforms } from 'queries/contactform.query';
 import helpers from 'helpers/index';
 import Pagination from 'components/pagination';
 import CreateHelpModal from './create';

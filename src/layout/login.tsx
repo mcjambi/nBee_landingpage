@@ -21,7 +21,7 @@ import 'media/css/login_register.scss';
 
 import React, { useState, useCallback, useEffect, useLayoutEffect } from 'react';
 import LoginLogo from 'media/images/LoginLogo.svg';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 
 import { lengthLessThan, lengthMoreThan, notEmptyString, useField, useForm } from '@shopify/react-form';
 

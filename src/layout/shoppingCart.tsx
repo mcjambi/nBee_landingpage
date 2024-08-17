@@ -146,7 +146,13 @@ export default function ShoppingCartPopup({ show }: { show: boolean }) {
                   <Box borderBlockEndWidth="0165" borderColor="border-disabled" paddingBlock={'400'} key={'shopping_cart_key_main_' + index}>
                     <InlineStack gap="400" align="space-between" blockAlign="center">
                       <InlineStack align="start" blockAlign="center" gap="200">
-                        <Thumbnail size="medium" source={helpers.getMediaLink(product?.product_thumbnail)} alt={''} />
+                        <Thumbnail
+                          size="medium"
+                          source={helpers.getMediaLink(
+                            product?.product_thumbnail_to_media ? product?.product_thumbnail_to_media.media_thumbnail['128x128'] : undefined
+                          )}
+                          alt={''}
+                        />
                         <div style={{ maxWidth: '174px' }}>
                           <Text as="p" tone="subdued" fontWeight="bold">
                             <Link removeUnderline onClick={() => history(`/product/view/` + product.product_slug)}>

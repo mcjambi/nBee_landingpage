@@ -218,7 +218,12 @@ export default function Homepage() {
                 return (
                   <Box background="bg-fill" padding={'400'} key={`product_in_best_sellers_` + index}>
                     <BlockStack gap="200">
-                      <img src={__helpers.getMediaLink(product.product_thumbnail)} alt="" />
+                      <img
+                        src={__helpers.getMediaLink(
+                          product.product_thumbnail_to_media ? product.product_thumbnail_to_media.media_thumbnail['256x169'] : undefined
+                        )}
+                        alt=""
+                      />
                       {product.product_to_category && (
                         <Text as="p" tone="subdued">
                           {product.product_to_category[0].product_category.category_name}

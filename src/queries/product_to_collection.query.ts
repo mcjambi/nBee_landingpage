@@ -2,14 +2,10 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import helpers from "helpers/index";
 import queryClient, { IQueryParams } from 'queries';
+import { TypedMedia } from "./media.query";
 
 
 type TypedProduct_to_collection = {
-    "ID"?: string,
-    "product_id"?: string,
-    "collection_id"?: string,
-    "relationship_hash"?: string,
-    "createdAt"?: string,
     "product"?: {
         "product_id"?: string,
         "product_description"?: string,
@@ -20,8 +16,8 @@ type TypedProduct_to_collection = {
         "product_price_range"?: string,
         "product_status"?: number,
         "product_sold_quantity"?: number,
-        "product_thumbnail"?: string,
         "product_to_category"?: any,
+        "product_thumbnail_to_media"?: TypedMedia
     }
 }
 

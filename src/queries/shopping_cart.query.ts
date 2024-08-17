@@ -2,6 +2,7 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import helpers from 'helpers/index';
 import queryClient, { IQueryParams } from 'queries';
+import { TypedMedia } from './media.query';
 
 /**
  *   Interface/model file auto generate for Setting Group
@@ -61,13 +62,13 @@ export interface TypedShopping_cart_item {
         product_id: string,
         product_slug: string,
         product_name: string,
-        product_thumbnail: string,
+        product_thumbnail_to_media: TypedMedia,
         product_status: number,
     },
     product_variant?: {
         variant_name: string,
         variant_slug: string,
-        variant_thumbnail: string,
+        variant_thumbnail_to_media: TypedMedia,
         variant_status: number,
     },
 

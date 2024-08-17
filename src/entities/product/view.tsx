@@ -173,7 +173,12 @@ export default function ViewProduct() {
           <Box padding={{ xs: '400', md: '0' }}>
             <InlineGrid columns={{ xs: 1, md: ['oneThird', 'twoThirds'] }} gap="400" alignItems="start">
               <Box>
-                <Image alt={''} source={__helpers.getMediaLink(productData?.product_thumbnail)} />
+                <Image
+                  alt={''}
+                  source={__helpers.getMediaLink(
+                    productData?.product_thumbnail_to_media ? productData?.product_thumbnail_to_media.media_thumbnail['300x200'] : undefined
+                  )}
+                />
                 <div className="product_image_slide">
                   <InlineStack gap="200" align="start" blockAlign="center">
                     {allMedia?.map((el, index) => {
@@ -274,7 +279,15 @@ export default function ViewProduct() {
                                         onClick={() => setVariant(variantData.id)}
                                       >
                                         <InlineStack align="start" blockAlign="center" gap="200">
-                                          <Thumbnail size="small" source={__helpers.getMediaLink(variantData.variant_thumbnail)} alt={''} />
+                                          <Thumbnail
+                                            size="small"
+                                            source={__helpers.getMediaLink(
+                                              variantData.variant_thumbnail_to_media
+                                                ? variantData.variant_thumbnail_to_media.media_thumbnail['128x128']
+                                                : undefined
+                                            )}
+                                            alt={''}
+                                          />
                                           <BlockStack align="start" inlineAlign="start" gap="100">
                                             <Text as="span" fontWeight="bold">
                                               {variantData.variant_name}
@@ -302,7 +315,15 @@ export default function ViewProduct() {
                                         onClick={() => setVariant(variantData.id)}
                                       >
                                         <InlineStack align="start" blockAlign="center" gap="200">
-                                          <Thumbnail size="small" source={__helpers.getMediaLink(variantData.variant_thumbnail)} alt={''} />
+                                          <Thumbnail
+                                            size="small"
+                                            source={__helpers.getMediaLink(
+                                              variantData.variant_thumbnail_to_media
+                                                ? variantData.variant_thumbnail_to_media.media_thumbnail['128x128']
+                                                : undefined
+                                            )}
+                                            alt={''}
+                                          />
                                           <BlockStack align="start" inlineAlign="start" gap="100">
                                             <Text as="span" fontWeight="bold">
                                               {variantData.variant_name}

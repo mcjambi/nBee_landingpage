@@ -2,6 +2,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import helpers from "helpers/index";
 import queryClient, { IQueryParams } from 'queries';
+import { TypedMedia } from "./media.query";
 
 
 
@@ -25,6 +26,8 @@ export type ProductVariant = {
     "variant_status"?: number,
     "hash"?: string,
     "createdAt"?: string
+
+    variant_thumbnail_to_media?: TypedMedia
 }
 
 type ProductVariantGroup = {
@@ -55,6 +58,8 @@ export interface TypedProduct {
     product_variant?: ProductVariant[];
     product_to_category?: any[];
     product_to_collection?: any[];
+
+    product_thumbnail_to_media?: TypedMedia
 }
 
 
@@ -96,15 +101,7 @@ type TypedProductMedia = {
     "media_id": string,
     "hash": string,
     "media_order": number,
-    "media": {
-        "media_url": string,
-        "media_description": string,
-        "media_filename": string,
-        "media_thumbnail"?: {
-            [propKey: string]: string
-        },
-        "media_filetype": string
-    }
+    "media": TypedMedia
 
 }
 

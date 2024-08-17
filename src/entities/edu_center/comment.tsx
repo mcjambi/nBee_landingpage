@@ -14,7 +14,7 @@ export default function CommentCourse({ heading = 'Nhận xét' }: { heading?: s
         <Box>
           <InlineStack align="space-between" blockAlign="center">
             <BlockStack>
-              <Text as="h3" variant="heading3xl">
+              <Text as="h3" variant="heading2xl">
                 4.3
               </Text>
               <StarRating num={4} />
