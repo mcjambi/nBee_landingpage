@@ -4,7 +4,7 @@ import './media/css/App.scss';
 import reportWebVitals from './reportWebVitals';
 import { HelmetProvider } from 'react-helmet-async';
 import '@shopify/polaris/build/esm/styles.css';
-import 'media/css/RichTextEditor.scss';
+import 'media/css/RichTextContent.scss';
 import viTranslations from '@shopify/polaris/locales/vi.json';
 import { AppProvider } from '@shopify/polaris';
 
